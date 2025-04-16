@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lans.sleep_care.presentation.screen.chatbot.ChatbotScreen
 import com.lans.sleep_care.presentation.screen.forgot_password.ForgotPasswordScreen
+import com.lans.sleep_care.presentation.screen.history.HistoryScreen
 import com.lans.sleep_care.presentation.screen.home.HomeScreen
 import com.lans.sleep_care.presentation.screen.login.LoginScreen
 import com.lans.sleep_care.presentation.screen.register.RegisterScreen
@@ -110,7 +111,11 @@ fun NavGraph(
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
-                navigateToHistory = { }
+                navigateToHistory = {
+                    navController.navigate(route = Route.HistoryScreen.route) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                }
             )
         }
         composable(route = Route.TherapistScreen.route) {
@@ -130,6 +135,11 @@ fun NavGraph(
             )
         }
         composable(route = Route.HistoryScreen.route) {
+            HistoryScreen(
+                navigateToHome = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

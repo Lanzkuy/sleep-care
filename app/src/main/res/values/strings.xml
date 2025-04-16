@@ -29,4 +29,5 @@
     <string name="search">Cari</string>
     <string name="year">%1$s tahun</string>
     <string name="percent">%1$d%%</string>
+    <string name="detail">Detail</string>
 </resources>
