@@ -3,7 +3,9 @@ package com.lans.sleep_care.presentation.screen.chatbot
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+@HiltViewModel
 class ChatbotViewModel : ViewModel() {
     private val _state = mutableStateOf(ChatbotUIState())
     val state: State<ChatbotUIState> get() = _state
