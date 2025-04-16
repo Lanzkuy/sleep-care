@@ -36,6 +36,6 @@ fun SleepCareApp(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.background
     ) {
-
+        NavGraph(startDestination = startDestination)
     }
 }
