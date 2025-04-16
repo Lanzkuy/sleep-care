@@ -12,4 +12,21 @@
     <string name="have_an_account_already">Sudah mempunyai akun?</string>
     <string name="name">Nama</string>
     <string name="confirm_password">Konfirmasi Kata Sandi</string>
+    <string name="verification_code">Kode Verifikasi</string>
+    <string name="new_password">Kata Sandi Baru</string>
+    <string name="send">Kirim</string>
+    <string name="ubah_password">Ubah Password</string>
+    <string name="back">Kembali</string>
+    <string name="image">Image</string>
+    <string name="hello">Halo</string>
+    <string name="user">User</string>
+    <string name="icon">Icon</string>
+    <string name="therapist">Terapis</string>
+    <string name="mytherapy">Terapiku</string>
+    <string name="chatbot">Chatbot</string>
+    <string name="history">Riwayat</string>
+    <string name="message">Pesan</string>
+    <string name="search">Cari</string>
+    <string name="year">%1$s tahun</string>
+    <string name="percent">%1$d%%</string>
 </resources>
