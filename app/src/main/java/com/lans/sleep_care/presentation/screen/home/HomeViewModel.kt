@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel : ViewModel() {
+class HomeViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: HomeUIEvent) {
         if (event is HomeUIEvent.LogoutButtonClicked) {
             logout()
