@@ -1,4 +1,4 @@
-package com.lans.sleep_care.presentation.screen.therapist
+package com.lans.sleep_care.presentation.screen.psychologist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,8 +38,8 @@ import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
-fun TherapistScreen(
-    viewModel: TherapistViewModel = hiltViewModel(),
+fun PsychologistScreen(
+    viewModel: PsychologistViewModel = hiltViewModel(),
     navigateToHome: () -> Unit
 ) {
     val therapists = listOf("Test1", "Test2", "Test3")
@@ -75,7 +75,7 @@ fun TherapistScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                text = stringResource(R.string.therapist),
+                text = stringResource(R.string.psychologist),
                 textAlign = TextAlign.Center,
                 fontSize = Dimens.sp24,
                 fontWeight = FontWeight.Bold
@@ -101,7 +101,7 @@ fun TherapistScreen(
             input = state.search,
             placeholder = stringResource(R.string.search),
             onValueChange = {
-                viewModel.onEvent(TherapistUIEvent.SearchChanged(it))
+                viewModel.onEvent(PsychologistUIEvent.SearchChanged(it))
             }
         )
         Spacer(

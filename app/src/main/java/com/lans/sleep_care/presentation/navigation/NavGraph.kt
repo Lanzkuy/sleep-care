@@ -17,8 +17,9 @@ import com.lans.sleep_care.presentation.screen.forgot_password.ForgotPasswordScr
 import com.lans.sleep_care.presentation.screen.history.HistoryScreen
 import com.lans.sleep_care.presentation.screen.home.HomeScreen
 import com.lans.sleep_care.presentation.screen.login.LoginScreen
+import com.lans.sleep_care.presentation.screen.my_theraphy.MyTherapyScreen
 import com.lans.sleep_care.presentation.screen.register.RegisterScreen
-import com.lans.sleep_care.presentation.screen.therapist.TherapistScreen
+import com.lans.sleep_care.presentation.screen.psychologist.PsychologistScreen
 
 @Composable
 fun NavGraph(
@@ -105,7 +106,9 @@ fun NavGraph(
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
-                navigateToMyTherapy = { },
+                navigateToMyTherapy = {
+                    
+                },
                 navigateToChatbot = {
                     navController.navigate(route = Route.ChatbotScreen.route) {
                         popUpTo(route = Route.HomeScreen.route)
@@ -119,13 +122,14 @@ fun NavGraph(
             )
         }
         composable(route = Route.TherapistScreen.route) {
-            TherapistScreen(
+            PsychologistScreen(
                 navigateToHome = {
                     navController.navigateUp()
                 }
             )
         }
         composable(route = Route.MyTherapyScreen.route) {
+
         }
         composable(route = Route.ChatbotScreen.route) {
             ChatbotScreen(

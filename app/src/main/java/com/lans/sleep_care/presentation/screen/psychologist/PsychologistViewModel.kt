@@ -1,4 +1,4 @@
-package com.lans.sleep_care.presentation.screen.therapist
+package com.lans.sleep_care.presentation.screen.psychologist
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -7,12 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class TherapistViewModel @Inject constructor() : ViewModel() {
-    private val _state = mutableStateOf(TherapistUIState())
-    val state: State<TherapistUIState> get() = _state
+class PsychologistViewModel @Inject constructor() : ViewModel() {
+    private val _state = mutableStateOf(PsychologistUIState())
+    val state: State<PsychologistUIState> get() = _state
 
-    fun onEvent(event: TherapistUIEvent) {
-        if (event is TherapistUIEvent.SearchChanged) {
+    fun onEvent(event: PsychologistUIEvent) {
+        if (event is PsychologistUIEvent.SearchChanged) {
             _state.value = _state.value.copy(
                 search = _state.value.search.copy(
                     value = event.message

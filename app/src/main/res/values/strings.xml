@@ -21,7 +21,7 @@
     <string name="hello">Halo</string>
     <string name="user">User</string>
     <string name="icon">Icon</string>
-    <string name="therapist">Terapis</string>
+    <string name="psychologist">Psikolog</string>
     <string name="mytherapy">Terapiku</string>
     <string name="chatbot">Chatbot</string>
     <string name="history">Riwayat</string>
@@ -30,4 +30,11 @@
     <string name="year">%1$s tahun</string>
     <string name="percent">%1$d%%</string>
     <string name="detail">Detail</string>
+    <string name="therapy_note">Catatan Terapi</string>
+    <string name="chat_doctor">Chat Dokter</string>
+    <string name="date">Tanggal</string>
+    <string name="topic">Topik</string>
+    <string name="link">Link</string>
+    <string name="doctor_note">Catatan Dokter</string>
+    <string name="therapy_schedule">Jadwal Terapi</string>
 </resources>
