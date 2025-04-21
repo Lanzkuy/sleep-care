@@ -31,10 +31,13 @@
     <string name="percent">%1$d%%</string>
     <string name="detail">Detail</string>
     <string name="therapy_note">Catatan Terapi</string>
-    <string name="chat_doctor">Chat Dokter</string>
+    <string name="chat_psychologist">Chat Psikologi</string>
     <string name="date">Tanggal</string>
     <string name="topic">Topik</string>
     <string name="link">Link</string>
     <string name="doctor_note">Catatan Dokter</string>
     <string name="therapy_schedule">Jadwal Terapi</string>
+    <string name="done">Sudah Dilaksanakan</string>
+    <string name="not_done">Belum Dilaksanakan</string>
+    <string name="psychologist_note">Catatan Psikolog</string>
 </resources>

@@ -107,7 +107,9 @@ fun NavGraph(
                     }
                 },
                 navigateToMyTherapy = {
-                    
+                    navController.navigate(route = Route.MyTherapyScreen.route) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
                 },
                 navigateToChatbot = {
                     navController.navigate(route = Route.ChatbotScreen.route) {
@@ -129,7 +131,17 @@ fun NavGraph(
             )
         }
         composable(route = Route.MyTherapyScreen.route) {
+            MyTherapyScreen(
+                navigateToHome = {
+                    navController.navigateUp()
+                },
+                navigateToChat = {
 
+                },
+                navigateToLogbook = {
+
+                }
+            )
         }
         composable(route = Route.ChatbotScreen.route) {
             ChatbotScreen(

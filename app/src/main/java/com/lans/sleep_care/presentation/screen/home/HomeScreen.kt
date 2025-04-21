@@ -50,7 +50,7 @@ fun HomeScreen(
     navigateToHistory: () -> Unit
 ) {
     val menuItems = listOf(
-        Pair(stringResource(R.string.therapist), navigateToTherapist),
+        Pair(stringResource(R.string.psychologist), navigateToTherapist),
         Pair(stringResource(R.string.mytherapy), navigateToMyTherapy),
         Pair(stringResource(R.string.chatbot), navigateToChatbot),
         Pair(stringResource(R.string.history), navigateToHistory)
