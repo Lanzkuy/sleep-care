@@ -40,4 +40,9 @@
     <string name="done">Sudah Dilaksanakan</string>
     <string name="not_done">Belum Dilaksanakan</string>
     <string name="psychologist_note">Catatan Psikolog</string>
+    <string name="sleep_diary">Catatan Tidur</string>
+    <string name="identify_value">Identifikasi Nilai Pribadi</string>
+    <string name="thought_record">Catatan Pikiran</string>
+    <string name="emotion_record">Catatan Emosi</string>
+    <string name="commited_action">Tindakan Berkomitmen</string>
 </resources>

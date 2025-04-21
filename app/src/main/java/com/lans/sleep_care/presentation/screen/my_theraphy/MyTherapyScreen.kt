@@ -59,6 +59,10 @@ fun MyTherapyScreen(
     navigateToChat: () -> Unit,
     navigateToLogbook: () -> Unit
 ) {
+    val buttonItems = listOf(
+        Triple(R.drawable.ic_message, R.string.chat_psychologist, navigateToChat),
+        Triple(R.drawable.ic_book, R.string.therapy_note, navigateToLogbook)
+    )
     val scheduleList = listOf(
         TherapySchedule(
             "24/08/2025",
@@ -134,33 +138,21 @@ fun MyTherapyScreen(
                 .fillMaxWidth()
                 .height(Dimens.dp16)
         )
-        OutlinedIconButton(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = Dimens.dp24
-                ),
-            icon = painterResource(R.drawable.ic_message),
-            name = stringResource(R.string.chat_psychologist),
-            onClick = {
-                navigateToChat.invoke()
+                .padding(horizontal = Dimens.dp24),
+            verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
+        ) {
+            items(buttonItems) { (icon, name, action) ->
+                OutlinedIconButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    icon = painterResource(icon),
+                    name = stringResource(name),
+                    onClick = { action.invoke() }
+                )
             }
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp8)
-        )
-        OutlinedIconButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = Dimens.dp24
-                ),
-            icon = painterResource(R.drawable.ic_book),
-            name = stringResource(R.string.therapy_note),
-            onClick = { }
-        )
+        }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()

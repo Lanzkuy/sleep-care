@@ -49,11 +49,11 @@ fun HomeScreen(
     navigateToChatbot: () -> Unit,
     navigateToHistory: () -> Unit
 ) {
-    val menuItems = listOf(
-        Pair(stringResource(R.string.psychologist), navigateToTherapist),
-        Pair(stringResource(R.string.mytherapy), navigateToMyTherapy),
-        Pair(stringResource(R.string.chatbot), navigateToChatbot),
-        Pair(stringResource(R.string.history), navigateToHistory)
+    val buttonItems = listOf(
+        Triple(R.drawable.image_placeholder, R.string.psychologist, navigateToTherapist),
+        Triple(R.drawable.image_placeholder, R.string.mytherapy, navigateToMyTherapy),
+        Triple(R.drawable.image_placeholder, R.string.chatbot, navigateToChatbot),
+        Triple(R.drawable.image_placeholder, R.string.history, navigateToHistory)
     )
 
     Column(
@@ -130,10 +130,10 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp16),
             verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
         ) {
-            items(menuItems) { (text, action) ->
+            items(buttonItems) { (image, name, action) ->
                 MenuItem(
-                    image = painterResource(R.drawable.image_placeholder),
-                    text = text,
+                    image = painterResource(image),
+                    text = stringResource(name),
                     onClick = action
                 )
             }
