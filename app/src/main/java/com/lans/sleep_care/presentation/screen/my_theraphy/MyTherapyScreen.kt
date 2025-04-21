@@ -142,7 +142,9 @@ fun MyTherapyScreen(
                 ),
             icon = painterResource(R.drawable.ic_message),
             name = stringResource(R.string.chat_psychologist),
-            onClick = { }
+            onClick = {
+                navigateToChat.invoke()
+            }
         )
         Spacer(
             modifier = Modifier

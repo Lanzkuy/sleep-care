@@ -7,6 +7,8 @@ sealed class Route(val route: String) {
     data object HomeScreen: Route("home")
     data object TherapistScreen: Route("therapist")
     data object MyTherapyScreen: Route("therapy")
+    data object ChatRoomScreen: Route("chat_room")
+    data object LogbookScreen: Route("logbook")
     data object ChatbotScreen: Route("chatbot")
     data object HistoryScreen: Route("history")
 }
