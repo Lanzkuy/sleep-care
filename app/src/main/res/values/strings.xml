@@ -50,4 +50,7 @@
     <string name="no">Tidak</string>
     <string name="day">Siang Hari</string>
     <string name="night">Malam Hari</string>
+    <string name="match_scale">Skala Kesesuaian Saat Ini: %1$s</string>
+    <string name="priority_scale">Skala Kepentingan: %1$s</string>
+    <string name="area_desire">Keinginan/Tujuan pada area ini</string>
 </resources>
