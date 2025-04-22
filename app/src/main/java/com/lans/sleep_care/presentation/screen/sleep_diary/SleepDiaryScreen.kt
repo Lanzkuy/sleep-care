@@ -19,6 +19,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -52,7 +53,6 @@ fun SleepDiaryScreen(
     navigateToLogbook: () -> Unit
 ) {
     // Temporary
-    // Note : Bug pada action save dan textfield tidak reset saat ganti minggu
     val allDates = remember { generateDateRange("2025-04-01", "2025-04-30") }
     val weeks = remember { splitDatesByWeek(allDates) }
     val dayQuestions = listOf(
@@ -92,22 +92,23 @@ fun SleepDiaryScreen(
             isYesNo = true,
             subQuestions = listOf(
                 DiaryQuestion(id = 10, text = "Apa jenis obatnya?", isYesNo = false),
-                DiaryQuestion(id = 11, text = "Berapa banyak?", isYesNo = false)
+                DiaryQuestion(id = 11, text = "Berapa banyak?", isYesNo = false),
+                DiaryQuestion(id = 12, text = "Pukul berapa kamu mengkonsumsi?", isYesNo = false),
             )
         ),
-        DiaryQuestion(id = 12, text = "Apakah kamu mengantuk sepanjang hari?", isYesNo = true)
+        DiaryQuestion(id = 13, text = "Apakah kamu mengantuk sepanjang hari?", isYesNo = true)
     )
     val nightQuestions = listOf(
         DiaryQuestion(
-            id = 13,
+            id = 14,
             text = "Pukul berapa kamu mulai mematikan lampu untuk mulai tidur?",
             isYesNo = false
         ),
-        DiaryQuestion(id = 14, text = "Pukul berapa kamu bangun tidur?", isYesNo = false),
-        DiaryQuestion(id = 15, text = "Berapa total jam kamu tidur? (dalam jam)", isYesNo = false),
-        DiaryQuestion(id = 16, text = "Berapa kali kamu terbangun di malam hari?", isYesNo = false),
-        DiaryQuestion(id = 17, text = "Isilah skala kualitas tidurmu (1-5)", isYesNo = false),
-        DiaryQuestion(id = 18, text = "Apakah kamu merasa tidurmu cukup?", isYesNo = true)
+        DiaryQuestion(id = 15, text = "Pukul berapa kamu bangun tidur?", isYesNo = false),
+        DiaryQuestion(id = 16, text = "Berapa total jam kamu tidur? (dalam jam)", isYesNo = false),
+        DiaryQuestion(id = 17, text = "Berapa kali kamu terbangun di malam hari?", isYesNo = false),
+        DiaryQuestion(id = 18, text = "Isilah skala kualitas tidurmu (1-5)", isYesNo = false),
+        DiaryQuestion(id = 19, text = "Apakah kamu merasa tidurmu cukup?", isYesNo = true)
     )
     val localSavedAnswers = DATA.savedAnswers
     val tempAnswers = remember { mutableStateMapOf<Pair<String, Int>, DiaryAnswer>() }
@@ -116,6 +117,10 @@ fun SleepDiaryScreen(
     var isExpanded by remember { mutableStateOf(false) }
     var selectedWeek by remember { mutableIntStateOf(0) }
     val selectedDates = weeks.getOrNull(selectedWeek) ?: emptyList()
+
+    LaunchedEffect(Unit) {
+        tempAnswers.putAll(localSavedAnswers)
+    }
 
     Box(
         modifier = Modifier

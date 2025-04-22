@@ -33,7 +33,9 @@ fun DiaryQuestionItem(
     answer: DiaryAnswer,
     onAnswerChanged: (questionId: Int, newAnswer: String) -> Unit
 ) {
-    var text by rememberSaveable { mutableStateOf(answer.value) }
+    var text by rememberSaveable(answer.questionId to answer.value) {
+        mutableStateOf(answer.value)
+    }
 
     Column(
         modifier = Modifier
