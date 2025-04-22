@@ -22,6 +22,7 @@ import com.lans.sleep_care.presentation.screen.login.LoginScreen
 import com.lans.sleep_care.presentation.screen.my_theraphy.MyTherapyScreen
 import com.lans.sleep_care.presentation.screen.register.RegisterScreen
 import com.lans.sleep_care.presentation.screen.psychologist.PsychologistScreen
+import com.lans.sleep_care.presentation.screen.sleep_diary.SleepDiaryScreen
 
 @Composable
 fun NavGraph(
@@ -162,7 +163,9 @@ fun NavGraph(
                     navController.navigateUp()
                 },
                 navigateToSleepDiary = {
-
+                    navController.navigate(route = Route.SleepDiaryScreen.route) {
+                        popUpTo(route = Route.LogbookScreen.route)
+                    }
                 },
                 navigateToIdentifyValue = {
 
@@ -175,6 +178,13 @@ fun NavGraph(
                 },
                 navigateToCommitedAction = {
 
+                }
+            )
+        }
+        composable(route = Route.SleepDiaryScreen.route) {
+            SleepDiaryScreen (
+                navigateToLogbook = {
+                    navController.navigateUp()
                 }
             )
         }

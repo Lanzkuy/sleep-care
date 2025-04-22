@@ -45,4 +45,9 @@
     <string name="thought_record">Catatan Pikiran</string>
     <string name="emotion_record">Catatan Emosi</string>
     <string name="commited_action">Tindakan Berkomitmen</string>
+    <string name="week_counter">Minggu ke-%1$s</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="day">Siang Hari</string>
+    <string name="night">Malam Hari</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.lans.sleep_care.presentation.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
@@ -42,10 +44,7 @@ fun OutlinedIconButton(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = Dimens.dp12,
-                    vertical = Dimens.dp8
-                ),
+                .padding(Dimens.dp12),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -66,7 +65,7 @@ fun OutlinedIconButton(
             )
             Spacer(
                 modifier = Modifier
-                    .size(Dimens.dp50)
+                    .size(Dimens.dp24)
             )
         }
     }
