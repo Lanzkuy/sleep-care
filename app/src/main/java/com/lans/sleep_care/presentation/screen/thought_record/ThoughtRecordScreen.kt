@@ -1,4 +1,4 @@
-package com.lans.sleep_care.presentation.screen.identify_value
+package com.lans.sleep_care.presentation.screen.thought_record
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,20 +17,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,33 +35,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.domain.model.ValueArea
+import com.lans.sleep_care.domain.model.ThoughtRecord
 import com.lans.sleep_care.presentation.component.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.ValueAreaItem
+import com.lans.sleep_care.presentation.component.ThoughtRecordDialog
+import com.lans.sleep_care.presentation.component.ThoughtRecordItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
-import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
-import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
-fun IdentifyValueScreen(
-    viewModel: IdentifyValueViewModel = hiltViewModel(),
+fun ThoughtRecordScreen(
+    viewModel: ThoughtRecordViewModel = hiltViewModel(),
     navigateToMyTherapy: () -> Unit
 ) {
-    val areas = listOf(
-        "Keluarga", "Pernikahan/Relasi Romantis", "Pertemanan", "Pekerjaan",
-        "Pendidikan & Pengembangan Diri", "Rekreasi", "Spiritualitas",
-        "Komunitas", "Lingkungan", "Kesehatan Tubuh"
-    )
-    val localSavedValueArea = DATA.savedValueArea
-    val tempValueArea = remember { mutableStateMapOf<String, ValueArea>() }
-
-    LaunchedEffect(Unit) {
-        tempValueArea.putAll(localSavedValueArea)
-    }
+    val localSavedThoughtRecord = DATA.savedThoughtRecord.toMutableList()
+    var showDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -103,7 +86,7 @@ fun IdentifyValueScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    text = stringResource(R.string.identify_value),
+                    text = stringResource(R.string.thought_record),
                     textAlign = TextAlign.Center,
                     fontSize = Dimens.sp24,
                     fontWeight = FontWeight.Bold
@@ -120,22 +103,11 @@ fun IdentifyValueScreen(
             )
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
             ) {
-                items(areas) { area ->
-                    val currentData = DATA.savedValueArea[area] ?: ValueArea()
-                    ValueAreaItem(
-                        areaName = area,
-                        valueArea = currentData,
-                        onDataChange = { valueArea ->
-                            tempValueArea[area] = valueArea
-                        }
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .height(Dimens.dp16)
-                    )
+                items(localSavedThoughtRecord) { record ->
+                    ThoughtRecordItem(record = record)
                 }
             }
         }
@@ -146,13 +118,21 @@ fun IdentifyValueScreen(
             contentColor = White,
             shape = Rounded,
             onClick = {
-                viewModel.saveValueArea(tempValueArea)
-                tempValueArea.clear()
+                showDialog = true
             }
         ) {
             Icon(
-                imageVector = Icons.Default.Save,
+                imageVector = Icons.Default.Add,
                 contentDescription = stringResource(R.string.icon)
+            )
+        }
+        if (showDialog) {
+            ThoughtRecordDialog (
+                onDismiss = { showDialog = false },
+                onSave = { newRecord ->
+                    viewModel.saveThoughtRecord(newRecord)
+                    showDialog = false
+                }
             )
         }
     }
