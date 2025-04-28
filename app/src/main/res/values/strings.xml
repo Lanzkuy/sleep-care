@@ -50,8 +50,8 @@
     <string name="no">Tidak</string>
     <string name="day">Siang Hari</string>
     <string name="night">Malam Hari</string>
-    <string name="match_scale">Skala Kesesuaian Saat Ini: %1$s</string>
-    <string name="priority_scale">Skala Kepentingan: %1$s</string>
+    <string name="match_scale">Skala Kesesuaian Saat Ini</string>
+    <string name="priority_scale">Skala Kepentingan</string>
     <string name="area_desire">Keinginan/Tujuan pada area ini</string>
     <string name="appear_thought">Pemikiran yang Muncul</string>
     <string name="cancel">Batal</string>
@@ -60,4 +60,17 @@
     <string name="situation">Situasi</string>
     <string name="date_yyyy_mm_dd">Tanggal (YYYY-MM-DD)</string>
     <string name="add_thought_record">Tambah Thought Record</string>
+    <string name="add_emotion_record">Tambah Catatan Emosi</string>
+    <string name="emotion_felt">Emosi yang Dirasakan</string>
+    <string name="what_happened">Apa yang terjadi?</string>
+    <string name="what_comes_to_mind">Apa yang terlintas di pikiran?</string>
+    <string name="what_do_you_do">Apa yang kamu lakukan?</string>
+    <string name="intensity">Intensitas</string>
+    <string name="after_action">Setelah Melakukan Tindakan</string>
+    <string name="intensity_after">Intensitas Setelahnya</string>
+    <string name="impact_after">Dampak setelahnya</string>
+    <string name="effect_after">Apa efeknya setelah kamu mengelola emosi?</string>
+    <string name="choose_emotion">Pilih Emosi</string>
+    <string name="how_to_manage">Cara mengelola</string>
+    <string name="afterwards">Setelahnya</string>
 </resources>

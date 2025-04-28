@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -69,7 +67,10 @@ fun ScheduleItem(
                         modifier = Modifier.align(Alignment.End),
                         onClick = onNoteClick
                     ) {
-                        Text(stringResource(R.string.doctor_note))
+                        Text(
+                            text = stringResource(R.string.doctor_note),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     }
                 }
             }
@@ -85,7 +86,7 @@ fun ScheduleItem(
                 } else {
                     stringResource(R.string.done)
                 },
-                color = color
+                color = color,
             )
         }
     }

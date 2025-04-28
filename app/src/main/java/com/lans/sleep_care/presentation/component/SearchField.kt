@@ -61,7 +61,7 @@ fun SearchField(
                 visualTransformation = visualTransformation,
                 interactionSource = interactionSource,
                 isError = input.error != null,
-                placeholder = placeholder?.let { { Text(it) } },
+                placeholder = placeholder?.let { { Text(text = it) } },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Search,

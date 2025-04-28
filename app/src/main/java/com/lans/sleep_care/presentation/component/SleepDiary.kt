@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -51,14 +52,16 @@ fun SleepDiary(
                     Text(
                         modifier = Modifier.padding(bottom = Dimens.dp8),
                         text = getDayName(date),
-                        fontSize = Dimens.sp20,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontSize = Dimens.sp20
+                        )
                     )
                     Text(
                         text = stringResource(R.string.day),
                         color = Secondary,
-                        fontSize = Dimens.sp16,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
                     questions.first.forEach { question ->
                         val answer =
@@ -104,8 +107,9 @@ fun SleepDiary(
                     Text(
                         text = stringResource(R.string.night),
                         color = Secondary,
-                        fontSize = Dimens.sp16,
-                        fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
                     questions.second.forEach { question ->
                         val answer =

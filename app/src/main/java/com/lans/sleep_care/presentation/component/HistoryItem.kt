@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,8 +52,10 @@ fun HistoryItem(
             ) {
                 Text(
                     text = name,
-                    fontSize = Dimens.sp16,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontSize = Dimens.sp18,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
                 Spacer(
                     modifier = Modifier
@@ -60,12 +63,12 @@ fun HistoryItem(
                 )
                 Text(
                     text = date,
-                    fontSize = Dimens.sp16
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
             Text(
                 text = "${stringResource(R.string.detail)} >>",
-                fontSize = Dimens.sp16
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }

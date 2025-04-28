@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -48,7 +49,10 @@ fun NumberDropDown(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = numbers[selectedPosition].toString())
+            Text(
+                text = numbers[selectedPosition].toString(),
+                style = MaterialTheme.typography.bodyLarge
+            )
             Image(
                 painter = painterResource(id = R.drawable.ic_dropdown),
                 contentDescription = stringResource(R.string.icon)
@@ -61,7 +65,10 @@ fun NumberDropDown(
             }) {
             numbers.forEachIndexed { index, number ->
                 DropdownMenuItem(text = {
-                    Text(text = number.toString())
+                    Text(
+                        text = number.toString(),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 },
                     onClick = {
                         onNumberSelected.invoke(index)

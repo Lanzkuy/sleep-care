@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,8 +44,9 @@ fun DiaryQuestionItem(
     ) {
         Text(
             text = question.text,
-            fontSize = Dimens.sp14,
-            fontWeight = FontWeight.Medium
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.SemiBold
+            )
         )
         if (question.isYesNo) {
             val currentAnswer = answer.value
@@ -67,10 +69,13 @@ fun DiaryQuestionItem(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             text = "Ya"
-                            onAnswerChanged(question.id, "Ya")
+                            onAnswerChanged(question.id, text)
                         }
                     ) {
-                        Text(text = stringResource(R.string.yes))
+                        Text(
+                            text = stringResource(R.string.yes),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
                 Box(
@@ -79,7 +84,7 @@ fun DiaryQuestionItem(
                         .padding(start = Dimens.dp4)
                         .clip(Rounded)
                         .background(
-                            if (currentAnswer == "Tidak") {
+                            if (currentAnswer == stringResource(R.string.no)) {
                                 Primary.copy(alpha = 0.2f)
                             } else Color.Transparent
                         )
@@ -88,10 +93,13 @@ fun DiaryQuestionItem(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             text = "Tidak"
-                            onAnswerChanged(question.id, "Tidak")
+                            onAnswerChanged(question.id, text)
                         }
                     ) {
-                        Text(text = stringResource(R.string.no))
+                        Text(
+                            text = stringResource(R.string.no),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
             }
@@ -100,6 +108,7 @@ fun DiaryQuestionItem(
                 modifier = Modifier
                     .fillMaxWidth(),
                 value = text,
+                textStyle = MaterialTheme.typography.bodyMedium,
                 onValueChange = {
                     text = it
                     onAnswerChanged(question.id, it)

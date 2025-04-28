@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.EmotionRecord
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
@@ -60,25 +62,25 @@ fun EmotionRecordItem(record: EmotionRecord) {
             )
             record.situation?.let {
                 EmotionRecordRow(
-                    label = "Situasi",
+                    label = stringResource(R.string.situation),
                     value = it
                 )
             }
             record.thoughts?.let {
                 EmotionRecordRow(
-                    label = "Pikiran",
+                    label = stringResource(R.string.thought),
                     value = it
                 )
             }
             record.copingStrategy?.let {
                 EmotionRecordRow(
-                    label = "Cara mengelola",
+                    label = stringResource(R.string.how_to_manage),
                     value = it
                 )
             }
             record.emotionAfter?.let {
                 EmotionRecordRow(
-                    label = "Setelahnya",
+                    label = stringResource(R.string.afterwards),
                     value = "$it (${record.intensityAfter ?: "-"}/10)"
                 )
             }
@@ -97,13 +99,13 @@ fun EmotionRecordRow(
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = DarkGray
+            color = DarkGray,
+            style = MaterialTheme.typography.bodyMedium
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Black
+            color = Black,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

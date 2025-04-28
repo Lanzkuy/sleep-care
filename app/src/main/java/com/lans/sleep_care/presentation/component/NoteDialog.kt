@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -71,8 +72,9 @@ fun NoteDialog(
                         Text(
                             modifier = Modifier.align(Alignment.Center),
                             text = stringResource(R.string.psychologist_note),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = Dimens.sp18
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontSize = Dimens.sp18
+                            )
                         )
                         IconButton(
                             modifier = Modifier
@@ -110,7 +112,7 @@ fun NoteDialog(
                     ) {
                         Text(
                             text = note,
-                            fontSize = Dimens.sp14
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 }

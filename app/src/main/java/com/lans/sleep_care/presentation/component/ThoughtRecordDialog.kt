@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.ThoughtRecord
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -41,19 +40,17 @@ fun ThoughtRecordDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = stringResource(R.string.add_thought_record),
-                fontWeight = FontWeight.Bold
-            )
-        },
+        title = { Text(text = stringResource(R.string.add_thought_record)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(Dimens.dp8)) {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth(),
                     label = {
-                        Text(text = stringResource(R.string.date_yyyy_mm_dd))
+                        Text(
+                            text = stringResource(R.string.date_yyyy_mm_dd),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     },
                     value = date,
                     onValueChange = { date = it }
@@ -62,7 +59,10 @@ fun ThoughtRecordDialog(
                     modifier = Modifier
                         .fillMaxWidth(),
                     label = {
-                        Text(text = stringResource(R.string.situation))
+                        Text(
+                            text = stringResource(R.string.situation),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     },
                     value = situation,
                     onValueChange = { situation = it }
@@ -74,7 +74,10 @@ fun ThoughtRecordDialog(
                     OutlinedTextField(
                         modifier = Modifier.weight(1f),
                         label = {
-                            Text(text = stringResource(R.string.thought))
+                            Text(
+                                text = stringResource(R.string.thought),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
                         },
                         value = currentThought,
                         onValueChange = { currentThought = it }

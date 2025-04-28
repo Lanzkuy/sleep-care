@@ -48,7 +48,8 @@ fun LoadingButton(
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterVertically),
-                text = text.uppercase()
+                text = text.uppercase(),
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }

@@ -54,30 +54,32 @@ fun ValueAreaItem(
         ) {
             Text(
                 text = areaName,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.SemiBold
+                )
             )
             Spacer(
-                modifier = Modifier.height(Dimens.dp12)
+                modifier = Modifier
+                    .height(Dimens.dp12)
             )
             Text(
-                text = stringResource(R.string.priority_scale, priority.toInt()),
+                text = "${stringResource(R.string.priority_scale)}: $priority",
                 style = MaterialTheme.typography.bodyLarge,
             )
             Slider(
                 value = priority,
+                valueRange = 1f..10f,
+                steps = 8,
                 onValueChange = {
                     priority = it
-                },
-                valueRange = 1f..10f,
-                steps = 8
+                }
             )
             Spacer(
                 modifier = Modifier
                     .height(Dimens.dp8)
             )
             Text(
-                text = stringResource(R.string.match_scale, match.toInt()),
+                text = "${stringResource(R.string.match_scale)}: $match",
                 style = MaterialTheme.typography.bodyLarge,
             )
             Slider(

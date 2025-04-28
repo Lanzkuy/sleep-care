@@ -12,6 +12,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -23,7 +24,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.EmotionRecord
 import com.lans.sleep_care.presentation.theme.Dimens
 
@@ -34,19 +37,19 @@ fun EmotionRecordDialog(
 ) {
     var date by remember { mutableStateOf("") }
     var selectedEmotion by remember { mutableStateOf("Senang") }
-    var intensity by remember { mutableFloatStateOf(5f) }
+    var intensity by remember { mutableFloatStateOf(0f) }
     var situation by remember { mutableStateOf("") }
     var thoughts by remember { mutableStateOf("") }
     var coping by remember { mutableStateOf("") }
     var emotionAfter by remember { mutableStateOf("Netral") }
-    var intensityAfter by remember { mutableFloatStateOf(5f) }
+    var intensityAfter by remember { mutableFloatStateOf(0f) }
     var impactAfter by remember { mutableStateOf("") }
 
     val emotionOptions = listOf("Senang", "Sedih", "Marah", "Takut", "Cemas", "Netral")
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Tambah Catatan Emosi") },
+        title = { Text(text = stringResource(R.string.add_emotion_record)) },
         text = {
             Column(
                 modifier = Modifier
@@ -54,8 +57,7 @@ fun EmotionRecordDialog(
             ) {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Tanggal & Waktu") },
-                    placeholder = { Text(text = "Contoh: 2025-04-07 08:00") },
+                    label = { Text(text = stringResource(R.string.date)) },
                     value = date,
                     onValueChange = { date = it }
                 )
@@ -64,8 +66,12 @@ fun EmotionRecordDialog(
                         .height(Dimens.dp12)
                 )
                 Text(
-                    text = "Emosi yang Dirasakan",
-                    fontWeight = FontWeight.SemiBold
+                    modifier = Modifier
+                        .padding(bottom = Dimens.dp4),
+                    text = stringResource(R.string.emotion_felt),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
                 EmotionDropdown(
                     selected = selectedEmotion,
@@ -75,41 +81,44 @@ fun EmotionRecordDialog(
                 Text(
                     modifier = Modifier
                         .padding(top = Dimens.dp8),
-                    text = "Intensitas: ${intensity.toInt()}",
+                    text = "${stringResource(R.string.intensity)}: $intensity",
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 Slider(
                     value = intensity,
                     valueRange = 0f..10f,
+                    steps = 8,
                     onValueChange = { intensity = it }
                 )
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = stringResource(R.string.what_happened)) },
                     value = situation,
-                    onValueChange = { situation = it },
-                    label = { Text(text = "Apa yang terjadi?") },
-                    placeholder = { Text(text = "Situasi yang memicu emosi") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = { situation = it }
                 )
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = stringResource(R.string.what_comes_to_mind)) },
                     value = thoughts,
-                    onValueChange = { thoughts = it },
-                    label = { Text(text = "Apa yang terlintas di pikiran?") },
-                    placeholder = { Text(text = "Isi pikiran saat merasakan emosi ini") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = { thoughts = it }
                 )
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = stringResource(R.string.what_do_you_do)) },
                     value = coping,
-                    onValueChange = { coping = it },
-                    label = { Text(text = "Apa yang kamu lakukan?") },
-                    placeholder = { Text(text = "Cara kamu mengelola emosi") },
-                    modifier = Modifier.fillMaxWidth()
+                    onValueChange = { coping = it }
                 )
                 Spacer(
                     modifier = Modifier
                         .height(Dimens.dp12)
                 )
                 Text(
-                    text = "Setelah Melakukan Tindakan",
-                    fontWeight = FontWeight.SemiBold
+                    modifier = Modifier
+                        .padding(bottom = Dimens.dp4),
+                    text = stringResource(R.string.after_action),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
                 EmotionDropdown(
                     selected = emotionAfter,
@@ -117,18 +126,22 @@ fun EmotionRecordDialog(
                     options = emotionOptions
                 )
                 Text(
-                    text = "Intensitas Setelahnya: ${intensityAfter.toInt()}",
-                    modifier = Modifier.padding(top = Dimens.dp8)
+                    modifier = Modifier
+                        .padding(top = Dimens.dp8),
+                    text = "${stringResource(R.string.intensity_after)}: $intensityAfter",
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 Slider(
                     value = intensityAfter,
                     valueRange = 0f..10f,
+                    steps = 8,
                     onValueChange = { intensityAfter = it }
                 )
                 OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Dampak setelahnya") },
-                    placeholder = { Text(text = "Apa efeknya setelah kamu mengelola emosi?") },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = { Text(text = stringResource(R.string.impact_after)) },
+                    placeholder = { Text(text = stringResource(R.string.effect_after)) },
                     value = impactAfter,
                     onValueChange = { impactAfter = it }
                 )
@@ -150,12 +163,12 @@ fun EmotionRecordDialog(
                 )
                 onDismiss()
             }) {
-                Text(text = "Simpan")
+                Text(text = stringResource(R.string.save))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "Batal")
+                Text(text = stringResource(R.string.cancel))
             }
         }
     )
@@ -178,11 +191,11 @@ fun EmotionDropdown(
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth(),
-            label = { Text(text = "Pilih Emosi") },
+            label = { Text(text = stringResource(R.string.choose_emotion)) },
             value = selected,
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-            onValueChange = {}
+            onValueChange = { }
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -190,7 +203,12 @@ fun EmotionDropdown(
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = {
+                        Text(
+                            text = option,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    },
                     onClick = {
                         onSelect(option)
                         expanded = false

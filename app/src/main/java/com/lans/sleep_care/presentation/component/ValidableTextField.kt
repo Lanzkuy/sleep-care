@@ -48,7 +48,7 @@ fun ValidableTextField(
         modifier = modifier
             .padding(bottom = Dimens.dp8),
         value = input.value,
-        label = label?.let { { Text(it) } },
+        label = label?.let { { Text(text = it) } },
         placeholder = placeholder?.let {
             {
                 Text(
@@ -59,7 +59,7 @@ fun ValidableTextField(
                 )
             }
         },
-        supportingText = input.error?.let { { Text(it) } },
+        supportingText = input.error?.let { { Text(text = it) } },
         isError = input.error != null,
         singleLine = true,
         leadingIcon = leadingIcon,
