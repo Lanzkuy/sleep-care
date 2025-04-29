@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lans.sleep_care.presentation.screen.chat_room.ChatRoomScreen
 import com.lans.sleep_care.presentation.screen.chatbot.ChatbotScreen
+import com.lans.sleep_care.presentation.screen.committed_action.CommitedActionScreen
 import com.lans.sleep_care.presentation.screen.emotion_record.EmotionRecordScreen
 import com.lans.sleep_care.presentation.screen.forgot_password.ForgotPasswordScreen
 import com.lans.sleep_care.presentation.screen.history.HistoryScreen
@@ -186,7 +187,9 @@ fun NavGraph(
                     }
                 },
                 navigateToCommitedAction = {
-
+                    navController.navigate(route = Route.CommittedActionScreen.route) {
+                        popUpTo(route = Route.LogbookScreen.route)
+                    }
                 }
             )
         }
@@ -213,6 +216,13 @@ fun NavGraph(
         }
         composable(route = Route.EmotionRecordScreen.route) {
             EmotionRecordScreen (
+                navigateToMyTherapy = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.CommittedActionScreen.route) {
+            CommitedActionScreen(
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }

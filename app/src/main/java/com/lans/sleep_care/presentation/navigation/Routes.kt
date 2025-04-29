@@ -13,7 +13,7 @@ sealed class Route(val route: String) {
     data object IdentifyValueScreen: Route("identify_value")
     data object ThoughtRecordScreen: Route("thought_record")
     data object EmotionRecordScreen: Route("emotion_record")
-    data object CommitedActionScreen: Route("commited_action")
+    data object CommittedActionScreen: Route("committed_action")
     data object ChatbotScreen: Route("chatbot")
     data object HistoryScreen: Route("history")
 }

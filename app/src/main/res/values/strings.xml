@@ -72,5 +72,14 @@
     <string name="effect_after">Apa efeknya setelah kamu mengelola emosi?</string>
     <string name="choose_emotion">Pilih Emosi</string>
     <string name="how_to_manage">Cara mengelola</string>
+    <string name="how_to_solve">Cara mengatasi</string>
     <string name="afterwards">Setelahnya</string>
+    <string name="plan">Rencana</string>
+    <string name="time">Waktu</string>
+    <string name="obstacle">Hambatan</string>
+    <string name="solution">Solusi</string>
+    <string name="add_commited_action">Tambah Committed Action</string>
+    <string name="goal">Tujuan</string>
+    <string name="area">Area</string>
+    <string name="status">Status</string>
 </resources>
