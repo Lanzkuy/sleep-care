@@ -1,7 +1,6 @@
 package com.lans.sleep_care.presentation.screen.login
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,17 +41,19 @@ fun LoginScreen(
     navigateToForgotPassword: () -> Unit,
     navigateToHome: () -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.state
 
-    LaunchedEffect(key1 = state.loginResponse, key2 = state.error) {
-        val response = state.loginResponse
+    LaunchedEffect(key1 = state.isLoggedIn, key2 = state.error) {
+        val response = state.isLoggedIn
         val error = state.error
 
-        if (response != null) {
+        if (response) {
             navigateToHome.invoke()
         }
 
         if (error.isNotBlank()) {
+            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
             state.error = ""
         }
     }
@@ -94,6 +96,7 @@ fun LoginScreen(
                 .fillMaxWidth(),
             input = state.password,
             label = stringResource(R.string.password),
+            isPassword = true,
             onValueChange = {
                 viewModel.onEvent(LoginUIEvent.PasswordChanged(it))
             }
@@ -125,8 +128,7 @@ fun LoginScreen(
             shape = Rounded,
             isLoading = state.isLoading,
             onClick = {
-                navigateToHome.invoke()
-//                viewModel.onEvent(LoginUIEvent.LoginButtonClicked)
+                viewModel.onEvent(LoginUIEvent.LoginButtonClicked)
             }
         )
         Spacer(

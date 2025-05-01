@@ -1,7 +1,7 @@
-package com.lans.sleep_care.domain.interactor
+package com.lans.sleep_care.domain.interactor.validator
 
 import com.lans.instagram_clone.domain.model.ValidationResult
-import com.lans.sleep_care.domain.usecase.ValidatePasswordUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordUseCase
 import java.util.regex.Pattern
 
 class ValidatePasswordInteractor : ValidatePasswordUseCase {

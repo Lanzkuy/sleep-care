@@ -1,22 +1,21 @@
-package com.lans.sleep_care.domain.interactor
+package com.lans.sleep_care.domain.interactor.validator
 
-import android.util.Patterns
 import com.lans.instagram_clone.domain.model.ValidationResult
-import com.lans.sleep_care.domain.usecase.ValidateEmailUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidateNameUseCase
 
-class ValidateEmailInteractor : ValidateEmailUseCase {
+class ValidateNameInteractor : ValidateNameUseCase {
     override fun execute(input: String): ValidationResult {
         if (input.isBlank()) {
             return ValidationResult(
                 isSuccess = false,
-                errorMessage = "Email must be filled"
+                errorMessage = "Name must be filled"
             )
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(input).matches()) {
+        if (input.length < 4) {
             return ValidationResult(
                 isSuccess = false,
-                errorMessage = "Email address is not valid"
+                errorMessage = "Name must be at least 4 characters long"
             )
         }
 
