@@ -30,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.SearchField
-import com.lans.sleep_care.presentation.component.TherapistItem
+import com.lans.sleep_care.presentation.component.PsychologistItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -116,7 +116,7 @@ fun PsychologistScreen(
             verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
         ) {
             items(therapists) { name ->
-                TherapistItem(
+                PsychologistItem(
                     name = name,
                     experience = 9,
                     like = 85,

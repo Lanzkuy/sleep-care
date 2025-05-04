@@ -20,7 +20,9 @@ import com.lans.sleep_care.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmotionDropDown(
+fun GenericDropDown(
+    modifier: Modifier,
+    label: String,
     selected: String,
     onSelect: (String) -> Unit,
     options: List<String>
@@ -28,6 +30,7 @@ fun EmotionDropDown(
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
+        modifier = modifier,
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
@@ -35,7 +38,7 @@ fun EmotionDropDown(
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth(),
-            label = { Text(text = stringResource(R.string.choose_emotion)) },
+            label = { Text(text = label) },
             value = selected,
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },

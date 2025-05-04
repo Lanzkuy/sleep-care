@@ -1,6 +1,6 @@
 package com.lans.sleep_care.data.source.network.dto.response
 
-import com.lans.sleep_care.domain.model.User
+import com.lans.sleep_care.domain.model.Session
 import com.squareup.moshi.Json
 
 data class LoginResponse(
@@ -11,13 +11,8 @@ data class LoginResponse(
     val user: UserResponse
 )
 
-fun LoginResponse.toDomain() = User(
-    id = user.id,
-    name = user.name,
-    email = user.email,
-    age = user.age,
-    gender = user.gender,
-    problems = user.problems,
-    isActive = user.isActive,
-    isOnline = user.isOnline
+fun LoginResponse.toDomain() = Session(
+    accessToken = accessToken,
+    tokenType = tokenType,
+    user = user.toDomain()
 )

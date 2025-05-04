@@ -1,5 +1,6 @@
 package com.lans.sleep_care.data.source.network.dto.response
 
+import com.lans.sleep_care.domain.model.User
 import com.squareup.moshi.Json
 
 data class UserResponse(
@@ -15,7 +16,18 @@ data class UserResponse(
     @field:Json(name = "is_online")
     val isOnline: Boolean?,
     @field:Json(name = "created_at")
-    val createdAt: String?,
+    val createdAt: String,
     @field:Json(name = "deleted_at")
     val deletedAt: String?
+)
+
+fun UserResponse.toDomain() = User(
+    id = id,
+    name = name,
+    email = email,
+    age = age,
+    gender = gender,
+    problems = problems,
+    isActive = isActive,
+    isOnline = isOnline
 )

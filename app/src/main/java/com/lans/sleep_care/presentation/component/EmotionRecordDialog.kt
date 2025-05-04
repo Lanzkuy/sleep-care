@@ -69,7 +69,10 @@ fun EmotionRecordDialog(
                         fontWeight = FontWeight.SemiBold
                     )
                 )
-                EmotionDropDown(
+                GenericDropDown(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = stringResource(R.string.choose_emotion),
                     selected = selectedEmotion,
                     onSelect = { selectedEmotion = it },
                     options = emotionOptions
@@ -116,7 +119,10 @@ fun EmotionRecordDialog(
                         fontWeight = FontWeight.SemiBold
                     )
                 )
-                EmotionDropDown(
+                GenericDropDown(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    label = stringResource(R.string.choose_emotion),
                     selected = emotionAfter,
                     onSelect = { emotionAfter = it },
                     options = emotionOptions

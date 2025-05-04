@@ -33,7 +33,7 @@ import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
-fun TherapistItem(
+fun PsychologistItem(
     image: String? = null,
     name: String,
     experience: Int = 1,

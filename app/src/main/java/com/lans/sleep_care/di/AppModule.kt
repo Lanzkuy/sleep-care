@@ -4,6 +4,9 @@ import com.lans.sleep_care.common.Constant.BASE_URL
 import com.lans.sleep_care.data.repository.AuthRepository
 import com.lans.sleep_care.data.source.network.api.SleepCareApi
 import com.lans.sleep_care.domain.interactor.LoginInteractor
+import com.lans.sleep_care.domain.interactor.RegisterInteractor
+import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
+import com.lans.sleep_care.domain.interactor.validator.ValidateConfirmPasswordInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateEmailInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateNameInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordInteractor
@@ -11,6 +14,9 @@ import com.lans.sleep_care.domain.interactor.validator.ValidateVerificationCodeI
 import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.LoginUseCase
+import com.lans.sleep_care.domain.usecase.RegisterUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidateConfirmPasswordUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateNameUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordUseCase
@@ -40,6 +46,12 @@ object AppModule {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("Accept", "application/json")
+                    .build()
+                chain.proceed(request)
+            }
 //            .authenticator(AuthAuthenticator(dataStoreManager))
 //            .addInterceptor(AuthInterceptor(dataStoreManager))
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -83,17 +95,31 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideRegisterUseCase(
+        repository: IAuthRepository
+    ): RegisterUseCase {
+        return RegisterInteractor(
+            repository
+        )
+    }
+
+    @Provides
+    @Singleton
     fun provideValidatorUseCase(
         validateEmailUseCase: ValidateEmailUseCase,
         validateNameUseCase: ValidateNameUseCase,
         validatePasswordUseCase: ValidatePasswordUseCase,
+        validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase,
         validateVerificationCodeUseCase: ValidateVerificationCodeUseCase,
+        validateAgeUseCase: ValidateAgeUseCase
     ): ValidatorUseCase {
         return ValidatorInteractor(
             validateEmailUseCase,
             validateNameUseCase,
             validatePasswordUseCase,
-            validateVerificationCodeUseCase
+            validateConfirmPasswordUseCase,
+            validateVerificationCodeUseCase,
+            validateAgeUseCase
         )
     }
 
@@ -117,7 +143,19 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideValidateConfirmPasswordUseCase(): ValidateConfirmPasswordUseCase {
+        return ValidateConfirmPasswordInteractor()
+    }
+
+    @Provides
+    @Singleton
     fun provideValidateVerificationCodeUseCase(): ValidateVerificationCodeUseCase {
         return ValidateVerificationCodeInteractor()
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidateAgeUseCase(): ValidateAgeUseCase {
+        return ValidateAgeInteractor()
     }
 }

@@ -4,11 +4,16 @@ import com.lans.instagram_clone.domain.model.InputWrapper
 import com.lans.sleep_care.domain.model.User
 
 data class RegisterUIState(
-    var email: InputWrapper = InputWrapper(),
-    var name: InputWrapper = InputWrapper(),
-    var password: InputWrapper = InputWrapper(),
-    var confirmPassword: InputWrapper = InputWrapper(),
-    var isLoading: Boolean = false,
+    val email: InputWrapper = InputWrapper(),
+    val name: InputWrapper = InputWrapper(),
+    val password: InputWrapper = InputWrapper(),
+    val confirmPassword: InputWrapper = InputWrapper(),
+    val age: InputWrapper = InputWrapper(),
+    var gender: String = "Pria",
+    var problem: String = "",
+    val problems: MutableList<String> = mutableListOf(),
+    val currentPage: Int = 0,
+    val isLoading: Boolean = false,
     var error: String = "",
-    var registerResponse: Boolean = false
+    val isRegistered: Boolean = false
 )

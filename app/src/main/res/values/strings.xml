@@ -82,4 +82,10 @@
     <string name="goal">Tujuan</string>
     <string name="area">Area</string>
     <string name="status">Status</string>
+    <string name="next">Next</string>
+    <string name="age">Umur</string>
+    <string name="gender">Jenis Kelamin</string>
+    <string name="man">Pria</string>
+    <string name="woman">Wanita</string>
+    <string name="problem">Permasalahan</string>
 </resources>
