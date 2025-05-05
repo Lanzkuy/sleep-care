@@ -53,8 +53,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun RegisterScreen(
     viewModel: RegisterViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToHome: () -> Unit,
-    navigateToVerification: () -> Unit
+    navigateToVerification: (email: String) -> Unit
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
@@ -64,7 +63,8 @@ fun RegisterScreen(
         val error = state.error
 
         if (response) {
-            navigateToVerification.invoke()
+            navigateToVerification.invoke(state.email.value)
+            viewModel.resetResult()
         }
 
         if (error.isNotBlank()) {
@@ -89,18 +89,22 @@ fun RegisterScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(horizontal = Dimens.dp24),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = Dimens.dp24)
     ) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)
         )
+
         Text(
             text = stringResource(R.string.app_name),
             fontWeight = FontWeight.Bold,
             style = Typography.headlineLarge
+        )
+        Text(
+            text = stringResource(R.string.register_description),
+            style = Typography.bodyLarge
         )
         Spacer(
             modifier = Modifier
@@ -229,7 +233,7 @@ fun RegisterScreen(
                 GenericDropDown(
                     modifier = Modifier
                         .weight(1f),
-                    label = stringResource(R.string.gender),
+                    label = stringResource(R.string.problem),
                     selected = state.problem,
                     onSelect = { viewModel.onEvent(RegisterUIEvent.ProblemChange(it)) },
                     options = listOf(

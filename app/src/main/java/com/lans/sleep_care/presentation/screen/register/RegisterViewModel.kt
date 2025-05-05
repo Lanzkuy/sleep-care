@@ -202,6 +202,12 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun resetResult() {
+        _state.value = _state.value.copy(
+            isRegistered = false
+        )
+    }
+
     private fun clearError() {
         val stateValue = _state.value
         _state.value = stateValue.copy(

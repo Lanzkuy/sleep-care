@@ -27,6 +27,7 @@ import com.lans.sleep_care.presentation.screen.psychologist.PsychologistScreen
 import com.lans.sleep_care.presentation.screen.register.RegisterScreen
 import com.lans.sleep_care.presentation.screen.sleep_diary.SleepDiaryScreen
 import com.lans.sleep_care.presentation.screen.thought_record.ThoughtRecordScreen
+import com.lans.sleep_care.presentation.screen.verification.VerificationScreen
 
 @Composable
 fun NavGraph(
@@ -83,15 +84,10 @@ fun NavGraph(
                 navigateToLogin = {
                     navController.navigateUp()
                 },
-                navigateToHome = {
-                    navController.navigate(route = Route.HomeScreen.route) {
-                        popUpTo(route = Route.LoginScreen.route) {
-                            inclusive = true
-                        }
+                navigateToVerification = { email ->
+                    navController.navigate(route = Route.VerificationScreen.route + "/$email") {
+                        popUpTo(route = Route.RegisterScreen.route)
                     }
-                },
-                navigateToVerification = {
-                    
                 }
             )
         }
@@ -99,6 +95,22 @@ fun NavGraph(
             ForgotPasswordScreen(
                 navigateToLogin = {
                     navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.VerificationScreen.route + "/{email}") {
+            val email = it.arguments?.getString("email") ?: ""
+            VerificationScreen(
+                email = email,
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                navigateNext = {
+                    navController.navigate(route = Route.LoginScreen.route) {
+                        popUpTo(route = Route.VerificationScreen.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

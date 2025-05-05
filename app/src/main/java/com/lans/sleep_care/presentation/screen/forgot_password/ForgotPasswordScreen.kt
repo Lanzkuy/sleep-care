@@ -58,8 +58,7 @@ fun ForgotPasswordScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(horizontal = Dimens.dp24),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = Dimens.dp24)
     ) {
         Spacer(
             modifier = Modifier
@@ -70,6 +69,10 @@ fun ForgotPasswordScreen(
             text = stringResource(R.string.app_name),
             fontWeight = FontWeight.Bold,
             style = Typography.headlineLarge
+        )
+        Text(
+            text = stringResource(R.string.forgot_password_description),
+            style = Typography.bodyLarge
         )
         Spacer(
             modifier = Modifier
