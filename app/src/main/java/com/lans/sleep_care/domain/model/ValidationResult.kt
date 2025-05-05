@@ -1,4 +1,4 @@
-package com.lans.instagram_clone.domain.model
+package com.lans.sleep_care.domain.model
 
 data class ValidationResult(
     val isSuccess: Boolean,

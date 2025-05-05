@@ -84,7 +84,7 @@ class LoginViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
-                            error = "Username or password was wrong",
+                            error = response.message,
                             isLoading = false
                         )
                     }

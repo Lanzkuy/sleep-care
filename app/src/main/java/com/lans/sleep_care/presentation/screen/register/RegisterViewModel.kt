@@ -185,7 +185,7 @@ class RegisterViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
-                            error = "Unable to register user. Please try again",
+                            error = response.message,
                             isLoading = false
                         )
                     }

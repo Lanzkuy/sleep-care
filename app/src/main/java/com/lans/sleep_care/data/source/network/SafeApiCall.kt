@@ -1,7 +1,7 @@
 package com.lans.sleep_care.data.source.network
 
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
+import com.lans.sleep_care.utils.extractErrorMessageFromJson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -16,6 +16,12 @@ interface SafeApiCall {
                 Resource.Success(response.invoke())
             } catch (e: Throwable) {
                 when (e) {
+                    is HttpException -> {
+                        val errorBody = e.response()?.errorBody()?.string()
+                        val errorMessage = extractErrorMessageFromJson(errorBody.toString())
+                        Resource.Error(errorMessage ?: "The server returned an invalid response.")
+                    }
+
                     is UnknownHostException -> {
                         Resource.Error("Connection failed: Unable to find the server. Please check your internet connection.")
                     }
@@ -28,7 +34,7 @@ interface SafeApiCall {
                         Resource.Error("Failed to connect: Unable to established a connection to the server")
                     }
 
-                    else -> Resource.Error(e.message.toString())
+                    else -> Resource.Error("An unknown error occurred: ${e.localizedMessage}")
                 }
             }
         }

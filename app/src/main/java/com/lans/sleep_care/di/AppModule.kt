@@ -3,6 +3,7 @@ package com.lans.sleep_care.di
 import com.lans.sleep_care.common.Constant.BASE_URL
 import com.lans.sleep_care.data.repository.AuthRepository
 import com.lans.sleep_care.data.source.network.api.SleepCareApi
+import com.lans.sleep_care.data.source.network.interceptor.HeaderInterceptor
 import com.lans.sleep_care.domain.interactor.LoginInteractor
 import com.lans.sleep_care.domain.interactor.RegisterInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
@@ -42,16 +43,9 @@ object AppModule {
     fun provideRetrofitClient(
 //        dataStoreManager: DataStoreManager
     ): OkHttpClient {
-        val loggingInterceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Accept", "application/json")
-                    .build()
-                chain.proceed(request)
-            }
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(HeaderInterceptor())
 //            .authenticator(AuthAuthenticator(dataStoreManager))
 //            .addInterceptor(AuthInterceptor(dataStoreManager))
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -88,9 +82,7 @@ object AppModule {
     fun provideLoginUseCase(
         repository: IAuthRepository
     ): LoginUseCase {
-        return LoginInteractor(
-            repository
-        )
+        return LoginInteractor(repository)
     }
 
     @Provides
@@ -98,9 +90,7 @@ object AppModule {
     fun provideRegisterUseCase(
         repository: IAuthRepository
     ): RegisterUseCase {
-        return RegisterInteractor(
-            repository
-        )
+        return RegisterInteractor(repository)
     }
 
     @Provides

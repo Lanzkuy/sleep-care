@@ -1,6 +1,6 @@
 package com.lans.sleep_care.domain.usecase.validator
 
-import com.lans.instagram_clone.domain.model.ValidationResult
+import com.lans.sleep_care.domain.model.ValidationResult
 
 interface ValidateEmailUseCase {
     fun execute(input: String): ValidationResult
