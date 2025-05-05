@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,6 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.LoadingButton
 import com.lans.sleep_care.presentation.component.ValidableTextField
+import com.lans.sleep_care.presentation.component.ValidationAlert
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
@@ -41,8 +46,8 @@ fun LoginScreen(
     navigateToForgotPassword: () -> Unit,
     navigateToHome: () -> Unit
 ) {
-    val context = LocalContext.current
     val state by viewModel.state
+    var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(key1 = state.isLoggedIn, key2 = state.error) {
         val response = state.isLoggedIn
@@ -53,9 +58,19 @@ fun LoginScreen(
         }
 
         if (error.isNotBlank()) {
-            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+            showAlert = Pair(true, error)
             state.error = ""
         }
+    }
+
+    if (showAlert.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_error_title),
+            message = showAlert.second,
+            onDismiss = {
+                showAlert = showAlert.copy(first = false)
+            }
+        )
     }
 
     Column(

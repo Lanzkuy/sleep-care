@@ -23,8 +23,8 @@ import com.lans.sleep_care.presentation.screen.identify_value.IdentifyValueScree
 import com.lans.sleep_care.presentation.screen.logbook.LogbookScreen
 import com.lans.sleep_care.presentation.screen.login.LoginScreen
 import com.lans.sleep_care.presentation.screen.my_theraphy.MyTherapyScreen
-import com.lans.sleep_care.presentation.screen.register.RegisterScreen
 import com.lans.sleep_care.presentation.screen.psychologist.PsychologistScreen
+import com.lans.sleep_care.presentation.screen.register.RegisterScreen
 import com.lans.sleep_care.presentation.screen.sleep_diary.SleepDiaryScreen
 import com.lans.sleep_care.presentation.screen.thought_record.ThoughtRecordScreen
 
@@ -89,6 +89,9 @@ fun NavGraph(
                             inclusive = true
                         }
                     }
+                },
+                navigateToVerification = {
+                    
                 }
             )
         }
@@ -155,14 +158,14 @@ fun NavGraph(
             )
         }
         composable(route = Route.ChatRoomScreen.route) {
-            ChatRoomScreen (
+            ChatRoomScreen(
                 navigateToMyTheraphy = {
                     navController.navigateUp()
                 }
             )
         }
         composable(route = Route.LogbookScreen.route) {
-            LogbookScreen (
+            LogbookScreen(
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 },
@@ -194,28 +197,28 @@ fun NavGraph(
             )
         }
         composable(route = Route.SleepDiaryScreen.route) {
-            SleepDiaryScreen (
+            SleepDiaryScreen(
                 navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
         }
         composable(route = Route.IdentifyValueScreen.route) {
-            IdentifyValueScreen (
+            IdentifyValueScreen(
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }
             )
         }
         composable(route = Route.ThoughtRecordScreen.route) {
-            ThoughtRecordScreen (
+            ThoughtRecordScreen(
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }
             )
         }
         composable(route = Route.EmotionRecordScreen.route) {
-            EmotionRecordScreen (
+            EmotionRecordScreen(
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }

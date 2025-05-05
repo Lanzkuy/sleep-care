@@ -83,12 +83,14 @@
     <string name="back">Kembali</string>
     <string name="cancel">Batal</string>
     <string name="save">Simpan</string>
+    <string name="ok">OK</string>
     <string name="send">Kirim</string>
     <string name="next">Next</string>
     <string name="search">Cari</string>
     <string name="detail">Detail</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
+    <string name="alert_error_title">Terjadi Kesalahan</string>
 
     <string name="search_icon">Search Icon</string>
     <string name="icon">Icon</string>

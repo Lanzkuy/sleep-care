@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.register
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,15 +23,16 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,8 +42,8 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.GenericDropDown
 import com.lans.sleep_care.presentation.component.LoadingButton
 import com.lans.sleep_care.presentation.component.ValidableTextField
+import com.lans.sleep_care.presentation.component.ValidationAlert
 import com.lans.sleep_care.presentation.theme.Dimens
-import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
@@ -53,24 +53,34 @@ import com.lans.sleep_care.presentation.theme.White
 fun RegisterScreen(
     viewModel: RegisterViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    navigateToVerification: () -> Unit
 ) {
-    val context = LocalContext.current
     val state by viewModel.state
+    var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(key1 = state.isRegistered, key2 = state.error) {
         val response = state.isRegistered
         val error = state.error
 
         if (response) {
-            Toast.makeText(context, "Account created! Check your email for the verification code", Toast.LENGTH_LONG).show()
-            navigateToHome.invoke()
+            navigateToVerification.invoke()
         }
 
         if (error.isNotBlank()) {
-            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+            showAlert = Pair(true, error)
             state.error = ""
         }
+    }
+
+    if (showAlert.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_error_title),
+            message = showAlert.second,
+            onDismiss = {
+                showAlert = showAlert.copy(first = false)
+            }
+        )
     }
 
     Column(
