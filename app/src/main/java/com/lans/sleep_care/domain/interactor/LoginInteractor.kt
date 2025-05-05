@@ -7,8 +7,10 @@ import com.lans.sleep_care.data.source.network.dto.response.toDomain
 import com.lans.sleep_care.domain.model.Session
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.LoginUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class LoginInteractor @Inject constructor(
@@ -20,6 +22,6 @@ class LoginInteractor @Inject constructor(
             emit(safeCall {
                 repository.login(request).data.toDomain()
             })
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }

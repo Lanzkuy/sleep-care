@@ -113,7 +113,6 @@ fun HomeScreen(
                 shape = Rounded,
                 onClick = {
                     viewModel.onEvent(HomeUIEvent.LogoutButtonClicked)
-                    navigateToLogin.invoke()
                 }
             )
         }
