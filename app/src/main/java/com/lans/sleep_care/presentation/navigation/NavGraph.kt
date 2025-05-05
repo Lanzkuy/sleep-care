@@ -117,13 +117,6 @@ fun NavGraph(
         }
         composable(route = Route.HomeScreen.route) {
             HomeScreen(
-                navigateToLogin = {
-                    navController.navigate(route = Route.LoginScreen.route) {
-                        popUpTo(route = Route.HomeScreen.route) {
-                            inclusive = true
-                        }
-                    }
-                },
                 navigateToTherapist = {
                     navController.navigate(route = Route.TherapistScreen.route) {
                         popUpTo(route = Route.HomeScreen.route)

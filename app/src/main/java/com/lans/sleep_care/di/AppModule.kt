@@ -3,15 +3,17 @@ package com.lans.sleep_care.di
 import android.content.Context
 import com.lans.sleep_care.common.Constant.BASE_URL
 import com.lans.sleep_care.data.repository.AuthRepository
+import com.lans.sleep_care.data.repository.UserRepository
 import com.lans.sleep_care.data.source.local.DataStoreManager
 import com.lans.sleep_care.data.source.network.api.SleepCareApi
 import com.lans.sleep_care.data.source.network.interceptor.AuthInterceptor
 import com.lans.sleep_care.data.source.network.interceptor.HeaderInterceptor
-import com.lans.sleep_care.domain.interactor.IsAuthenticatedInteractor
-import com.lans.sleep_care.domain.interactor.LoginInteractor
-import com.lans.sleep_care.domain.interactor.LogoutInteractor
-import com.lans.sleep_care.domain.interactor.RegisterInteractor
-import com.lans.sleep_care.domain.interactor.StoreSessionInteractor
+import com.lans.sleep_care.domain.interactor.auth.IsAuthenticatedInteractor
+import com.lans.sleep_care.domain.interactor.auth.LoginInteractor
+import com.lans.sleep_care.domain.interactor.auth.LogoutInteractor
+import com.lans.sleep_care.domain.interactor.auth.RegisterInteractor
+import com.lans.sleep_care.domain.interactor.auth.StoreSessionInteractor
+import com.lans.sleep_care.domain.interactor.user.GetMeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateConfirmPasswordInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateEmailInteractor
@@ -20,11 +22,13 @@ import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordInteracto
 import com.lans.sleep_care.domain.interactor.validator.ValidateVerificationCodeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
 import com.lans.sleep_care.domain.repository.IAuthRepository
-import com.lans.sleep_care.domain.usecase.IsAuthenticatedUseCase
-import com.lans.sleep_care.domain.usecase.LoginUseCase
-import com.lans.sleep_care.domain.usecase.LogoutUseCase
-import com.lans.sleep_care.domain.usecase.RegisterUseCase
-import com.lans.sleep_care.domain.usecase.StoreSessionUseCase
+import com.lans.sleep_care.domain.repository.IUserRepository
+import com.lans.sleep_care.domain.usecase.auth.IsAuthenticatedUseCase
+import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
+import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
+import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
+import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
+import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateConfirmPasswordUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
@@ -94,6 +98,14 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideUserRepository(
+        api: SleepCareApi
+    ): IUserRepository {
+        return UserRepository(api)
+    }
+
+    @Provides
+    @Singleton
     fun provideIsAuthenticatedUseCase(
         repository: IAuthRepository
     ): IsAuthenticatedUseCase {
@@ -130,6 +142,14 @@ object AppModule {
         repository: IAuthRepository
     ): RegisterUseCase {
         return RegisterInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMeUseCase(
+        repository: IUserRepository
+    ): GetMeUseCase {
+        return GetMeInteractor(repository)
     }
 
     @Provides

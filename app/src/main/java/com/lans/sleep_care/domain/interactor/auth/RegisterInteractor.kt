@@ -1,4 +1,4 @@
-package com.lans.sleep_care.domain.interactor
+package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
@@ -6,7 +6,7 @@ import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
 import com.lans.sleep_care.data.source.network.dto.response.toDomain
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.repository.IAuthRepository
-import com.lans.sleep_care.domain.usecase.RegisterUseCase
+import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

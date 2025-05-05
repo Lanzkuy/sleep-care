@@ -2,6 +2,7 @@ package com.lans.sleep_care.presentation.screen.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +23,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +40,7 @@ import coil.compose.AsyncImage
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.MenuItem
+import com.lans.sleep_care.presentation.component.ValidationAlert
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -43,18 +50,38 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    navigateToLogin: () -> Unit,
     navigateToTherapist: () -> Unit,
     navigateToMyTherapy: () -> Unit,
     navigateToChatbot: () -> Unit,
     navigateToHistory: () -> Unit
 ) {
+    val state by viewModel.state
+    var showAlert by remember { mutableStateOf(Pair(false, "")) }
     val buttonItems = listOf(
         Triple(R.drawable.image_placeholder, R.string.psychologist, navigateToTherapist),
         Triple(R.drawable.image_placeholder, R.string.mytherapy, navigateToMyTherapy),
         Triple(R.drawable.image_placeholder, R.string.chatbot, navigateToChatbot),
         Triple(R.drawable.image_placeholder, R.string.history, navigateToHistory)
     )
+
+    LaunchedEffect(key1 = state.error) {
+        val error = state.error
+
+        if (error.isNotBlank()) {
+            showAlert = Pair(true, error)
+            state.error = ""
+        }
+    }
+
+    if (showAlert.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_error_title),
+            message = showAlert.second,
+            onDismiss = {
+                showAlert = showAlert.copy(first = false)
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -80,7 +107,8 @@ fun HomeScreen(
                         color = DarkGray,
                         shape = CircleShape
                     )
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .clickable { },
                 model = null,
                 placeholder = painterResource(R.drawable.ic_person),
                 error = painterResource(R.drawable.ic_person),
@@ -98,7 +126,7 @@ fun HomeScreen(
                     lineHeight = Dimens.sp24
                 )
                 Text(
-                    text = stringResource(R.string.user),
+                    text = state.user.name.ifEmpty { stringResource(R.string.user) },
                     fontSize = Dimens.sp24,
                     fontWeight = FontWeight.Bold,
                     lineHeight = Dimens.sp28

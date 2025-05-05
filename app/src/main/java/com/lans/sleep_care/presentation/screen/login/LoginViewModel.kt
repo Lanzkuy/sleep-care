@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
-import com.lans.sleep_care.domain.usecase.LoginUseCase
-import com.lans.sleep_care.domain.usecase.StoreSessionUseCase
+import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
+import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

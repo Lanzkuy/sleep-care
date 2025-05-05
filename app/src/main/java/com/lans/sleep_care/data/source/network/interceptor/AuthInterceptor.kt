@@ -14,7 +14,7 @@ class AuthInterceptor @Inject constructor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val accessToken = runBlocking {
-            dataStoreManager.getAccessToken()
+            dataStoreManager.getAccessToken().first()
         }
 
         val request = chain.request().newBuilder()

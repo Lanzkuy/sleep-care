@@ -1,7 +1,7 @@
-package com.lans.sleep_care.domain.interactor
+package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.domain.repository.IAuthRepository
-import com.lans.sleep_care.domain.usecase.LogoutUseCase
+import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
 import javax.inject.Inject
 
 class LogoutInteractor @Inject constructor(

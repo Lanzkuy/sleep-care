@@ -9,14 +9,13 @@ import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
     private val api: SleepCareApi,
     private val dataStoreManager: DataStoreManager
-): IAuthRepository {
+) : IAuthRepository {
     override suspend fun isAuthenticated(): Flow<Boolean> {
         return dataStoreManager.getAccessToken().map { it.isNotEmpty() }
     }
