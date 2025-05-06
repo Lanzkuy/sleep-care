@@ -1,7 +1,9 @@
 package com.lans.sleep_care.data.source.network.api
 
 import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
+import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
 import com.lans.sleep_care.data.source.network.dto.response.MeResponse
@@ -21,6 +23,16 @@ interface SleepCareApi {
     suspend fun register(
         @Body requestBody: RegisterRequest
     ): ApiResponse<RegisterResponse>
+
+    @POST("otp/request")
+    suspend fun requestOtp(
+        @Body requestBody: OtpRequest
+    ): ApiResponse<Any>
+
+    @POST("otp/verify")
+    suspend fun verifyOtp(
+        @Body requestBody: VerifyOtpRequest
+    ): ApiResponse<Any>
 
     @GET("patient")
     suspend fun me(): ApiResponse<MeResponse>

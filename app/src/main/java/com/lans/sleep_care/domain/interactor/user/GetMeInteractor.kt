@@ -19,7 +19,8 @@ class GetMeInteractor @Inject constructor(
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                userRepository.me().data.user.toDomain()
+                val response = userRepository.me().data
+                response?.user?.toDomain() ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)
     }

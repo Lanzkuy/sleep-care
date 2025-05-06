@@ -11,8 +11,10 @@ import com.lans.sleep_care.data.source.network.interceptor.HeaderInterceptor
 import com.lans.sleep_care.domain.interactor.auth.IsAuthenticatedInteractor
 import com.lans.sleep_care.domain.interactor.auth.LoginInteractor
 import com.lans.sleep_care.domain.interactor.auth.LogoutInteractor
+import com.lans.sleep_care.domain.interactor.auth.OtpRequestInteractor
 import com.lans.sleep_care.domain.interactor.auth.RegisterInteractor
 import com.lans.sleep_care.domain.interactor.auth.StoreSessionInteractor
+import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
 import com.lans.sleep_care.domain.interactor.user.GetMeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateConfirmPasswordInteractor
@@ -26,8 +28,10 @@ import com.lans.sleep_care.domain.repository.IUserRepository
 import com.lans.sleep_care.domain.usecase.auth.IsAuthenticatedUseCase
 import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
 import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
+import com.lans.sleep_care.domain.usecase.auth.OtpRequestUseCase
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
 import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
+import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateConfirmPasswordUseCase
@@ -122,14 +126,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLogoutUseCase(
-        repository: IAuthRepository
-    ): LogoutUseCase {
-        return LogoutInteractor(repository)
-    }
-
-    @Provides
-    @Singleton
     fun provideLoginUseCase(
         repository: IAuthRepository
     ): LoginUseCase {
@@ -142,6 +138,30 @@ object AppModule {
         repository: IAuthRepository
     ): RegisterUseCase {
         return RegisterInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLogoutUseCase(
+        repository: IAuthRepository
+    ): LogoutUseCase {
+        return LogoutInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOtpRequestUseCase(
+        repository: IAuthRepository
+    ): OtpRequestUseCase {
+        return OtpRequestInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVerifyOtpUseCase(
+        repository: IAuthRepository
+    ): VerifyOtpUseCase {
+        return VerifyOtpInteractor(repository)
     }
 
     @Provides

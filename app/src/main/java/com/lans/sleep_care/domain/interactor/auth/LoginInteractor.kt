@@ -20,7 +20,8 @@ class LoginInteractor @Inject constructor(
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                repository.login(request).data.toDomain()
+                val response = repository.login(request).data
+                response?.toDomain() ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)
     }

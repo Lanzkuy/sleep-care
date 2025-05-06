@@ -13,10 +13,10 @@ class ValidateVerificationCodeInteractor: ValidateVerificationCodeUseCase {
             )
         }
 
-        if (!Pattern.matches("\\d{6}", input)) {
+        if (!Pattern.matches("\\d{5}", input)) {
             return ValidationResult(
                 isSuccess = false,
-                errorMessage = "Verification code must be a 6-digit number"
+                errorMessage = "Verification code must be a 5-digit number"
             )
         }
 

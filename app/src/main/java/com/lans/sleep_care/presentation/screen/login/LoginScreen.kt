@@ -41,6 +41,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
     navigateToRegister: () -> Unit,
     navigateToForgotPassword: () -> Unit,
+    navigateToVerification: (email: String) -> Unit,
     navigateToHome: () -> Unit
 ) {
     val state by viewModel.state
@@ -61,12 +62,23 @@ fun LoginScreen(
     }
 
     if (showAlert.first) {
+        val isEmailVerificationValidation = showAlert.second == "Email akun belum diverifikasi."
+
         ValidationAlert(
             title = stringResource(R.string.alert_error_title),
             message = showAlert.second,
+            dismissButtonText = stringResource(R.string.cancel),
+            confirmButtonText = if (isEmailVerificationValidation) {
+                stringResource(R.string.verification)
+            } else stringResource(R.string.ok),
             onDismiss = {
                 showAlert = showAlert.copy(first = false)
-            }
+            },
+            onConfirm = if (isEmailVerificationValidation) {
+                {
+                    navigateToVerification.invoke(state.email.value)
+                }
+            } else null
         )
     }
 

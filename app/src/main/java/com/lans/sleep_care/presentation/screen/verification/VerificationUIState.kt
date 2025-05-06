@@ -1,11 +1,11 @@
 package com.lans.sleep_care.presentation.screen.verification
 
 import com.lans.instagram_clone.domain.model.InputWrapper
-import com.lans.sleep_care.domain.model.User
 
 data class VerificationUIState(
-    var verificationCode: InputWrapper = InputWrapper(),
-    var isLoading: Boolean = false,
+    val otpCode: InputWrapper = InputWrapper(),
+    val isLoading: Boolean = false,
     var error: String = "",
+    var requestOtpResponse: Boolean = false,
     var verificationResponse: Boolean = false
 )

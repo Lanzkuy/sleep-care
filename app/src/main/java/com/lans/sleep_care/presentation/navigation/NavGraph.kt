@@ -71,6 +71,11 @@ fun NavGraph(
                         popUpTo(route = Route.LoginScreen.route)
                     }
                 },
+                navigateToVerification = { email ->
+                    navController.navigate(route = Route.VerificationScreen.route + "/$email") {
+                        popUpTo(route = Route.LoginScreen.route)
+                    }
+                },
                 navigateToHome = {
                     navController.navigate(route = Route.HomeScreen.route) {
                         popUpTo(route = Route.LoginScreen.route) {

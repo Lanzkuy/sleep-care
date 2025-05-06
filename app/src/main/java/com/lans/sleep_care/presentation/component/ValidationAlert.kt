@@ -11,15 +11,25 @@ import com.lans.sleep_care.R
 fun ValidationAlert(
     title: String,
     message: String,
-    onDismiss: () -> Unit
+    dismissButtonText: String = stringResource(R.string.cancel),
+    confirmButtonText: String = stringResource(R.string.ok),
+    onDismiss: () -> Unit,
+    onConfirm: (() -> Unit)? = null
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = title) },
         text = { Text(text = message) },
+        dismissButton = {
+            if (onConfirm != null) {
+                TextButton(onClick = onDismiss) {
+                    Text(text = dismissButtonText)
+                }
+            }
+        },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(R.string.ok))
+            TextButton(onClick = { (onConfirm ?: onDismiss).invoke() }) {
+                Text(text = confirmButtonText)
             }
         }
     )

@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.screen.verification
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,16 +19,22 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.LoadingButton
 import com.lans.sleep_care.presentation.component.ValidableTextField
+import com.lans.sleep_care.presentation.component.ValidationAlert
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
@@ -41,7 +48,48 @@ fun VerificationScreen(
     navigateBack: () -> Unit,
     navigateNext: () -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.state
+    var showAlert by remember { mutableStateOf(Pair(false, "")) }
+
+    LaunchedEffect(Unit) {
+        viewModel.requestOtp(email)
+    }
+
+    LaunchedEffect(
+        key1 = state.requestOtpResponse,
+        key2 = state.verificationResponse,
+        key3 = state.error
+    ) {
+        val requestOtpResponse = state.requestOtpResponse
+        val verificationResponse = state.verificationResponse
+        val error = state.error
+
+        if (requestOtpResponse) {
+            Toast.makeText(context, "Kode OTP berhasil dikirim", Toast.LENGTH_SHORT).show()
+            state.requestOtpResponse = false
+        }
+
+        if (verificationResponse) {
+            Toast.makeText(context, "Kode OTP berhasil diverifikasi", Toast.LENGTH_SHORT).show()
+            navigateNext.invoke()
+        }
+
+        if (error.isNotBlank()) {
+            showAlert = Pair(true, error)
+            state.error = ""
+        }
+    }
+
+    if (showAlert.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_error_title),
+            message = showAlert.second,
+            onDismiss = {
+                showAlert = showAlert.copy(first = false)
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -73,7 +121,7 @@ fun VerificationScreen(
         ValidableTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            input = state.verificationCode,
+            input = state.otpCode,
             label = stringResource(R.string.verification_code),
             onValueChange = {
                 viewModel.onEvent(VerificationUIEvent.VerificationCodeChanged(it))
@@ -101,7 +149,7 @@ fun VerificationScreen(
             Text(
                 modifier = Modifier
                     .clickable {
-
+                        viewModel.requestOtp(email)
                     },
                 text = stringResource(R.string.resend),
                 style = Typography.labelLarge
@@ -119,7 +167,7 @@ fun VerificationScreen(
             shape = Rounded,
             isLoading = state.isLoading,
             onClick = {
-                viewModel.onEvent(VerificationUIEvent.ConfirmButtonClicked)
+                viewModel.onEvent(VerificationUIEvent.ConfirmButtonClicked(email))
             }
         )
         Spacer(
