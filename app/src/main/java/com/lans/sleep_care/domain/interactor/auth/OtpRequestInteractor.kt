@@ -5,8 +5,10 @@ import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.auth.OtpRequestUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class OtpRequestInteractor @Inject constructor(
@@ -19,6 +21,6 @@ class OtpRequestInteractor @Inject constructor(
                 val response = authRepository.requestOtp(request).message
                 response == "Kode OTP berhasil dikirim."
             })
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }

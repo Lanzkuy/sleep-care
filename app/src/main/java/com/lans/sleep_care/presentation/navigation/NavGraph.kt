@@ -132,8 +132,8 @@ fun NavGraph(
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
-                navigateToChatbot = {
-                    navController.navigate(route = Route.ChatbotScreen.route) {
+                navigateToChatbot = { email, name ->
+                    navController.navigate(route = Route.ChatbotScreen.route + "/$email/$name") {
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
@@ -242,8 +242,12 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.ChatbotScreen.route) {
+        composable(route = Route.ChatbotScreen.route + "/{email}/{name}") {
+            val email = it.arguments?.getString("email") ?: ""
+            val name = it.arguments?.getString("name") ?: ""
             ChatbotScreen(
+                email = email,
+                name = name,
                 navigateToHome = {
                     navController.navigateUp()
                 }

@@ -27,10 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
-import com.lans.sleep_care.presentation.component.ChatBubble
-import com.lans.sleep_care.presentation.component.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.ValidableTextField
-import com.lans.sleep_care.presentation.screen.chatbot.ChatbotUIEvent
+import com.lans.sleep_care.presentation.component.misc.ChatBubble
+import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary

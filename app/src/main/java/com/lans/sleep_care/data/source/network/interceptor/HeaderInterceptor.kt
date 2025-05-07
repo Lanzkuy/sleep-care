@@ -7,7 +7,7 @@ import okhttp3.Response
 class HeaderInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
-            .addHeader(Constant.HEADER_ACCEPT, Constant.HEADER_ACCEPT_VALUE)
+            .addHeader(name = Constant.HEADER_ACCEPT, value = Constant.HEADER_ACCEPT_VALUE)
             .build()
         return chain.proceed(request)
     }

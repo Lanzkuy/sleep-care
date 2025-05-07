@@ -7,7 +7,7 @@ import javax.inject.Inject
 class LogoutInteractor @Inject constructor(
     private val authRepository: IAuthRepository
 ) : LogoutUseCase {
-    override suspend fun invoke() {
+    override suspend fun execute() {
         authRepository.clearSession()
     }
 }

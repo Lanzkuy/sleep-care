@@ -23,7 +23,7 @@ class AuthRepository @Inject constructor(
     }
 
     override suspend fun storeSession(accessToken: String) {
-        dataStoreManager.storeData(DataStoreManager.ACCESS_TOKEN, accessToken)
+        dataStoreManager.storeData(key = DataStoreManager.ACCESS_TOKEN, value = accessToken)
     }
 
     override suspend fun clearSession() {

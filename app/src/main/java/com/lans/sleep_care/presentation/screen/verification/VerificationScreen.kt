@@ -32,9 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
-import com.lans.sleep_care.presentation.component.LoadingButton
-import com.lans.sleep_care.presentation.component.ValidableTextField
-import com.lans.sleep_care.presentation.component.ValidationAlert
+import com.lans.sleep_care.presentation.component.button.LoadingButton
+import com.lans.sleep_care.presentation.component.form.ValidableTextField
+import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded

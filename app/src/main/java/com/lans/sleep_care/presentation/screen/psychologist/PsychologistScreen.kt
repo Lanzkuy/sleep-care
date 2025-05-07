@@ -28,9 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
-import com.lans.sleep_care.presentation.component.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.SearchField
-import com.lans.sleep_care.presentation.component.PsychologistItem
+import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.form.SearchField
+import com.lans.sleep_care.presentation.component.items.PsychologistItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens

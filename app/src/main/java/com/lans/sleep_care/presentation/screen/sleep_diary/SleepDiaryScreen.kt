@@ -36,9 +36,9 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.data.DATA
 import com.lans.sleep_care.domain.model.DiaryAnswer
 import com.lans.sleep_care.domain.model.DiaryQuestion
-import com.lans.sleep_care.presentation.component.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.NumberDropDown
-import com.lans.sleep_care.presentation.component.SleepDiary
+import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.form.NumberDropDown
+import com.lans.sleep_care.presentation.component.form.SleepDiary
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary

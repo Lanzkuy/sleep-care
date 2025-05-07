@@ -34,9 +34,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.presentation.component.CommitedActionItem
-import com.lans.sleep_care.presentation.component.CommittedActionDialog
-import com.lans.sleep_care.presentation.component.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.items.CommitedActionItem
+import com.lans.sleep_care.presentation.component.dialog.CommittedActionDialog
+import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary

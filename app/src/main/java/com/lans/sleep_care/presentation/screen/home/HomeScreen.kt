@@ -38,9 +38,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.lans.sleep_care.R
-import com.lans.sleep_care.presentation.component.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.MenuItem
-import com.lans.sleep_care.presentation.component.ValidationAlert
+import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
+import com.lans.sleep_care.presentation.component.items.MenuItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -52,7 +52,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToTherapist: () -> Unit,
     navigateToMyTherapy: () -> Unit,
-    navigateToChatbot: () -> Unit,
+    navigateToChatbot: (email: String, name: String) -> Unit,
     navigateToHistory: () -> Unit
 ) {
     val state by viewModel.state
@@ -60,7 +60,9 @@ fun HomeScreen(
     val buttonItems = listOf(
         Triple(R.drawable.image_placeholder, R.string.psychologist, navigateToTherapist),
         Triple(R.drawable.image_placeholder, R.string.mytherapy, navigateToMyTherapy),
-        Triple(R.drawable.image_placeholder, R.string.chatbot, navigateToChatbot),
+        Triple(R.drawable.image_placeholder, R.string.chatbot) {
+            navigateToChatbot(state.user.email, state.user.name)
+        },
         Triple(R.drawable.image_placeholder, R.string.history, navigateToHistory)
     )
 

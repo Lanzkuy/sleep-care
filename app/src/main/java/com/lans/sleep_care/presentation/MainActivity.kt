@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
             if (authState != null) {
                 SleepCareTheme(dynamicColor = false) {
-                    SleepCareApp(startDestination = if (authState == true) "home" else "login")
+                    SleepCareApp(if (authState == true) "home" else "login")
                 }
             }
         }

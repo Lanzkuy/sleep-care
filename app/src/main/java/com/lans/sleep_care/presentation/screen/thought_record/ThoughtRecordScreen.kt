@@ -22,7 +22,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,10 +34,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.domain.model.ThoughtRecord
-import com.lans.sleep_care.presentation.component.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.ThoughtRecordDialog
-import com.lans.sleep_care.presentation.component.ThoughtRecordItem
+import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.dialog.ThoughtRecordDialog
+import com.lans.sleep_care.presentation.component.items.ThoughtRecordItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
