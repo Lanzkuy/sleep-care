@@ -4,7 +4,7 @@ sealed class RegisterUIEvent {
     data class NameChanged(val name: String): RegisterUIEvent()
     data class EmailChanged(val email: String): RegisterUIEvent()
     data class PasswordChanged(val password: String): RegisterUIEvent()
-    data class ConfirmPasswordChanged(val confirmPassword: String): RegisterUIEvent()
+    data class PasswordConfirmationChanged(val passwordConfirmation: String): RegisterUIEvent()
     data class AgeChanged(val age: String): RegisterUIEvent()
     data class GenderSelected(val gender: String): RegisterUIEvent()
     data class ProblemChange(val problem: String): RegisterUIEvent()

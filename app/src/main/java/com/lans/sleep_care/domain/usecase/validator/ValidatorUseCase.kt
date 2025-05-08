@@ -4,7 +4,7 @@ interface ValidatorUseCase {
     val email: ValidateEmailUseCase
     val name: ValidateNameUseCase
     val password: ValidatePasswordUseCase
-    val confirmPassword: ValidateConfirmPasswordUseCase
+    val passwordConfirmation: ValidatePasswordConfirmationUseCase
     val verificationCode: ValidateVerificationCodeUseCase
     val age: ValidateAgeUseCase
 }

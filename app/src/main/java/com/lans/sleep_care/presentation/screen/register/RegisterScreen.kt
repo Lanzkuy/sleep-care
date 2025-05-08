@@ -142,11 +142,11 @@ fun RegisterScreen(
             ValidableTextField(
                 modifier = Modifier
                     .fillMaxWidth(),
-                input = state.confirmPassword,
+                input = state.passwordConfirmation,
                 label = stringResource(R.string.confirm_password),
                 isPassword = true,
                 onValueChange = {
-                    viewModel.onEvent(RegisterUIEvent.ConfirmPasswordChanged(it))
+                    viewModel.onEvent(RegisterUIEvent.PasswordConfirmationChanged(it))
                 }
             )
             Spacer(

@@ -1,7 +1,7 @@
 package com.lans.sleep_care.domain.interactor.validator
 
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
-import com.lans.sleep_care.domain.usecase.validator.ValidateConfirmPasswordUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordConfirmationUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateNameUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordUseCase
@@ -13,7 +13,7 @@ class ValidatorInteractor @Inject constructor(
     override val email: ValidateEmailUseCase,
     override val name: ValidateNameUseCase,
     override val password: ValidatePasswordUseCase,
-    override val confirmPassword: ValidateConfirmPasswordUseCase,
+    override val passwordConfirmation: ValidatePasswordConfirmationUseCase,
     override val verificationCode: ValidateVerificationCodeUseCase,
     override val age: ValidateAgeUseCase,
 ) : ValidatorUseCase

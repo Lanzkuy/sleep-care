@@ -35,6 +35,8 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
+import com.lans.sleep_care.presentation.component.form.ValidableTextFieldWithButton
+import com.lans.sleep_care.presentation.screen.forgot_password.ForgotPasswordUIEvent
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
@@ -118,43 +120,17 @@ fun VerificationScreen(
                 .fillMaxWidth()
                 .height(Dimens.dp16)
         )
-        ValidableTextField(
+        ValidableTextFieldWithButton(
             modifier = Modifier
-                .fillMaxWidth(),
+                .padding(top = Dimens.dp8),
             input = state.otpCode,
-            label = stringResource(R.string.verification_code),
             onValueChange = {
                 viewModel.onEvent(VerificationUIEvent.VerificationCodeChanged(it))
+            },
+            onSendClick = {
+                viewModel.onEvent(VerificationUIEvent.SendVerificationCodeButtonClicked(email))
             }
         )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp8)
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.not_received_code),
-                style = Typography.bodyMedium
-            )
-            Spacer(
-                modifier = Modifier
-                    .width(Dimens.dp4)
-            )
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        viewModel.requestOtp(email)
-                    },
-                text = stringResource(R.string.resend),
-                style = Typography.labelLarge
-            )
-        }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()

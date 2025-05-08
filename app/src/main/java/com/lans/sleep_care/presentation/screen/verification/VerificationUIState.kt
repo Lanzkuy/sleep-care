@@ -7,5 +7,5 @@ data class VerificationUIState(
     val isLoading: Boolean = false,
     var error: String = "",
     var requestOtpResponse: Boolean = false,
-    var verificationResponse: Boolean = false
+    val verificationResponse: Boolean = false
 )

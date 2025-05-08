@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class VerifyOtpInteractor @Inject constructor(
-    private val authRepository: IAuthRepository
+    private val repository: IAuthRepository
 ): VerifyOtpUseCase, SafeApiCall {
     override suspend fun execute(request: VerifyOtpRequest): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                val response = authRepository.verifyOtp(request).message
+                val response = repository.verifyOtp(request).message
                 response == "Kode OTP berhasil diverifikasi."
             })
         }

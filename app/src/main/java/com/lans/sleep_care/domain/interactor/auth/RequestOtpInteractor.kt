@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class RequestOtpInteractor @Inject constructor(
-    private val authRepository: IAuthRepository
+    private val repository: IAuthRepository
 ): RequestOtpUseCase, SafeApiCall {
     override suspend fun execute(request: OtpRequest): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                val response = authRepository.sendOtp(request).message
+                val response = repository.sendOtp(request).message
                 response == "Kode OTP berhasil dikirim."
             })
         }.flowOn(Dispatchers.IO)

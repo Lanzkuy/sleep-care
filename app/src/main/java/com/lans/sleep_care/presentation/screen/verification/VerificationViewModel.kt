@@ -33,6 +33,10 @@ class VerificationViewModel @Inject constructor(
                 )
             }
 
+            is VerificationUIEvent.SendVerificationCodeButtonClicked -> {
+                requestOtp(event.email)
+            }
+
             is VerificationUIEvent.ConfirmButtonClicked -> {
                 verifyOtp(event.email)
             }

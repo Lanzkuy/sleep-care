@@ -1,10 +1,12 @@
 package com.lans.sleep_care.di
 
+import com.lans.sleep_care.domain.interactor.auth.ForgotPasswordInteractor
 import com.lans.sleep_care.domain.interactor.auth.IsAuthenticatedInteractor
 import com.lans.sleep_care.domain.interactor.auth.LoginInteractor
 import com.lans.sleep_care.domain.interactor.auth.LogoutInteractor
 import com.lans.sleep_care.domain.interactor.auth.RequestOtpInteractor
 import com.lans.sleep_care.domain.interactor.auth.RegisterInteractor
+import com.lans.sleep_care.domain.interactor.auth.ResetPasswordInteractor
 import com.lans.sleep_care.domain.interactor.auth.StoreSessionInteractor
 import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotAnswerInteractor
@@ -12,7 +14,7 @@ import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.StoreChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.user.GetMeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
-import com.lans.sleep_care.domain.interactor.validator.ValidateConfirmPasswordInteractor
+import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordConfirmationInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateEmailInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateNameInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordInteractor
@@ -21,11 +23,13 @@ import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.repository.IChatBotRepository
 import com.lans.sleep_care.domain.repository.IUserRepository
+import com.lans.sleep_care.domain.usecase.auth.ForgotPasswordUseCase
 import com.lans.sleep_care.domain.usecase.auth.IsAuthenticatedUseCase
 import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
 import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
 import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
+import com.lans.sleep_care.domain.usecase.auth.ResetPasswordUseCase
 import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
@@ -33,7 +37,7 @@ import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.StoreChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
-import com.lans.sleep_care.domain.usecase.validator.ValidateConfirmPasswordUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordConfirmationUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateNameUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordUseCase
@@ -90,7 +94,23 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideOtpRequestUseCase(
+    fun provideForgotPasswordUseCase(
+        repository: IAuthRepository
+    ): ForgotPasswordUseCase {
+        return ForgotPasswordInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideResetPasswordUseCase(
+        repository: IAuthRepository
+    ): ResetPasswordUseCase {
+        return ResetPasswordInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRequestOtpUseCase(
         repository: IAuthRepository
     ): RequestOtpUseCase {
         return RequestOtpInteractor(repository)
@@ -142,7 +162,7 @@ object UseCaseModule {
         validateEmailUseCase: ValidateEmailUseCase,
         validateNameUseCase: ValidateNameUseCase,
         validatePasswordUseCase: ValidatePasswordUseCase,
-        validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase,
+        validatePasswordConfirmationUseCase: ValidatePasswordConfirmationUseCase,
         validateVerificationCodeUseCase: ValidateVerificationCodeUseCase,
         validateAgeUseCase: ValidateAgeUseCase
     ): ValidatorUseCase {
@@ -150,7 +170,7 @@ object UseCaseModule {
             validateEmailUseCase,
             validateNameUseCase,
             validatePasswordUseCase,
-            validateConfirmPasswordUseCase,
+            validatePasswordConfirmationUseCase,
             validateVerificationCodeUseCase,
             validateAgeUseCase
         )
@@ -176,8 +196,8 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideValidateConfirmPasswordUseCase(): ValidateConfirmPasswordUseCase {
-        return ValidateConfirmPasswordInteractor()
+    fun provideValidateConfirmPasswordUseCase(): ValidatePasswordConfirmationUseCase {
+        return ValidatePasswordConfirmationInteractor()
     }
 
     @Provides

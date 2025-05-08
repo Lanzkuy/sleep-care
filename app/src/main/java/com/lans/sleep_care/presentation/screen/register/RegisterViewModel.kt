@@ -46,10 +46,10 @@ class RegisterViewModel @Inject constructor(
                 )
             }
 
-            is RegisterUIEvent.ConfirmPasswordChanged -> {
+            is RegisterUIEvent.PasswordConfirmationChanged -> {
                 _state.value = _state.value.copy(
-                    confirmPassword = _state.value.confirmPassword.copy(
-                        value = event.confirmPassword
+                    passwordConfirmation = _state.value.passwordConfirmation.copy(
+                        value = event.passwordConfirmation
                     )
                 )
             }
@@ -114,17 +114,17 @@ class RegisterViewModel @Inject constructor(
         val emailResult = validatorUseCase.email.execute(stateValue.email.value)
         val nameResult = validatorUseCase.name.execute(stateValue.name.value)
         val passwordResult = validatorUseCase.password.execute(stateValue.password.value)
-        val confirmPasswordResult =
-            validatorUseCase.confirmPassword.execute(
+        val passwordConfirmationResult =
+            validatorUseCase.passwordConfirmation.execute(
                 password = stateValue.password.value,
-                confirmPassword = stateValue.confirmPassword.value
+                passwordConfirmation = stateValue.passwordConfirmation.value
             )
 
         val hasErrors = listOf(
             emailResult,
             nameResult,
             passwordResult,
-            confirmPasswordResult
+            passwordConfirmationResult
         ).any { !it.isSuccess }
 
         if (hasErrors) {
@@ -138,8 +138,8 @@ class RegisterViewModel @Inject constructor(
                 password = stateValue.password.copy(
                     error = passwordResult.errorMessage
                 ),
-                confirmPassword = stateValue.confirmPassword.copy(
-                    error = confirmPasswordResult.errorMessage
+                passwordConfirmation = stateValue.passwordConfirmation.copy(
+                    error = passwordConfirmationResult.errorMessage
                 )
             )
         }
@@ -178,7 +178,7 @@ class RegisterViewModel @Inject constructor(
                     name = _state.value.name.value,
                     email = _state.value.email.value,
                     password = _state.value.password.value,
-                    passwordConfirmation = _state.value.confirmPassword.value,
+                    passwordConfirmation = _state.value.passwordConfirmation.value,
                     age = _state.value.age.value.toInt(),
                     gender = _state.value.gender.lowercase(),
                     problems = _state.value.problems
@@ -229,7 +229,7 @@ class RegisterViewModel @Inject constructor(
             password = stateValue.password.copy(
                 error = null
             ),
-            confirmPassword = stateValue.confirmPassword.copy(
+            passwordConfirmation = stateValue.passwordConfirmation.copy(
                 error = null
             ),
             age = stateValue.age.copy(
