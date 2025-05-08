@@ -33,13 +33,9 @@ fun EmotionRecordItem(record: EmotionRecord) {
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = Dimens.dp12,
-                vertical = Dimens.dp6
-            ),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = White),
-        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.dp2),
+        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.dp6),
         shape = RoundedLarge
     ) {
         Column(

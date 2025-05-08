@@ -121,6 +121,8 @@ fun IdentifyValueScreen(
                             tempValueArea[area] = valueArea
                         }
                     )
+                }
+                item {
                     Spacer(
                         modifier = Modifier
                             .height(Dimens.dp16)

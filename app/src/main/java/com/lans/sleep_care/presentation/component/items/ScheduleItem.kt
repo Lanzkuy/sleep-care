@@ -69,7 +69,7 @@ fun ScheduleItem(
                         onClick = onNoteClick
                     ) {
                         Text(
-                            text = stringResource(R.string.doctor_note),
+                            text = stringResource(R.string.psychologist_note),
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }

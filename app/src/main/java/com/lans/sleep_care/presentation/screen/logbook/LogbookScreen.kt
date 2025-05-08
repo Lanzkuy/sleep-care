@@ -80,7 +80,7 @@ fun LogbookScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                text = stringResource(R.string.mytherapy),
+                text = stringResource(R.string.logbook),
                 textAlign = TextAlign.Center,
                 fontSize = Dimens.sp24,
                 fontWeight = FontWeight.Bold

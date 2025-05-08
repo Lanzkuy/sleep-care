@@ -84,7 +84,7 @@ fun CommitedActionScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    text = stringResource(R.string.thought_record),
+                    text = stringResource(R.string.commited_action),
                     textAlign = TextAlign.Center,
                     fontSize = Dimens.sp24,
                     fontWeight = FontWeight.Bold
@@ -101,11 +101,17 @@ fun CommitedActionScreen(
             )
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
             ) {
                 items(localSavedCommitedAction) { record ->
                     CommitedActionItem(record)
+                }
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .height(Dimens.dp16)
+                    )
                 }
             }
         }

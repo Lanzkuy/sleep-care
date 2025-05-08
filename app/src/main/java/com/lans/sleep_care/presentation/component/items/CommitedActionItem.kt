@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.component.items
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,14 +53,9 @@ fun CommitedActionItem(
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = Dimens.dp16,
-                vertical = Dimens.dp8
-            )
-            .animateContentSize(),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = White),
-        elevation = CardDefaults.cardElevation(Dimens.dp6),
+        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.dp6),
         shape = RoundedLarge
     ) {
         Column(

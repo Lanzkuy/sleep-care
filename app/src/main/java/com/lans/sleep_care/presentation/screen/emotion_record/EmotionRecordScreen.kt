@@ -101,11 +101,17 @@ fun EmotionRecordScreen(
             )
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
             ) {
                 items(localSavedEmotionRecord) { record ->
                     EmotionRecordItem(record = record)
+                }
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .height(Dimens.dp16)
+                    )
                 }
             }
         }
