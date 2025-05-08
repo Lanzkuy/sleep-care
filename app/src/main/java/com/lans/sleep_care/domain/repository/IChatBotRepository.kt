@@ -8,9 +8,9 @@ import com.lans.sleep_care.domain.model.Chat
 import kotlinx.coroutines.flow.Flow
 
 interface IChatBotRepository {
-    suspend fun storeMessage(email: String, chat: Chat)
+    suspend fun saveChat(email: String, chat: Chat)
 
-    suspend fun getChatHistory(email: String): Flow<List<ChatBotHistoryEntity>>
+    suspend fun fetchHistory(email: String): Flow<List<ChatBotHistoryEntity>>
 
-    suspend fun getAnswer(request: ChatBotRequest): ApiResponse<ChatBotResponse>
+    suspend fun fetchAnswer(request: ChatBotRequest): ApiResponse<ChatBotResponse>
 }

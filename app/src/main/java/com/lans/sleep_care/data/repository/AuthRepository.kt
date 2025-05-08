@@ -18,27 +18,27 @@ class AuthRepository @Inject constructor(
     private val api: SleepCareApi,
     private val dataStoreManager: DataStoreManager
 ) : IAuthRepository {
-    override suspend fun isAuthenticated(): Flow<Boolean> {
+    override suspend fun authState(): Flow<Boolean> {
         return dataStoreManager.getAccessToken().map { it.isNotEmpty() }
     }
 
-    override suspend fun storeSession(accessToken: String) {
+    override suspend fun saveToken(accessToken: String) {
         dataStoreManager.storeData(key = DataStoreManager.ACCESS_TOKEN, value = accessToken)
     }
 
-    override suspend fun clearSession() {
+    override suspend fun deleteToken() {
         dataStoreManager.clear()
     }
 
-    override suspend fun login(request: LoginRequest): ApiResponse<LoginResponse> {
+    override suspend fun fetchLogin(request: LoginRequest): ApiResponse<LoginResponse> {
         return api.login(request)
     }
 
-    override suspend fun register(request: RegisterRequest): ApiResponse<RegisterResponse> {
+    override suspend fun fetchRegister(request: RegisterRequest): ApiResponse<RegisterResponse> {
         return api.register(request)
     }
 
-    override suspend fun requestOtp(request: OtpRequest): ApiResponse<Any> {
+    override suspend fun sendOtp(request: OtpRequest): ApiResponse<Any> {
         return api.requestOtp(request)
     }
 

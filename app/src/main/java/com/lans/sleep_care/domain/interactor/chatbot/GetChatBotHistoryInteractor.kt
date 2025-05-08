@@ -19,7 +19,7 @@ class GetChatBotHistoryInteractor @Inject constructor(
     override suspend fun execute(email: String): Flow<Resource<List<Chat>>> {
         return flow {
             emit(Resource.Loading)
-            repository.getChatHistory(email)
+            repository.fetchHistory(email)
                 .map { list ->
                     val chats = list.map { it.toDomain() }
                     Resource.Success(chats)

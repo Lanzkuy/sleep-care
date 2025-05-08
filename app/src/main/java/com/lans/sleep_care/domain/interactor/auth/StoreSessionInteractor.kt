@@ -8,6 +8,6 @@ class StoreSessionInteractor @Inject constructor(
     private val authRepository: IAuthRepository
 ): StoreSessionUseCase {
     override suspend fun invoke(accessToken: String) {
-        authRepository.storeSession(accessToken)
+        authRepository.saveToken(accessToken)
     }
 }

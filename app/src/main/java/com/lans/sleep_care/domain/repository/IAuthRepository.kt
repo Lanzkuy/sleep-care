@@ -10,21 +10,21 @@ import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
 import kotlinx.coroutines.flow.Flow
 
 interface IAuthRepository {
-    suspend fun isAuthenticated(): Flow<Boolean>
+    suspend fun authState(): Flow<Boolean>
 
-    suspend fun storeSession(accessToken: String)
+    suspend fun saveToken(accessToken: String)
 
-    suspend fun clearSession()
+    suspend fun deleteToken()
 
-    suspend fun login(
+    suspend fun fetchLogin(
         request: LoginRequest
     ): ApiResponse<LoginResponse>
 
-    suspend fun register(
+    suspend fun fetchRegister(
         request: RegisterRequest
     ): ApiResponse<RegisterResponse>
 
-    suspend fun requestOtp(
+    suspend fun sendOtp(
         request: OtpRequest
     ): ApiResponse<Any>
 

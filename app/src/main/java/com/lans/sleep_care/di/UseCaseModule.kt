@@ -3,7 +3,7 @@ package com.lans.sleep_care.di
 import com.lans.sleep_care.domain.interactor.auth.IsAuthenticatedInteractor
 import com.lans.sleep_care.domain.interactor.auth.LoginInteractor
 import com.lans.sleep_care.domain.interactor.auth.LogoutInteractor
-import com.lans.sleep_care.domain.interactor.auth.OtpRequestInteractor
+import com.lans.sleep_care.domain.interactor.auth.RequestOtpInteractor
 import com.lans.sleep_care.domain.interactor.auth.RegisterInteractor
 import com.lans.sleep_care.domain.interactor.auth.StoreSessionInteractor
 import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
@@ -24,7 +24,7 @@ import com.lans.sleep_care.domain.repository.IUserRepository
 import com.lans.sleep_care.domain.usecase.auth.IsAuthenticatedUseCase
 import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
 import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
-import com.lans.sleep_care.domain.usecase.auth.OtpRequestUseCase
+import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
 import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
@@ -92,8 +92,8 @@ object UseCaseModule {
     @Singleton
     fun provideOtpRequestUseCase(
         repository: IAuthRepository
-    ): OtpRequestUseCase {
-        return OtpRequestInteractor(repository)
+    ): RequestOtpUseCase {
+        return RequestOtpInteractor(repository)
     }
 
     @Provides

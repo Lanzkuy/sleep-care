@@ -9,7 +9,7 @@ import javax.inject.Inject
 class UserRepository @Inject constructor(
     private val api: SleepCareApi
 ) : IUserRepository {
-    override suspend fun me(): ApiResponse<MeResponse> {
+    override suspend fun fetchProfile(): ApiResponse<MeResponse> {
         return api.me()
     }
 }

@@ -20,7 +20,7 @@ class RegisterInteractor @Inject constructor(
         return flow{
             emit(Resource.Loading)
             emit(safeCall {
-                val response = repository.register(request).data
+                val response = repository.fetchRegister(request).data
                 response?.user?.toDomain() ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)

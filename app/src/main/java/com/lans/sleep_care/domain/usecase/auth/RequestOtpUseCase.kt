@@ -4,6 +4,6 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import kotlinx.coroutines.flow.Flow
 
-interface OtpRequestUseCase {
+interface RequestOtpUseCase {
     suspend fun execute(request: OtpRequest): Flow<Resource<Boolean>>
 }

@@ -9,6 +9,6 @@ class StoreChatBotHistoryInteractor @Inject constructor(
     private val repository: IChatBotRepository
 ): StoreChatBotHistoryUseCase {
     override suspend fun execute(email: String, chat: Chat) {
-        repository.storeMessage(email, chat)
+        repository.saveChat(email, chat)
     }
 }

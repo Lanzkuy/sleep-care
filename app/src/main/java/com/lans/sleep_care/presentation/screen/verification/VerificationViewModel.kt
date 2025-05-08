@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
-import com.lans.sleep_care.domain.usecase.auth.OtpRequestUseCase
+import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class VerificationViewModel @Inject constructor(
     private val validatorUseCase: ValidatorUseCase,
-    private val otpRequestUseCase: OtpRequestUseCase,
+    private val requestOtpUseCase: RequestOtpUseCase,
     private val verifyOtpUseCase: VerifyOtpUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(VerificationUIState())
@@ -41,7 +41,7 @@ class VerificationViewModel @Inject constructor(
 
     fun requestOtp(email: String) {
         viewModelScope.launch {
-            otpRequestUseCase.execute(
+            requestOtpUseCase.execute(
                 OtpRequest(email = email)
             ).collect { response ->
                 when (response) {

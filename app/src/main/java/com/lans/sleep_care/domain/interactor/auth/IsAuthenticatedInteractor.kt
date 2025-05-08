@@ -15,7 +15,7 @@ class IsAuthenticatedInteractor @Inject constructor(
     override suspend fun execute(): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading)
-            authRepository.isAuthenticated().collect { result ->
+            authRepository.authState().collect { result ->
                 emit(Resource.Success(result))
             }
         }.flowOn(Dispatchers.IO)

@@ -4,21 +4,21 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import com.lans.sleep_care.domain.repository.IAuthRepository
-import com.lans.sleep_care.domain.usecase.auth.OtpRequestUseCase
+import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class OtpRequestInteractor @Inject constructor(
+class RequestOtpInteractor @Inject constructor(
     private val authRepository: IAuthRepository
-): OtpRequestUseCase, SafeApiCall {
+): RequestOtpUseCase, SafeApiCall {
     override suspend fun execute(request: OtpRequest): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                val response = authRepository.requestOtp(request).message
+                val response = authRepository.sendOtp(request).message
                 response == "Kode OTP berhasil dikirim."
             })
         }.flowOn(Dispatchers.IO)

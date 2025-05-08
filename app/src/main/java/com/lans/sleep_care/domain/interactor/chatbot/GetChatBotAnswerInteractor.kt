@@ -18,7 +18,7 @@ class GetChatBotAnswerInteractor @Inject constructor(
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                repository.getAnswer(request).data?.response ?: throw Exception()
+                repository.fetchAnswer(request).data?.response ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)
     }
