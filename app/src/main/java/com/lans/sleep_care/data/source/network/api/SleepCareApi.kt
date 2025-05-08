@@ -34,6 +34,6 @@ interface SleepCareApi {
         @Body requestBody: VerifyOtpRequest
     ): ApiResponse<Any>
 
-    @GET("patient")
+    @GET("patient/profile")
     suspend fun me(): ApiResponse<MeResponse>
 }

@@ -1,4 +1,4 @@
-package com.lans.sleep_care.presentation.screen.profile
+package com.lans.sleep_care.presentation.screen.change_password
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,13 +12,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,40 +25,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
-import com.lans.sleep_care.presentation.component.form.GenericDropDown
 import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
-import com.lans.sleep_care.utils.capitalize
 
 @Composable
-fun ProfileScreen(
-    viewModel: ProfileViewModel = hiltViewModel(),
-    name: String,
-    age: String,
-    gender: String,
-    problemList: List<String>,
+fun ChangePasswordScreen(
+    viewModel: ChangePasswordViewModel = hiltViewModel(),
     navigateToHome: () -> Unit
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
-    LaunchedEffect(Unit) {
-        state.gender = gender.capitalize()
-        state.problems.addAll(problemList)
-    }
-
-    LaunchedEffect(key1 = state.isProfileUpdated, key2 = state.error) {
-        val response = state.isProfileUpdated
+    LaunchedEffect(key1 = state.isPasswordChanged, key2 = state.error) {
+        val response = state.isPasswordChanged
         val error = state.error
 
         if (response) {
@@ -97,7 +80,7 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = Dimens.dp24),
+                .padding(top = Dimens.dp24,),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -116,7 +99,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                text = stringResource(R.string.profile),
+                text = stringResource(R.string.change_password),
                 textAlign = TextAlign.Center,
                 fontSize = Dimens.sp24,
                 fontWeight = FontWeight.Bold
@@ -134,86 +117,33 @@ fun ProfileScreen(
         ValidableTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            input = state.name.copy(value = name),
-            label = stringResource(R.string.name),
+            input = state.currentPassword,
+            label = stringResource(R.string.current_password),
+            isPassword = true,
             onValueChange = {
-                viewModel.onEvent(ProfileUIEvent.NameChanged(it))
+                viewModel.onEvent(ChangePasswordUIEvent.CurrentPasswordChanged(it))
             }
         )
         ValidableTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            input = state.name.copy(value = age),
-            label = stringResource(R.string.age),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number
-            ),
+            input = state.newPassword,
+            label = stringResource(R.string.new_password),
+            isPassword = true,
             onValueChange = {
-                viewModel.onEvent(ProfileUIEvent.AgeChanged(it))
+                viewModel.onEvent(ChangePasswordUIEvent.NewPasswordChanged(it))
             }
         )
-        GenericDropDown(
+        ValidableTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            label = stringResource(R.string.gender),
-            selected = state.gender,
-            onSelect = {
-                viewModel.onEvent(ProfileUIEvent.GenderSelected(it))
-            },
-            options = listOf(
-                stringResource(R.string.man),
-                stringResource(R.string.woman)
-            )
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp8)
-        )
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(Dimens.dp8),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            GenericDropDown(
-                modifier = Modifier
-                    .weight(1f),
-                label = stringResource(R.string.problem),
-                selected = state.problem,
-                onSelect = { viewModel.onEvent(ProfileUIEvent.ProblemChange(it)) },
-                options = listOf(
-                    stringResource(R.string.stress),
-                    stringResource(R.string.adiction),
-                    stringResource(R.string.depresion),
-                    stringResource(R.string.trauma)
-                )
-            )
-            IconButton(
-                modifier = Modifier
-                    .size(Dimens.dp32),
-                onClick = {
-                    viewModel.onEvent(ProfileUIEvent.AddProblemButtonClicked)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AddCircle,
-                    contentDescription = stringResource(R.string.icon)
-                )
+            input = state.newPasswordConfirmation,
+            label = stringResource(R.string.new_password_confirmation),
+            isPassword = true,
+            onValueChange = {
+                viewModel.onEvent(ChangePasswordUIEvent.NewPasswordConfirmationChanged(it))
             }
-        }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp8)
         )
-        state.problems.forEach {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = "• $it",
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -223,11 +153,11 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(Dimens.dp48),
-            text = stringResource(R.string.change_profile),
+            text = stringResource(R.string.update),
             shape = Rounded,
             isLoading = state.isLoading,
             onClick = {
-
+                viewModel.onEvent(ChangePasswordUIEvent.UpdateButtonClicked)
             }
         )
     }

@@ -12,7 +12,7 @@ data class UserResponse(
     val gender: String,
     val problems: List<String>?,
     @field:Json(name = "is_active")
-    val isActive: Int?,
+    val isActive: Boolean?,
     @field:Json(name = "is_online")
     val isOnline: Boolean?,
     @field:Json(name = "created_at")

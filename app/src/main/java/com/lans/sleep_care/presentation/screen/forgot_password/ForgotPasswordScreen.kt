@@ -116,7 +116,7 @@ fun ForgotPasswordScreen(
         LoadingButton(
             modifier = Modifier
                 .fillMaxWidth(),
-            text = stringResource(R.string.ubah_password),
+            text = stringResource(R.string.change_password),
             shape = Rounded,
             isLoading = state.isLoading,
             onClick = {

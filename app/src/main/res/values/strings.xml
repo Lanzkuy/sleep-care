@@ -5,8 +5,11 @@
     <string name="password">Kata Sandi</string>
     <string name="confirm_password">Konfirmasi Kata Sandi</string>
     <string name="new_password">Kata Sandi Baru</string>
-    <string name="show_password">Show password</string>
-    <string name="hide_password">Hide password</string>
+    <string name="show_password">Tunjukkan Kata Sandi</string>
+    <string name="hide_password">Sembunyikan Kata Sandi</string>
+    <string name="change_password">Ubah Kata Sandi</string>
+    <string name="current_password">Kata Sandi Saat Ini</string>
+    <string name="new_password_confirmation">Konfirmasi Kata Sandi Baru</string>
     <string name="login">Login</string>
     <string name="login_description">Silakan masuk ke akun Anda</string>
     <string name="register">Register</string>
@@ -16,11 +19,9 @@
     <string name="forgot_password">Lupa Kata Sandi</string>
     <string name="forgot_password_description">Masukkan email untuk mengatur ulang kata sandi</string>
     <string name="profile">Profil</string>
-    <string name="change_password">Ubah Password</string>
     <string name="edit_profile">Edit Profil</string>
     <string name="change_profile">Ubah Profil</string>
     <string name="verification_code">Kode Verifikasi</string>
-    <string name="ubah_password">Ubah Password</string>
     <string name="not_received_code">Belum mendapatkan kode?</string>
     <string name="dont_have_an_account">Tidak mempunyai akun?</string>
     <string name="have_an_account_already">Sudah mempunyai akun?</string>
@@ -106,6 +107,7 @@
     <string name="detail">Detail</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
+    <string name="update">Perbaharui</string>
     <string name="alert_error_title">Terjadi Kesalahan</string>
 
     <string name="search_icon">Search Icon</string>

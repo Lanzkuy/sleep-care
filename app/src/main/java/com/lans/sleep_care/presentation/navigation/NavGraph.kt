@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.lans.sleep_care.presentation.screen.change_password.ChangePasswordScreen
 import com.lans.sleep_care.presentation.screen.chat_room.ChatRoomScreen
 import com.lans.sleep_care.presentation.screen.chatbot.ChatbotScreen
 import com.lans.sleep_care.presentation.screen.committed_action.CommitedActionScreen
@@ -168,6 +169,13 @@ fun NavGraph(
                 age = age,
                 gender = gender,
                 problemList = problemList,
+                navigateToHome = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.ChangePasswordScreen.route) {
+            ChangePasswordScreen(
                 navigateToHome = {
                     navController.navigateUp()
                 }
