@@ -96,7 +96,6 @@ fun RegisterScreen(
                 .fillMaxWidth()
                 .fillMaxHeight(0.1f)
         )
-
         Text(
             text = stringResource(R.string.app_name),
             fontWeight = FontWeight.Bold,
@@ -215,7 +214,9 @@ fun RegisterScreen(
                     .fillMaxWidth(),
                 label = stringResource(R.string.gender),
                 selected = state.gender,
-                onSelect = { state.gender = it },
+                onSelect = {
+                    viewModel.onEvent(RegisterUIEvent.GenderSelected(it))
+                },
                 options = listOf(
                     stringResource(R.string.man),
                     stringResource(R.string.woman)
@@ -237,7 +238,10 @@ fun RegisterScreen(
                     selected = state.problem,
                     onSelect = { viewModel.onEvent(RegisterUIEvent.ProblemChange(it)) },
                     options = listOf(
-                        "Stres", "Adiksi", "Depresi", "Trauma"
+                        stringResource(R.string.stress),
+                        stringResource(R.string.adiction),
+                        stringResource(R.string.depresion),
+                        stringResource(R.string.trauma)
                     )
                 )
                 IconButton(

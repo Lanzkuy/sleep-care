@@ -15,6 +15,10 @@
     <string name="verification_description">Masukkan kode yang telah dikirimkan ke</string>
     <string name="forgot_password">Lupa Kata Sandi</string>
     <string name="forgot_password_description">Masukkan email untuk mengatur ulang kata sandi</string>
+    <string name="profile">Profil</string>
+    <string name="change_password">Ubah Password</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="change_profile">Ubah Profil</string>
     <string name="verification_code">Kode Verifikasi</string>
     <string name="ubah_password">Ubah Password</string>
     <string name="not_received_code">Belum mendapatkan kode?</string>
@@ -39,6 +43,7 @@
     <string name="message">Pesan</string>
     <string name="problem">Permasalahan</string>
 
+    <string name="logbook">Catatan Terapi</string>
     <string name="sleep_diary">Catatan Tidur</string>
     <string name="identify_value">Identifikasi Nilai Pribadi</string>
     <string name="thought_record">Catatan Pikiran</string>
@@ -77,6 +82,10 @@
     <string name="percent">%1$d%%</string>
     <string name="done">Sudah Dilaksanakan</string>
     <string name="not_done">Belum Dilaksanakan</string>
+    <string name="stress">Stres</string>
+    <string name="adiction">Adiksi</string>
+    <string name="depresion">Depresi</string>
+    <string name="trauma">Trauma</string>
 
     <string name="date">Tanggal</string>
     <string name="date_yyyy_mm_dd">Tanggal (YYYY-MM-DD)</string>
@@ -102,5 +111,4 @@
     <string name="search_icon">Search Icon</string>
     <string name="icon">Icon</string>
     <string name="image">Image</string>
-    <string name="logbook">Catatan Terapi</string>
 </resources>

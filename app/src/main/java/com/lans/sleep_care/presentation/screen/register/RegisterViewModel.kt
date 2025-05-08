@@ -64,6 +64,12 @@ class RegisterViewModel @Inject constructor(
                 }
             }
 
+            is RegisterUIEvent.GenderSelected -> {
+                _state.value = _state.value.copy(
+                    gender = event.gender
+                )
+            }
+
             is RegisterUIEvent.ProblemChange -> {
                 _state.value = _state.value.copy(
                     problem = event.problem
@@ -71,9 +77,12 @@ class RegisterViewModel @Inject constructor(
             }
 
             is RegisterUIEvent.AddProblemButtonClicked -> {
-                if (_state.value.problem.isNotBlank()) {
+                val problem = _state.value.problem.lowercase()
+                if (problem.isNotBlank()) {
                     val updatedList = _state.value.problems.toMutableList().apply {
-                        add(_state.value.problem.lowercase())
+                        if (!_state.value.problems.contains(problem)) {
+                            add(problem.lowercase())
+                        }
                     }
                     _state.value = _state.value.copy(
                         problems = updatedList,

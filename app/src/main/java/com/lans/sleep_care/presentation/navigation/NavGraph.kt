@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -24,6 +23,7 @@ import com.lans.sleep_care.presentation.screen.identify_value.IdentifyValueScree
 import com.lans.sleep_care.presentation.screen.logbook.LogbookScreen
 import com.lans.sleep_care.presentation.screen.login.LoginScreen
 import com.lans.sleep_care.presentation.screen.my_theraphy.MyTherapyScreen
+import com.lans.sleep_care.presentation.screen.profile.ProfileScreen
 import com.lans.sleep_care.presentation.screen.psychologist.PsychologistScreen
 import com.lans.sleep_care.presentation.screen.register.RegisterScreen
 import com.lans.sleep_care.presentation.screen.sleep_diary.SleepDiaryScreen
@@ -132,8 +132,8 @@ fun NavGraph(
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
-                navigateToChatbot = { email, name ->
-                    navController.navigate(route = Route.ChatbotScreen.route + "/$email/$name") {
+                navigateToChatbot = { name, email ->
+                    navController.navigate(route = Route.ChatbotScreen.route + "/$name/$email") {
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
@@ -141,6 +141,35 @@ fun NavGraph(
                     navController.navigate(route = Route.HistoryScreen.route) {
                         popUpTo(route = Route.HomeScreen.route)
                     }
+                },
+                navigateToProfile = { name, age, gender, problemList ->
+                    val problems = problemList?.joinToString(",") ?: ""
+                    navController.navigate(
+                        route = Route.ProfileScreen.route + "/$name/$age/$gender/$problems"
+                    ) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                },
+                navigateToChangePassword = {
+                    navController.navigate(route = Route.ChangePasswordScreen.route) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                }
+            )
+        }
+        composable(route = Route.ProfileScreen.route + "/{name}/{age}/{gender}/{problems}") {
+            val name = it.arguments?.getString("name") ?: ""
+            val age = it.arguments?.getString("age") ?: "0"
+            val gender = it.arguments?.getString("gender") ?: ""
+            val problems = it.arguments?.getString("problems") ?: ""
+            val problemList = if (problems.isNotEmpty()) problems.split(",") else emptyList()
+            ProfileScreen(
+                name = name,
+                age = age,
+                gender = gender,
+                problemList = problemList,
+                navigateToHome = {
+                    navController.navigateUp()
                 }
             )
         }
@@ -242,9 +271,9 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.ChatbotScreen.route + "/{email}/{name}") {
-            val email = it.arguments?.getString("email") ?: ""
+        composable(route = Route.ChatbotScreen.route + "/{name}/{email}") {
             val name = it.arguments?.getString("name") ?: ""
+            val email = it.arguments?.getString("email") ?: ""
             ChatbotScreen(
                 email = email,
                 name = name,

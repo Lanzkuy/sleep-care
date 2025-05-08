@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,6 +38,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.lans.sleep_care.R
@@ -52,11 +56,19 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToTherapist: () -> Unit,
     navigateToMyTherapy: () -> Unit,
-    navigateToChatbot: (email: String, name: String) -> Unit,
-    navigateToHistory: () -> Unit
+    navigateToChatbot: (name: String, email: String) -> Unit,
+    navigateToHistory: () -> Unit,
+    navigateToProfile: (
+        name: String,
+        age: String,
+        gender: String,
+        problemList: List<String>?
+    ) -> Unit,
+    navigateToChangePassword: () -> Unit
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
     val buttonItems = listOf(
         Triple(R.drawable.image_placeholder, R.string.psychologist, navigateToTherapist),
         Triple(R.drawable.image_placeholder, R.string.mytherapy, navigateToMyTherapy),
@@ -85,6 +97,7 @@ fun HomeScreen(
         )
     }
 
+
     Column(
         modifier = Modifier
             .background(White)
@@ -100,23 +113,49 @@ fun HomeScreen(
                 .spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .size(Dimens.dp50)
-                    .padding()
-                    .border(
-                        width = Dimens.dp1,
-                        color = DarkGray,
-                        shape = CircleShape
+            Box {
+                AsyncImage(
+                    modifier = Modifier
+                        .size(Dimens.dp50)
+                        .border(
+                            width = Dimens.dp1,
+                            color = DarkGray,
+                            shape = CircleShape
+                        )
+                        .clip(CircleShape)
+                        .clickable { showOverflowMenu = true },
+                    model = null,
+                    placeholder = painterResource(R.drawable.ic_person),
+                    error = painterResource(R.drawable.ic_person),
+                    contentDescription = stringResource(R.string.image),
+                    contentScale = ContentScale.Crop,
+                )
+                DropdownMenu(
+                    offset = DpOffset(x = Dimens.dp24, y = Dimens.dp4),
+                    expanded = showOverflowMenu,
+                    onDismissRequest = { showOverflowMenu = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(R.string.edit_profile)) },
+                        onClick = {
+                            showOverflowMenu = false
+                            navigateToProfile.invoke(
+                                state.user.name,
+                                state.user.age.toString(),
+                                state.user.gender,
+                                state.user.problems
+                            )
+                        }
                     )
-                    .clip(CircleShape)
-                    .clickable { },
-                model = null,
-                placeholder = painterResource(R.drawable.ic_person),
-                error = painterResource(R.drawable.ic_person),
-                contentDescription = stringResource(R.string.image),
-                contentScale = ContentScale.Crop,
-            )
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource(R.string.change_password)) },
+                        onClick = {
+                            showOverflowMenu = false
+                            navigateToChangePassword.invoke()
+                        }
+                    )
+                }
+            }
             Column(
                 modifier = Modifier
                     .weight(1f)
