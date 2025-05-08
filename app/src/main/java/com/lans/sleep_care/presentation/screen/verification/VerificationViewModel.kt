@@ -43,6 +43,21 @@ class VerificationViewModel @Inject constructor(
         }
     }
 
+    private fun validate(stateValue: VerificationUIState): Boolean {
+        val verificationCodeResult =
+            validatorUseCase.verificationCode.execute(stateValue.otpCode.value)
+
+        if (!verificationCodeResult.isSuccess) {
+            _state.value = stateValue.copy(
+                otpCode = stateValue.otpCode.copy(
+                    error = verificationCodeResult.errorMessage
+                )
+            )
+        }
+
+        return verificationCodeResult.isSuccess
+    }
+
     fun requestOtp(email: String) {
         viewModelScope.launch {
             requestOtpUseCase.execute(
@@ -78,22 +93,15 @@ class VerificationViewModel @Inject constructor(
     private fun verifyOtp(email: String) {
         val stateValue = _state.value
 
-        val verificationCodeResult =
-            validatorUseCase.verificationCode.execute(stateValue.otpCode.value)
-
-        if (!verificationCodeResult.isSuccess) {
-            _state.value = stateValue.copy(
-                otpCode = stateValue.otpCode.copy(
-                    error = verificationCodeResult.errorMessage
-                )
-            )
+        val isValid = validate(stateValue)
+        if (!isValid) {
             return
         }
 
         viewModelScope.launch {
             verifyOtpUseCase.execute(
                 VerifyOtpRequest(
-                    otp = _state.value.otpCode.value,
+                    otp = stateValue.otpCode.value,
                     email = email
                 )
             ).collect{ response ->

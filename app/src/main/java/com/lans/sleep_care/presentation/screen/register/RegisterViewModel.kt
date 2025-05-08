@@ -92,9 +92,12 @@ class RegisterViewModel @Inject constructor(
             }
 
             is RegisterUIEvent.NextButtonClicked -> {
-                val isValid = validatePageOne()
+                val stateValue = _state.value
+
+                val isValid = validatePageOne(stateValue)
+
                 if (isValid) {
-                    _state.value = _state.value.copy(currentPage = 1)
+                    _state.value = stateValue.copy(currentPage = 1)
                     clearError()
                 }
             }
@@ -109,8 +112,7 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun validatePageOne(): Boolean {
-        val stateValue = _state.value
+    private fun validatePageOne(stateValue: RegisterUIState): Boolean {
         val emailResult = validatorUseCase.email.execute(stateValue.email.value)
         val nameResult = validatorUseCase.name.execute(stateValue.name.value)
         val passwordResult = validatorUseCase.password.execute(stateValue.password.value)
@@ -147,8 +149,7 @@ class RegisterViewModel @Inject constructor(
         return !hasErrors
     }
 
-    private fun validatePageTwo(): Boolean {
-        val stateValue = _state.value
+    private fun validatePageTwo(stateValue: RegisterUIState): Boolean {
         val ageResult = validatorUseCase.age.execute(stateValue.age.value)
 
         val hasErrors = listOf(
@@ -167,7 +168,9 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun register() {
-        val isValid = validatePageTwo()
+        val stateValue = _state.value
+
+        val isValid = validatePageTwo(stateValue)
         if (!isValid) {
             return
         }
@@ -175,13 +178,13 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             registerUseCase.execute(
                 RegisterRequest(
-                    name = _state.value.name.value,
-                    email = _state.value.email.value,
-                    password = _state.value.password.value,
-                    passwordConfirmation = _state.value.passwordConfirmation.value,
-                    age = _state.value.age.value.toInt(),
-                    gender = _state.value.gender.lowercase(),
-                    problems = _state.value.problems
+                    name = stateValue.name.value,
+                    email = stateValue.email.value,
+                    password = stateValue.password.value,
+                    passwordConfirmation = stateValue.passwordConfirmation.value,
+                    age = stateValue.age.value.toInt(),
+                    gender = stateValue.gender.lowercase(),
+                    problems = stateValue.problems
                 )
             ).collect { response ->
                 when (response) {

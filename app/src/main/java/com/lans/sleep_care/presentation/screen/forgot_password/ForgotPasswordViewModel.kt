@@ -69,8 +69,7 @@ class ForgotPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun validatePageOne(): Boolean {
-        val stateValue = _state.value
+    private fun validatePageOne(stateValue: ForgotPasswordUIState): Boolean {
         val emailResult = validatorUseCase.email.execute(stateValue.email.value)
 
         if (!emailResult.isSuccess) {
@@ -84,8 +83,7 @@ class ForgotPasswordViewModel @Inject constructor(
         return emailResult.isSuccess
     }
 
-    private fun validatePageTwo(): Boolean {
-        val stateValue = _state.value
+    private fun validatePageTwo(stateValue: ForgotPasswordUIState): Boolean {
         val verificationCodeResult =
             validatorUseCase.verificationCode.execute(stateValue.verificationCode.value)
         val passwordResult = validatorUseCase.password.execute(stateValue.newPassword.value)
@@ -117,56 +115,58 @@ class ForgotPasswordViewModel @Inject constructor(
     }
 
     private fun forgotPassword() {
-        val isValid = validatePageOne()
+        val stateValue = _state.value
+
+        val isValid = validatePageOne(stateValue)
         if (!isValid) {
             return
         }
 
         viewModelScope.launch {
-            viewModelScope.launch {
-                forgotPasswordUseCase.execute(_state.value.email.value).collect { response ->
-                    when (response) {
-                        is Resource.Success -> {
-                            _state.value = _state.value.copy(
-                                forgotPasswordResponse = response.data,
-                                currentPage = 1,
-                                isLoading = false
-                            )
-                        }
-
-                        is Resource.Error -> {
-                            _state.value = _state.value.copy(
-                                error = response.message,
-                                currentPage = if (response.message.contains("Duplicate")) 1 else 0,
-                                isLoading = false
-                            )
-                        }
-
-                        is Resource.Loading -> {
-                            _state.value = _state.value.copy(
-                                isLoading = true
-                            )
-                        }
-
-                        else -> Unit
+            forgotPasswordUseCase.execute(stateValue.email.value).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            forgotPasswordResponse = response.data,
+                            currentPage = 1,
+                            isLoading = false
+                        )
                     }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            currentPage = if (response.message.contains("Duplicate")) 1 else 0,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isLoading = true
+                        )
+                    }
+
+                    else -> Unit
                 }
             }
         }
     }
 
     private fun resetPassword() {
-        val isValid = validatePageTwo()
+        val stateValue = _state.value
+
+        val isValid = validatePageTwo(stateValue)
         if (!isValid) {
             return
         }
 
         viewModelScope.launch {
             resetPasswordUseCase.execute(
-                email = _state.value.email.value,
-                token = _state.value.verificationCode.value.toInt(),
-                password = _state.value.newPassword.value,
-                passwordConfirmation = _state.value.newPasswordConfirmation.value
+                email = stateValue.email.value,
+                token = stateValue.verificationCode.value.toInt(),
+                password = stateValue.newPassword.value,
+                passwordConfirmation = stateValue.newPasswordConfirmation.value
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {

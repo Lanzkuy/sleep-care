@@ -46,9 +46,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun login() {
-        val stateValue = _state.value
-
+    private fun validate(stateValue: LoginUIState): Boolean {
         val emailResult = validatorUseCase.email.execute(stateValue.email.value)
         val passwordResult = validatorUseCase.password.execute(stateValue.password.value)
 
@@ -66,6 +64,16 @@ class LoginViewModel @Inject constructor(
                     error = passwordResult.errorMessage
                 )
             )
+        }
+
+        return hasErrors
+    }
+
+    private fun login() {
+        val stateValue = _state.value
+
+        val isValid = validate(stateValue)
+        if (!isValid) {
             return
         }
 
