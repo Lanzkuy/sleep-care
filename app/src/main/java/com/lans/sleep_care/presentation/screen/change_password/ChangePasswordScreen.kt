@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.screen.change_password
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +44,7 @@ fun ChangePasswordScreen(
     viewModel: ChangePasswordViewModel = hiltViewModel(),
     navigateToHome: () -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
@@ -50,7 +53,8 @@ fun ChangePasswordScreen(
         val error = state.error
 
         if (response) {
-
+            Toast.makeText(context, "Password berhasil diganti", Toast.LENGTH_SHORT).show()
+            navigateToHome.invoke()
         }
 
         if (error.isNotBlank()) {

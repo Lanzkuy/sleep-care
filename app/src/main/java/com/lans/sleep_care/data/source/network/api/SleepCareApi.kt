@@ -1,5 +1,6 @@
 package com.lans.sleep_care.data.source.network.api
 
+import com.lans.sleep_care.data.source.network.dto.request.ChangePasswordRequest
 import com.lans.sleep_care.data.source.network.dto.request.ForgotPasswordRequest
 import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
 import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
@@ -14,6 +15,7 @@ import com.lans.sleep_care.data.source.network.dto.response.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 interface SleepCareApi {
     @POST("login")
@@ -48,4 +50,9 @@ interface SleepCareApi {
 
     @GET("patient/profile")
     suspend fun me(): ApiResponse<MeResponse>
+
+    @PUT("patient/password")
+    suspend fun changePassword(
+        @Body requestBody: ChangePasswordRequest
+    ): ApiResponse<Any>
 }

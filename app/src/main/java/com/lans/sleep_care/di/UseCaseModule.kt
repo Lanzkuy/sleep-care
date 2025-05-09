@@ -12,8 +12,10 @@ import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotAnswerInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.StoreChatBotHistoryInteractor
+import com.lans.sleep_care.domain.interactor.user.ChangePasswordInteractor
 import com.lans.sleep_care.domain.interactor.user.GetMeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
+import com.lans.sleep_care.domain.interactor.validator.ValidateCurrentPasswordInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateEmailInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateNameInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordConfirmationInteractor
@@ -35,8 +37,10 @@ import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.StoreChatBotHistoryUseCase
+import com.lans.sleep_care.domain.usecase.user.ChangePasswordUseCase
 import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidateCurrentPasswordUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateNameUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordConfirmationUseCase
@@ -138,6 +142,14 @@ object UseCaseModule {
 
     @Provides
     @Singleton
+    fun provideChangePasswordUseCase(
+        repository: IUserRepository
+    ): ChangePasswordUseCase {
+        return ChangePasswordInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
     fun provideGetChatBotAnswerUseCase(
         repository: IChatBotRepository
     ): GetChatBotAnswerUseCase {
@@ -166,6 +178,7 @@ object UseCaseModule {
         validateEmailUseCase: ValidateEmailUseCase,
         validateNameUseCase: ValidateNameUseCase,
         validatePasswordUseCase: ValidatePasswordUseCase,
+        validateCurrentPasswordUseCase: ValidateCurrentPasswordUseCase,
         validatePasswordConfirmationUseCase: ValidatePasswordConfirmationUseCase,
         validateVerificationCodeUseCase: ValidateVerificationCodeUseCase,
         validateAgeUseCase: ValidateAgeUseCase
@@ -174,6 +187,7 @@ object UseCaseModule {
             validateEmailUseCase,
             validateNameUseCase,
             validatePasswordUseCase,
+            validateCurrentPasswordUseCase,
             validatePasswordConfirmationUseCase,
             validateVerificationCodeUseCase,
             validateAgeUseCase
@@ -196,6 +210,12 @@ object UseCaseModule {
     @Singleton
     fun provideValidatePasswordUseCase(): ValidatePasswordUseCase {
         return ValidatePasswordInteractor()
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidateCurrentPasswordUseCase(): ValidateCurrentPasswordUseCase {
+        return ValidateCurrentPasswordInteractor()
     }
 
     @Provides
