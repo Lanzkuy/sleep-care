@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,11 +33,14 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.form.ValidableTextField
+import com.lans.sleep_care.presentation.component.form.ValidableTextFieldWithButton
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
 import com.lans.sleep_care.presentation.theme.White
+import kotlinx.coroutines.delay
+import java.util.Locale
 
 @Composable
 fun ForgotPasswordScreen(
@@ -46,6 +50,8 @@ fun ForgotPasswordScreen(
     val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
+    var resendCountdown by remember { mutableIntStateOf(300) }
+    var canResend by remember { mutableStateOf(false) }
 
     LaunchedEffect(
         key1 = state.forgotPasswordResponse,
@@ -70,6 +76,16 @@ fun ForgotPasswordScreen(
             showAlert = Pair(true, error)
             state.error = ""
         }
+    }
+
+    LaunchedEffect(state.isCountdown) {
+        resendCountdown = 300
+        canResend = false
+        while (resendCountdown > 0) {
+            delay(1000)
+            resendCountdown--
+        }
+        canResend = true
     }
 
     if (showAlert.first) {
@@ -164,13 +180,26 @@ fun ForgotPasswordScreen(
                 )
             }
         } else if (state.currentPage == 1) {
-            ValidableTextField(
+            ValidableTextFieldWithButton(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .padding(top = Dimens.dp8),
                 input = state.verificationCode,
-                label = stringResource(R.string.verification_code),
+                placeholder = stringResource(R.string.verification_code),
+                buttonText = if (canResend) {
+                    stringResource(R.string.send)
+                } else {
+                    val minutes = resendCountdown / 60
+                    val seconds = resendCountdown % 60
+                    String.format(Locale.ROOT, "%02d:%02d", minutes, seconds)
+                },
+                isLoading = state.isForgotPasswordLoading,
                 onValueChange = {
                     viewModel.onEvent(ForgotPasswordUIEvent.VerificationCodeChanged(it))
+                },
+                onSendClick = {
+                    if (canResend) {
+                        viewModel.onEvent(ForgotPasswordUIEvent.ForgotPasswordButtonClicked)
+                    }
                 }
             )
             ValidableTextField(
@@ -203,7 +232,7 @@ fun ForgotPasswordScreen(
                     .fillMaxWidth(),
                 text = stringResource(R.string.change_password),
                 shape = Rounded,
-                isLoading = state.isLoading,
+                isLoading = state.isResetPasswordLoading,
                 onClick = {
                     viewModel.onEvent(ForgotPasswordUIEvent.ChangePasswordButtonClicked)
                 }

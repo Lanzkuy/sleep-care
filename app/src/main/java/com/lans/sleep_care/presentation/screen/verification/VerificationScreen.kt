@@ -2,10 +2,7 @@ package com.lans.sleep_care.presentation.screen.verification
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,13 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,15 +30,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.LoadingButton
-import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.form.ValidableTextFieldWithButton
-import com.lans.sleep_care.presentation.screen.forgot_password.ForgotPasswordUIEvent
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
 import com.lans.sleep_care.presentation.theme.White
+import kotlinx.coroutines.delay
+import java.util.Locale
 
 @Composable
 fun VerificationScreen(
@@ -53,6 +50,8 @@ fun VerificationScreen(
     val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
+    var resendCountdown by remember { mutableIntStateOf(300) }
+    var canResend by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.requestOtp(email)
@@ -81,6 +80,16 @@ fun VerificationScreen(
             showAlert = Pair(true, error)
             state.error = ""
         }
+    }
+
+    LaunchedEffect(state.isCountdown) {
+        resendCountdown = 300
+        canResend = false
+        while (resendCountdown > 0) {
+            delay(1000)
+            resendCountdown--
+        }
+        canResend = true
     }
 
     if (showAlert.first) {
@@ -124,11 +133,22 @@ fun VerificationScreen(
             modifier = Modifier
                 .padding(top = Dimens.dp8),
             input = state.otpCode,
+            placeholder = stringResource(R.string.verification_code),
+            buttonText = if (canResend) {
+                stringResource(R.string.send)
+            } else {
+                val minutes = resendCountdown / 60
+                val seconds = resendCountdown % 60
+                String.format(Locale.ROOT, "%02d:%02d", minutes, seconds)
+            },
+            isLoading = state.isRequestOtpLoading,
             onValueChange = {
                 viewModel.onEvent(VerificationUIEvent.VerificationCodeChanged(it))
             },
             onSendClick = {
-                viewModel.onEvent(VerificationUIEvent.SendVerificationCodeButtonClicked(email))
+                if (canResend) {
+                    viewModel.onEvent(VerificationUIEvent.SendVerificationCodeButtonClicked(email))
+                }
             }
         )
         Spacer(
@@ -141,7 +161,7 @@ fun VerificationScreen(
                 .fillMaxWidth(),
             text = stringResource(R.string.confirm),
             shape = Rounded,
-            isLoading = state.isLoading,
+            isLoading = state.isVerificationLoading,
             onClick = {
                 viewModel.onEvent(VerificationUIEvent.ConfirmButtonClicked(email))
             }

@@ -4,8 +4,8 @@ import com.lans.sleep_care.domain.interactor.auth.ForgotPasswordInteractor
 import com.lans.sleep_care.domain.interactor.auth.IsAuthenticatedInteractor
 import com.lans.sleep_care.domain.interactor.auth.LoginInteractor
 import com.lans.sleep_care.domain.interactor.auth.LogoutInteractor
-import com.lans.sleep_care.domain.interactor.auth.RequestOtpInteractor
 import com.lans.sleep_care.domain.interactor.auth.RegisterInteractor
+import com.lans.sleep_care.domain.interactor.auth.RequestOtpInteractor
 import com.lans.sleep_care.domain.interactor.auth.ResetPasswordInteractor
 import com.lans.sleep_care.domain.interactor.auth.StoreSessionInteractor
 import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
@@ -14,9 +14,9 @@ import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.StoreChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.user.GetMeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
-import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordConfirmationInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateEmailInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateNameInteractor
+import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordConfirmationInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidatePasswordInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateVerificationCodeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
@@ -27,8 +27,8 @@ import com.lans.sleep_care.domain.usecase.auth.ForgotPasswordUseCase
 import com.lans.sleep_care.domain.usecase.auth.IsAuthenticatedUseCase
 import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
 import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
-import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
+import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.ResetPasswordUseCase
 import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
@@ -37,9 +37,9 @@ import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.StoreChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
-import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordConfirmationUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateNameUseCase
+import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordConfirmationUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateVerificationCodeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
@@ -55,9 +55,13 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideIsAuthenticatedUseCase(
-        repository: IAuthRepository
+        authRepository: IAuthRepository,
+        userRepository: IUserRepository
     ): IsAuthenticatedUseCase {
-        return IsAuthenticatedInteractor(repository)
+        return IsAuthenticatedInteractor(
+            authRepository,
+            userRepository
+        )
     }
 
     @Provides

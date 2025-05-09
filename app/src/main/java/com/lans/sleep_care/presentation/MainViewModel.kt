@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val isAuthenticatedUseCase: IsAuthenticatedUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _isAuthenticated = MutableStateFlow<Boolean?>(null)
     val isAuthenticated: Flow<Boolean?> get() = _isAuthenticated
     var splashState by mutableStateOf(true)
@@ -27,7 +27,6 @@ class MainViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         _isAuthenticated.value = response.data
-                        splashState = false
                     }
 
                     is Resource.Error -> {
@@ -36,6 +35,7 @@ class MainViewModel @Inject constructor(
 
                     else -> Unit
                 }
+                splashState = false
             }
         }
     }

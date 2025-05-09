@@ -8,7 +8,9 @@ data class ForgotPasswordUIState(
     val newPassword: InputWrapper = InputWrapper(),
     val newPasswordConfirmation: InputWrapper = InputWrapper(),
     val currentPage: Int = 0,
-    val isLoading: Boolean = false,
+    val isCountdown: Long = System.currentTimeMillis(),
+    val isForgotPasswordLoading: Boolean = false,
+    val isResetPasswordLoading: Boolean = false,
     var error: String = "",
     var forgotPasswordResponse: Boolean = false,
     val resetPasswordResponse: Boolean = false

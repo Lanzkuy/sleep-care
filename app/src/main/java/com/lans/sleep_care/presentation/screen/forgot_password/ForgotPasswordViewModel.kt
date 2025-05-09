@@ -129,21 +129,22 @@ class ForgotPasswordViewModel @Inject constructor(
                         _state.value = _state.value.copy(
                             forgotPasswordResponse = response.data,
                             currentPage = 1,
-                            isLoading = false
+                            isCountdown = System.currentTimeMillis(),
+                            isResetPasswordLoading = false
                         )
                     }
 
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
                             error = response.message,
-                            currentPage = if (response.message.contains("Duplicate")) 1 else 0,
-                            isLoading = false
+                            currentPage = if (response.message.contains("sudah dikirim")) 1 else 0,
+                            isResetPasswordLoading = false
                         )
                     }
 
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
-                            isLoading = true
+                            isResetPasswordLoading = true
                         )
                     }
 
@@ -172,20 +173,20 @@ class ForgotPasswordViewModel @Inject constructor(
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
                             resetPasswordResponse = response.data,
-                            isLoading = false
+                            isResetPasswordLoading = false
                         )
                     }
 
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
                             error = response.message,
-                            isLoading = false
+                            isResetPasswordLoading = false
                         )
                     }
 
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
-                            isLoading = true
+                            isResetPasswordLoading = true
                         )
                     }
 

@@ -5,9 +5,9 @@ import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
 import javax.inject.Inject
 
 class LogoutInteractor @Inject constructor(
-    private val authRepository: IAuthRepository
+    private val repository: IAuthRepository
 ) : LogoutUseCase {
     override suspend fun execute() {
-        authRepository.deleteToken()
+        repository.deleteToken()
     }
 }

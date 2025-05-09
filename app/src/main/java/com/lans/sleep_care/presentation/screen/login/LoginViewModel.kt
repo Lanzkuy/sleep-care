@@ -66,7 +66,7 @@ class LoginViewModel @Inject constructor(
             )
         }
 
-        return hasErrors
+        return !hasErrors
     }
 
     private fun login() {

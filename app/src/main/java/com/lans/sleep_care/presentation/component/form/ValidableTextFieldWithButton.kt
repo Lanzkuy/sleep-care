@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.lans.instagram_clone.domain.model.InputWrapper
 import com.lans.sleep_care.R
+import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.White
@@ -24,6 +25,9 @@ import com.lans.sleep_care.presentation.theme.White
 fun ValidableTextFieldWithButton(
     modifier: Modifier,
     input: InputWrapper,
+    placeholder: String,
+    buttonText: String,
+    isLoading: Boolean,
     onValueChange: (String) -> Unit,
     onSendClick: () -> Unit
 ) {
@@ -35,7 +39,7 @@ fun ValidableTextFieldWithButton(
             modifier = Modifier
                 .weight(0.8f),
             input = input,
-            placeholder = stringResource(R.string.verification_code),
+            placeholder = placeholder,
             shape = RoundedCornerShape(
                 topStart = Dimens.dp4,
                 bottomStart = Dimens.dp4
@@ -43,23 +47,19 @@ fun ValidableTextFieldWithButton(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             onValueChange = onValueChange
         )
-        Button(
+        LoadingButton(
             modifier = Modifier
                 .height(Dimens.dp56)
                 .weight(0.2f),
-            colors = ButtonDefaults.buttonColors(containerColor = Primary),
-            contentPadding = PaddingValues(Dimens.dp0),
+            text = buttonText,
             shape = RoundedCornerShape(
                 topEnd = Dimens.dp4,
                 bottomEnd = Dimens.dp4
             ),
-            onClick = onSendClick,
-        ) {
-            Text(
-                text = stringResource(R.string.send).uppercase(),
-                color = White,
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
+            containerColor = Primary,
+            contentPadding = PaddingValues(Dimens.dp0),
+            isLoading = isLoading,
+            onClick = onSendClick
+        )
     }
 }

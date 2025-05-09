@@ -4,7 +4,9 @@ import com.lans.instagram_clone.domain.model.InputWrapper
 
 data class VerificationUIState(
     val otpCode: InputWrapper = InputWrapper(),
-    val isLoading: Boolean = false,
+    val isCountdown: Long = System.currentTimeMillis(),
+    val isRequestOtpLoading: Boolean = false,
+    val isVerificationLoading: Boolean = false,
     var error: String = "",
     var requestOtpResponse: Boolean = false,
     val verificationResponse: Boolean = false
