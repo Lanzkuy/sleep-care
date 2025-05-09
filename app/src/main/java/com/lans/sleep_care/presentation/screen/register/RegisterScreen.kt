@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,11 +19,11 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,30 +35,43 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
-import com.lans.sleep_care.presentation.component.form.GenericDropDown
 import com.lans.sleep_care.presentation.component.button.LoadingButton
-import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
+import com.lans.sleep_care.presentation.component.form.GenericDropDown
+import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
 import com.lans.sleep_care.presentation.theme.White
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
     navigateToVerification: (email: String) -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
+
+    LaunchedEffect(Unit) {
+        viewModel.initializeData(
+            availableProblems = listOf(
+                context.getString(R.string.stress),
+                context.getString(R.string.adiction),
+                context.getString(R.string.depresion),
+                context.getString(R.string.trauma)
+            )
+        )
+    }
 
     LaunchedEffect(key1 = state.isRegistered, key2 = state.error) {
         val response = state.isRegistered
@@ -227,49 +242,43 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .height(Dimens.dp8)
             )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(Dimens.dp8),
-                verticalAlignment = Alignment.CenterVertically
+            Text(
+                modifier = Modifier
+                    .padding(bottom = Dimens.dp4),
+                text = stringResource(R.string.problem),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+            )
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(Dimens.dp6)
             ) {
-                GenericDropDown(
-                    modifier = Modifier
-                        .weight(1f),
-                    label = stringResource(R.string.problem),
-                    selected = state.problem,
-                    onSelect = { viewModel.onEvent(RegisterUIEvent.ProblemChange(it)) },
-                    options = listOf(
-                        stringResource(R.string.stress),
-                        stringResource(R.string.adiction),
-                        stringResource(R.string.depresion),
-                        stringResource(R.string.trauma)
-                    )
-                )
-                IconButton(
-                    modifier = Modifier
-                        .size(Dimens.dp32),
-                    onClick = {
-                        viewModel.onEvent(RegisterUIEvent.AddProblemButtonClicked)
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AddCircle,
-                        contentDescription = stringResource(R.string.icon)
+                state.availableProblems.forEach { option ->
+                    val isSelected = option in state.problems
+
+                    FilterChip(
+                        label = {
+                            Text(
+                                text = option,
+                                fontSize = Dimens.sp16
+                            )
+                        },
+                        selected = isSelected,
+                        leadingIcon = if (isSelected) {
+                            {
+                                Icon(
+                                    modifier = Modifier.size(Dimens.dp18),
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = stringResource(R.string.icon)
+                                )
+                            }
+                        } else null,
+                        onClick = {
+                            viewModel.onEvent(RegisterUIEvent.ToggleProblem(option))
+                        }
                     )
                 }
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.dp8)
-            )
-            state.problems.forEach {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    text = "• $it",
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodyMedium
-                )
             }
             Spacer(
                 modifier = Modifier

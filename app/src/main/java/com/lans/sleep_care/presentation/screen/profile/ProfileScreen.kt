@@ -4,6 +4,8 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,9 +18,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +48,7 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -66,7 +69,13 @@ fun ProfileScreen(
             name = name,
             age = age,
             gender = gender,
-            problems = problemList
+            problems = problemList,
+            availableProblems = listOf(
+                context.getString(R.string.stress),
+                context.getString(R.string.adiction),
+                context.getString(R.string.depresion),
+                context.getString(R.string.trauma)
+            )
         )
     }
 
@@ -179,49 +188,43 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .height(Dimens.dp8)
         )
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(Dimens.dp8),
-            verticalAlignment = Alignment.CenterVertically
+        Text(
+            modifier = Modifier
+                .padding(bottom = Dimens.dp4),
+            text = stringResource(R.string.problem),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+        )
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.dp6)
         ) {
-            GenericDropDown(
-                modifier = Modifier
-                    .weight(1f),
-                label = stringResource(R.string.problem),
-                selected = state.problem,
-                onSelect = { viewModel.onEvent(ProfileUIEvent.ProblemChange(it)) },
-                options = listOf(
-                    stringResource(R.string.stress),
-                    stringResource(R.string.adiction),
-                    stringResource(R.string.depresion),
-                    stringResource(R.string.trauma)
-                )
-            )
-            IconButton(
-                modifier = Modifier
-                    .size(Dimens.dp32),
-                onClick = {
-                    viewModel.onEvent(ProfileUIEvent.AddProblemButtonClicked)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AddCircle,
-                    contentDescription = stringResource(R.string.icon)
+            state.availableProblems.forEach { option ->
+                val isSelected = option in state.problems
+
+                FilterChip(
+                    label = {
+                        Text(
+                            text = option,
+                            fontSize = Dimens.sp16
+                        )
+                    },
+                    selected = isSelected,
+                    leadingIcon = if (isSelected) {
+                        {
+                            Icon(
+                                modifier = Modifier.size(Dimens.dp18),
+                                imageVector = Icons.Default.Check,
+                                contentDescription = stringResource(R.string.icon)
+                            )
+                        }
+                    } else null,
+                    onClick = {
+                        viewModel.onEvent(ProfileUIEvent.ToggleProblem(option))
+                    }
                 )
             }
-        }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp8)
-        )
-        state.problems.forEach {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = "• $it",
-                textAlign = TextAlign.Start,
-                style = MaterialTheme.typography.bodyMedium
-            )
         }
         Spacer(
             modifier = Modifier

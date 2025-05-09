@@ -7,8 +7,8 @@ data class ProfileUIState(
     val age: InputWrapper = InputWrapper(),
     val id: Int = 0,
     val gender: String = "Pria",
-    val problem: String = "",
     val problems: MutableList<String> = mutableListOf(),
+    val availableProblems: MutableList<String> = mutableListOf(),
     val isLoading: Boolean = false,
     var error: String = "",
     val isProfileUpdated: Boolean = false

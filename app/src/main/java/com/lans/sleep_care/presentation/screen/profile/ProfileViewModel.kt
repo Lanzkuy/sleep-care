@@ -47,25 +47,14 @@ class ProfileViewModel @Inject constructor(
                 )
             }
 
-            is ProfileUIEvent.ProblemChange -> {
-                _state.value = _state.value.copy(
-                    problem = event.problem
-                )
-            }
-
-            is ProfileUIEvent.AddProblemButtonClicked -> {
-                val problem = _state.value.problem.lowercase()
-                if (problem.isNotBlank()) {
-                    val updatedList = _state.value.problems.toMutableList().apply {
-                        if (!_state.value.problems.contains(problem)) {
-                            add(problem.lowercase())
-                        }
-                    }
-                    _state.value = _state.value.copy(
-                        problems = updatedList,
-                        problem = ""
-                    )
+            is ProfileUIEvent.ToggleProblem -> {
+                val updatedProblems = _state.value.problems.toMutableList()
+                if (updatedProblems.contains(event.problem)) {
+                    updatedProblems.remove(event.problem)
+                } else {
+                    updatedProblems.add(event.problem)
                 }
+                _state.value = _state.value.copy(problems = updatedProblems)
             }
 
             is ProfileUIEvent.SaveButtonClicked -> {
@@ -79,7 +68,8 @@ class ProfileViewModel @Inject constructor(
         name: String,
         age: String,
         gender: String,
-        problems: List<String>
+        problems: List<String>,
+        availableProblems: List<String>
     ) {
         _state.value = _state.value.copy(
             id = id,
@@ -87,10 +77,8 @@ class ProfileViewModel @Inject constructor(
             age = _state.value.age.copy(value = age),
             gender = gender.capitalize()
         )
-        _state.value.problems.apply {
-            clear()
-            addAll(problems)
-        }
+        _state.value.problems.addAll(problems.map { it.capitalize() })
+        _state.value.availableProblems.addAll(availableProblems)
     }
 
     private fun validate(stateValue: ProfileUIState): Boolean {
@@ -131,7 +119,7 @@ class ProfileViewModel @Inject constructor(
                     name = stateValue.name.value,
                     age = stateValue.age.value.toInt(),
                     gender = stateValue.gender.lowercase(),
-                    problems = stateValue.problems
+                    problems = stateValue.problems.map { it.lowercase() }
                 )
             ).collect { response ->
                 when (response) {

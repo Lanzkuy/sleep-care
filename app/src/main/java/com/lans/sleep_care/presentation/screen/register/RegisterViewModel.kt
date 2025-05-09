@@ -8,6 +8,7 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
+import com.lans.sleep_care.utils.capitalize
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -70,25 +71,14 @@ class RegisterViewModel @Inject constructor(
                 )
             }
 
-            is RegisterUIEvent.ProblemChange -> {
-                _state.value = _state.value.copy(
-                    problem = event.problem
-                )
-            }
-
-            is RegisterUIEvent.AddProblemButtonClicked -> {
-                val problem = _state.value.problem.lowercase()
-                if (problem.isNotBlank()) {
-                    val updatedList = _state.value.problems.toMutableList().apply {
-                        if (!_state.value.problems.contains(problem)) {
-                            add(problem.lowercase())
-                        }
-                    }
-                    _state.value = _state.value.copy(
-                        problems = updatedList,
-                        problem = ""
-                    )
+            is RegisterUIEvent.ToggleProblem -> {
+                val updatedProblems = _state.value.problems.toMutableList()
+                if (updatedProblems.contains(event.problem)) {
+                    updatedProblems.remove(event.problem)
+                } else {
+                    updatedProblems.add(event.problem)
                 }
+                _state.value = _state.value.copy(problems = updatedProblems)
             }
 
             is RegisterUIEvent.NextButtonClicked -> {
@@ -110,6 +100,12 @@ class RegisterViewModel @Inject constructor(
                 register()
             }
         }
+    }
+
+    fun initializeData(
+        availableProblems: List<String>
+    ) {
+        _state.value.availableProblems.addAll(availableProblems)
     }
 
     private fun validatePageOne(stateValue: RegisterUIState): Boolean {
@@ -182,7 +178,7 @@ class RegisterViewModel @Inject constructor(
                     email = stateValue.email.value,
                     age = stateValue.age.value.toInt(),
                     gender = stateValue.gender.lowercase(),
-                    problems = stateValue.problems
+                    problems = stateValue.problems.map { it.lowercase() }
                 ),
                 password = stateValue.password.value,
                 passwordConfirmation = stateValue.passwordConfirmation.value,
