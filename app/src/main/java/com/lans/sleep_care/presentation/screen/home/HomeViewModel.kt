@@ -19,17 +19,13 @@ class HomeViewModel @Inject constructor(
     private val _state = mutableStateOf(HomeUIState())
     val state: State<HomeUIState> get() = _state
 
-    init {
-        getMe()
-    }
-
     fun onEvent(event: HomeUIEvent) {
         if (event is HomeUIEvent.LogoutButtonClicked) {
             logout()
         }
     }
 
-    private fun getMe() {
+    fun getMe() {
         viewModelScope.launch {
             getMeUseCase.execute().collect { response ->
                 when (response) {

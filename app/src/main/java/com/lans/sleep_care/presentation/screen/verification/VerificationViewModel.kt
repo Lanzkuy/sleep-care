@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
 import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
@@ -60,9 +59,7 @@ class VerificationViewModel @Inject constructor(
 
     fun requestOtp(email: String) {
         viewModelScope.launch {
-            requestOtpUseCase.execute(
-                OtpRequest(email = email)
-            ).collect { response ->
+            requestOtpUseCase.execute(email).collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
@@ -100,11 +97,9 @@ class VerificationViewModel @Inject constructor(
 
         viewModelScope.launch {
             verifyOtpUseCase.execute(
-                VerifyOtpRequest(
-                    otp = stateValue.otpCode.value,
-                    email = email
-                )
-            ).collect{ response ->
+                otp = stateValue.otpCode.value,
+                email = email
+            ).collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(

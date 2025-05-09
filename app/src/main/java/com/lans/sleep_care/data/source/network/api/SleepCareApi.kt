@@ -6,6 +6,7 @@ import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
 import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
 import com.lans.sleep_care.data.source.network.dto.request.ResetPasswordRequest
+import com.lans.sleep_care.data.source.network.dto.request.UpdateProfileRequest
 import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
@@ -50,6 +51,11 @@ interface SleepCareApi {
 
     @GET("patient/profile")
     suspend fun me(): ApiResponse<MeResponse>
+
+    @PUT("patient/profile")
+    suspend fun updateProfile(
+        @Body requestBody: UpdateProfileRequest
+    ): ApiResponse<Any>
 
     @PUT("patient/password")
     suspend fun changePassword(

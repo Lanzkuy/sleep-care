@@ -27,7 +27,7 @@ fun UserResponse.toDomain() = User(
     email = email,
     age = age,
     gender = gender,
-    problems = problems,
+    problems = problems ?: emptyList(),
     isActive = isActive,
     isOnline = isOnline
 )

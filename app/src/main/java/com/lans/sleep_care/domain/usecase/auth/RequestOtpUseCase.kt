@@ -1,9 +1,8 @@
 package com.lans.sleep_care.domain.usecase.auth
 
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
 import kotlinx.coroutines.flow.Flow
 
 interface RequestOtpUseCase {
-    suspend fun execute(request: OtpRequest): Flow<Resource<Boolean>>
+    suspend fun execute(email: String): Flow<Resource<Boolean>>
 }

@@ -59,6 +59,7 @@ fun HomeScreen(
     navigateToChatbot: (name: String, email: String) -> Unit,
     navigateToHistory: () -> Unit,
     navigateToProfile: (
+        id: String,
         name: String,
         age: String,
         gender: String,
@@ -77,6 +78,10 @@ fun HomeScreen(
         },
         Triple(R.drawable.image_placeholder, R.string.history, navigateToHistory)
     )
+
+    LaunchedEffect(Unit) {
+        viewModel.getMe()
+    }
 
     LaunchedEffect(key1 = state.error) {
         val error = state.error
@@ -140,6 +145,7 @@ fun HomeScreen(
                         onClick = {
                             showOverflowMenu = false
                             navigateToProfile.invoke(
+                                state.user.id.toString(),
                                 state.user.name,
                                 state.user.age.toString(),
                                 state.user.gender,

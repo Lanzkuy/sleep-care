@@ -14,6 +14,7 @@ import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.StoreChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.user.ChangePasswordInteractor
 import com.lans.sleep_care.domain.interactor.user.GetMeInteractor
+import com.lans.sleep_care.domain.interactor.user.UpdateProfileInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateCurrentPasswordInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateEmailInteractor
@@ -39,6 +40,7 @@ import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.StoreChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.user.ChangePasswordUseCase
 import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
+import com.lans.sleep_care.domain.usecase.user.UpdateProfileUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateCurrentPasswordUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
@@ -138,6 +140,14 @@ object UseCaseModule {
         repository: IUserRepository
     ): GetMeUseCase {
         return GetMeInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateProfileUseCase(
+        repository: IUserRepository
+    ): UpdateProfileUseCase {
+        return UpdateProfileInteractor(repository)
     }
 
     @Provides

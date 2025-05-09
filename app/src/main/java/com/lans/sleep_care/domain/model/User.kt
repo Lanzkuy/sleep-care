@@ -8,7 +8,7 @@ data class User(
     val avatar: String = "",
     val age: Int = 0,
     val gender: String = "",
-    val problems: List<String>? = null,
+    val problems: List<String> = emptyList(),
     val isActive: Boolean? = false,
     val isOnline: Boolean? = false,
 )

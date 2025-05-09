@@ -16,11 +16,13 @@ import javax.inject.Inject
 class LoginInteractor @Inject constructor(
     private val repository: IAuthRepository
 ) : LoginUseCase, SafeApiCall {
-    override suspend fun execute(request: LoginRequest): Flow<Resource<Session>> {
+    override suspend fun execute(email: String, password: String): Flow<Resource<Session>> {
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                val response = repository.fetchLogin(request).data
+                val response = repository.fetchLogin(
+                    LoginRequest(email = email, password = password)
+                ).data
                 response?.toDomain() ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)

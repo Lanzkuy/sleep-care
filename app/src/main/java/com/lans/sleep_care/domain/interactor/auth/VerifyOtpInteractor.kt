@@ -12,11 +12,13 @@ import javax.inject.Inject
 class VerifyOtpInteractor @Inject constructor(
     private val repository: IAuthRepository
 ): VerifyOtpUseCase, SafeApiCall {
-    override suspend fun execute(request: VerifyOtpRequest): Flow<Resource<Boolean>> {
+    override suspend fun execute(otp: String, email: String): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                val response = repository.verifyOtp(request).message
+                val response = repository.verifyOtp(
+                    VerifyOtpRequest(otp = otp, email = email)
+                ).message
                 response == "Kode OTP berhasil diverifikasi."
             })
         }

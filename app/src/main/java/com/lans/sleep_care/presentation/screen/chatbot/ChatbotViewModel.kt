@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.instagram_clone.domain.model.InputWrapper
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.request.ChatBotRequest
 import com.lans.sleep_care.domain.model.Chat
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
@@ -58,11 +57,7 @@ class ChatbotViewModel @Inject constructor(
 
     private fun getAnswer(message: String) {
         viewModelScope.launch {
-            getChatBotAnswerUseCase.execute(
-                ChatBotRequest(
-                    message = message
-                )
-            ).collect { response ->
+            getChatBotAnswerUseCase.execute(message).collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         storeChat(sender = "bot", message = response.data)

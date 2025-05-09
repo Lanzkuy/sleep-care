@@ -5,5 +5,5 @@ import com.lans.sleep_care.data.source.network.dto.request.ChatBotRequest
 import kotlinx.coroutines.flow.Flow
 
 interface GetChatBotAnswerUseCase {
-    suspend fun execute(request: ChatBotRequest): Flow<Resource<String>>
+    suspend fun execute(message: String): Flow<Resource<String>>
 }

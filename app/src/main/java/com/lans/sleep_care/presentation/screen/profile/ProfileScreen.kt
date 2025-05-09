@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.screen.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,23 +45,29 @@ import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
-import com.lans.sleep_care.utils.capitalize
 
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
+    id: String,
     name: String,
     age: String,
     gender: String,
     problemList: List<String>,
     navigateToHome: () -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
-        state.gender = gender.capitalize()
-        state.problems.addAll(problemList)
+        viewModel.initializeData(
+            id = id.toInt(),
+            name = name,
+            age = age,
+            gender = gender,
+            problems = problemList
+        )
     }
 
     LaunchedEffect(key1 = state.isProfileUpdated, key2 = state.error) {
@@ -67,7 +75,8 @@ fun ProfileScreen(
         val error = state.error
 
         if (response) {
-
+            Toast.makeText(context, "Profil berhasil diperbaharui", Toast.LENGTH_SHORT).show()
+            navigateToHome.invoke()
         }
 
         if (error.isNotBlank()) {
@@ -134,7 +143,7 @@ fun ProfileScreen(
         ValidableTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            input = state.name.copy(value = name),
+            input = state.name,
             label = stringResource(R.string.name),
             onValueChange = {
                 viewModel.onEvent(ProfileUIEvent.NameChanged(it))
@@ -143,7 +152,7 @@ fun ProfileScreen(
         ValidableTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            input = state.name.copy(value = age),
+            input = state.age,
             label = stringResource(R.string.age),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number
@@ -227,7 +236,7 @@ fun ProfileScreen(
             shape = Rounded,
             isLoading = state.isLoading,
             onClick = {
-
+                viewModel.onEvent(ProfileUIEvent.SaveButtonClicked)
             }
         )
     }

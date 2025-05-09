@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
+import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -177,15 +177,15 @@ class RegisterViewModel @Inject constructor(
 
         viewModelScope.launch {
             registerUseCase.execute(
-                RegisterRequest(
+                user = User(
                     name = stateValue.name.value,
                     email = stateValue.email.value,
-                    password = stateValue.password.value,
-                    passwordConfirmation = stateValue.passwordConfirmation.value,
                     age = stateValue.age.value.toInt(),
                     gender = stateValue.gender.lowercase(),
                     problems = stateValue.problems
-                )
+                ),
+                password = stateValue.password.value,
+                passwordConfirmation = stateValue.passwordConfirmation.value,
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {

@@ -1,10 +1,9 @@
 package com.lans.sleep_care.domain.usecase.auth
 
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
 import com.lans.sleep_care.domain.model.Session
 import kotlinx.coroutines.flow.Flow
 
 interface LoginUseCase {
-    suspend fun execute(request: LoginRequest): Flow<Resource<Session>>
+    suspend fun execute(email: String, password: String): Flow<Resource<Session>>
 }

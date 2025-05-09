@@ -13,12 +13,12 @@ import javax.inject.Inject
 
 class RequestOtpInteractor @Inject constructor(
     private val repository: IAuthRepository
-): RequestOtpUseCase, SafeApiCall {
-    override suspend fun execute(request: OtpRequest): Flow<Resource<Boolean>> {
+) : RequestOtpUseCase, SafeApiCall {
+    override suspend fun execute(email: String): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                val response = repository.sendOtp(request).message
+                val response = repository.sendOtp(OtpRequest(email)).message
                 response == "Kode OTP berhasil dikirim."
             })
         }.flowOn(Dispatchers.IO)

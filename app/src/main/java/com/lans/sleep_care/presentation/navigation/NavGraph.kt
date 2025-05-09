@@ -143,10 +143,10 @@ fun NavGraph(
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
-                navigateToProfile = { name, age, gender, problemList ->
+                navigateToProfile = { id, name, age, gender, problemList ->
                     val problems = problemList?.joinToString(",") ?: ""
                     navController.navigate(
-                        route = Route.ProfileScreen.route + "/$name/$age/$gender/$problems"
+                        route = Route.ProfileScreen.route + "/$id/$name/$age/$gender/$problems"
                     ) {
                         popUpTo(route = Route.HomeScreen.route)
                     }
@@ -158,13 +158,15 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.ProfileScreen.route + "/{name}/{age}/{gender}/{problems}") {
+        composable(route = Route.ProfileScreen.route + "/{id}/{name}/{age}/{gender}/{problems}") {
+            val id = it.arguments?.getString("id") ?: ""
             val name = it.arguments?.getString("name") ?: ""
             val age = it.arguments?.getString("age") ?: "0"
             val gender = it.arguments?.getString("gender") ?: ""
             val problems = it.arguments?.getString("problems") ?: ""
             val problemList = if (problems.isNotEmpty()) problems.split(",") else emptyList()
             ProfileScreen(
+                id = id,
                 name = name,
                 age = age,
                 gender = gender,

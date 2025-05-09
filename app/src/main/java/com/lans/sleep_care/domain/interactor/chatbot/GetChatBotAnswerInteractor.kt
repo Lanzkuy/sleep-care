@@ -14,11 +14,13 @@ import javax.inject.Inject
 class GetChatBotAnswerInteractor @Inject constructor(
     private val repository: IChatBotRepository
 ) : GetChatBotAnswerUseCase, SafeApiCall {
-    override suspend fun execute(request: ChatBotRequest): Flow<Resource<String>> {
+    override suspend fun execute(message: String): Flow<Resource<String>> {
         return flow {
             emit(Resource.Loading)
             emit(safeCall {
-                repository.fetchAnswer(request).data?.response ?: throw Exception()
+                repository.fetchAnswer(
+                    ChatBotRequest(message)
+                ).data?.response ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)
     }

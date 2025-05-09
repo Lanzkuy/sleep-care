@@ -16,11 +16,25 @@ import javax.inject.Inject
 class RegisterInteractor @Inject constructor(
     private val repository: IAuthRepository
 ): RegisterUseCase, SafeApiCall {
-    override suspend fun execute(request: RegisterRequest): Flow<Resource<User>> {
+    override suspend fun execute(
+        user: User,
+        password: String,
+        passwordConfirmation: String
+    ): Flow<Resource<User>> {
         return flow{
             emit(Resource.Loading)
             emit(safeCall {
-                val response = repository.fetchRegister(request).data
+                val response = repository.fetchRegister(
+                    RegisterRequest(
+                        name = user.name,
+                        email = user.email,
+                        password = password,
+                        passwordConfirmation = passwordConfirmation,
+                        age = user.age,
+                        gender = user.gender.lowercase(),
+                        problems = user.problems
+                    )
+                ).data
                 response?.user?.toDomain() ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)
