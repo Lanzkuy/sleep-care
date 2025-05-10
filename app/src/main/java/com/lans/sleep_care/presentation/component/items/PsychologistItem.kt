@@ -1,7 +1,6 @@
 package com.lans.sleep_care.presentation.component.items
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,10 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
 import com.lans.sleep_care.R
-import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
-import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
-import com.lans.sleep_care.presentation.theme.Rounded
+import com.lans.sleep_care.presentation.theme.Gray
+import com.lans.sleep_care.presentation.theme.Warning
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
@@ -38,14 +35,14 @@ fun PsychologistItem(
     image: String? = null,
     name: String,
     experience: Int = 1,
-    like: Int = 0,
-    onClick: () -> Unit,
-    onMessageClick: () -> Unit
+    rating: Double = 0.0,
+    totalReview: Int = 0,
+    onClick: () -> Unit
 ) {
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth(),
-        border = BorderStroke(Dimens.dp1, DarkGray),
+        border = BorderStroke(Dimens.dp1, Gray),
         colors = CardDefaults.outlinedCardColors(
             containerColor = White
         ),
@@ -55,86 +52,77 @@ fun PsychologistItem(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(Dimens.dp16),
-            horizontalArrangement = Arrangement.spacedBy(Dimens.dp8),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(Dimens.dp56)
+                    .size(Dimens.dp48)
                     .padding()
-                    .border(
-                        width = Dimens.dp1,
-                        color = DarkGray,
-                        shape = CircleShape
-                    )
                     .clip(CircleShape),
                 model = image,
-                placeholder = painterResource(R.drawable.ic_person),
-                error = painterResource(R.drawable.ic_person),
+                placeholder = painterResource(R.drawable.img_user_placeholder),
+                error = painterResource(R.drawable.img_user_placeholder),
                 contentDescription = stringResource(R.string.image),
                 contentScale = ContentScale.Crop,
             )
             Column(
                 modifier = Modifier
+                    .height(Dimens.dp48)
                     .weight(1f),
                 horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(Dimens.dp4)
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = name,
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.Bold
                     )
                 )
-                Row {
-                    SuggestionChip(
-                        modifier = Modifier
-                            .height(Dimens.dp32),
-                        onClick = { },
-                        label = {
-                            Text(
-                                text = stringResource(R.string.year, experience),
-                                style = MaterialTheme.typography.bodyMedium
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(Dimens.dp4),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(Dimens.dp20),
+                            painter = painterResource(R.drawable.ic_work),
+                            contentDescription = stringResource(R.string.icon)
+                        )
+                        Text(
+                            text = stringResource(R.string.year, experience),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(Dimens.dp4),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(Dimens.dp20),
+                            painter = painterResource(R.drawable.ic_star_filled),
+                            tint = Warning,
+                            contentDescription = stringResource(R.string.icon)
+                        )
+                        Text(
+                            text = rating.toString(),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.SemiBold
                             )
-                        },
-                        icon = {
-                            Icon(
-                                modifier = Modifier.size(Dimens.dp16),
-                                painter = painterResource(R.drawable.ic_work),
-                                contentDescription = stringResource(R.string.icon)
-                            )
-                        }
-                    )
-                    SuggestionChip(
-                        modifier = Modifier
-                            .height(Dimens.dp32)
-                            .padding(horizontal = Dimens.dp4),
-                        onClick = { },
-                        label = {
-                            Text(
-                                text = stringResource(R.string.percent, like),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        },
-                        icon = {
-                            Icon(
-                                modifier = Modifier.size(Dimens.dp16),
-                                painter = painterResource(R.drawable.ic_like),
-                                contentDescription = stringResource(R.string.icon)
-                            )
-                        }
-                    )
+                        )
+                        Text(
+                            text = "($totalReview)",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
                 }
             }
-            ElevatedIconButton(
-                modifier = Modifier
-                    .size(Dimens.dp40),
-                color = White,
-                tint = DarkGray,
-                icon = painterResource(R.drawable.ic_message),
-                shape = Rounded,
-                onClick = onMessageClick
-            )
         }
     }
 }

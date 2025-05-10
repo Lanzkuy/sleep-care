@@ -32,7 +32,9 @@ import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
+import com.lans.sleep_care.presentation.theme.SecondaryVariant
 import com.lans.sleep_care.presentation.theme.Typography
 import com.lans.sleep_care.presentation.theme.White
 
@@ -84,7 +86,6 @@ fun LoginScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -139,6 +140,7 @@ fun LoginScreen(
                         navigateToForgotPassword.invoke()
                     },
                 text = stringResource(R.string.forgot_password),
+                color = Primary,
                 style = Typography.labelLarge
             )
         }
@@ -183,6 +185,7 @@ fun LoginScreen(
                         navigateToRegister.invoke()
                     },
                 text = stringResource(R.string.register),
+                color = Primary,
                 style = Typography.labelLarge,
             )
         }

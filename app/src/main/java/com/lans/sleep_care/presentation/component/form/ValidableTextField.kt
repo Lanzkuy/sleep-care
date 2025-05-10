@@ -10,6 +10,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +27,7 @@ import com.lans.instagram_clone.domain.model.InputWrapper
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.RoundedSmall
+import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun ValidableTextField(
@@ -82,6 +84,10 @@ fun ValidableTextField(
             }
         } else trailingIcon,
         shape = shape,
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = White,
+            unfocusedContainerColor = White
+        ),
         keyboardOptions = keyboardOptions,
         visualTransformation = if (passwordVisible && isPassword) {
             PasswordVisualTransformation()

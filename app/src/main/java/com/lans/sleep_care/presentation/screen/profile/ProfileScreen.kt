@@ -1,7 +1,6 @@
 package com.lans.sleep_care.presentation.screen.profile
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -106,7 +105,6 @@ fun ProfileScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()

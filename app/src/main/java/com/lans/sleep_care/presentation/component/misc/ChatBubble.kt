@@ -12,7 +12,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Primary
+import com.lans.sleep_care.presentation.theme.PrimaryVariant
 import com.lans.sleep_care.presentation.theme.Secondary
 import com.lans.sleep_care.presentation.theme.SecondaryVariant
 import com.lans.sleep_care.presentation.theme.White
@@ -23,7 +26,8 @@ fun ChatBubble(
     isUser: Boolean
 ) {
     val arrangement = if (isUser) Arrangement.End else Arrangement.Start
-    val bubbleColor = if (isUser) SecondaryVariant else Secondary
+    val bubbleColor = if (isUser) Primary else Secondary
+    val textColor = if (isUser) White else Black
     val shape = if (isUser) {
         RoundedCornerShape(
             topStart = Dimens.dp50,
@@ -63,7 +67,7 @@ fun ChatBubble(
         ) {
             Text(
                 text = message,
-                color = White,
+                color = textColor,
                 style = MaterialTheme.typography.bodyLarge
             )
         }

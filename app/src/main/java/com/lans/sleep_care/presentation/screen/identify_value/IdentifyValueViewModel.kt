@@ -11,8 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class IdentifyValueViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _state = mutableStateOf(IdentifyValueState())
-    val state: State<IdentifyValueState> get() = _state
+    private val _state = mutableStateOf(IdentifyValueUIState())
+    val state: State<IdentifyValueUIState> get() = _state
 
     fun saveValueArea(answers: Map<String, ValueArea>) {
         val newAnswers = _state.value.localSavedAreaValue.toMutableMap()

@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.component.items
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,10 +15,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +31,7 @@ import com.lans.sleep_care.domain.model.ThoughtRecord
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.MediumGray
+import com.lans.sleep_care.presentation.theme.PrimaryVariant
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
@@ -38,11 +40,14 @@ import com.lans.sleep_care.presentation.theme.White
 fun ThoughtRecordItem(
     record: ThoughtRecord
 ) {
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Gray),
-        elevation = CardDefaults.cardElevation(Dimens.dp6),
+        border = BorderStroke(
+            width = Dimens.dp1,
+            color = Gray
+        ),
+        colors = CardDefaults.cardColors(containerColor = White),
         shape = RoundedLarge
     ) {
         Column(
@@ -88,7 +93,7 @@ fun ThoughtRecordItem(
             Text(
                 text = "${stringResource(R.string.appear_thought)} :",
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = PrimaryVariant,
                     fontWeight = FontWeight.Medium
                 )
             )
@@ -103,7 +108,7 @@ fun ThoughtRecordItem(
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        color = PrimaryVariant,
                         shape = RoundedLarge,
                         tonalElevation = Dimens.dp2
                     ) {
@@ -119,7 +124,7 @@ fun ThoughtRecordItem(
                                 modifier = Modifier
                                     .size(Dimens.dp18),
                                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                tint = MaterialTheme.colorScheme.secondary,
+                                tint = White,
                                 contentDescription = null,
                             )
                             Spacer(
@@ -129,7 +134,7 @@ fun ThoughtRecordItem(
                             Text(
                                 text = thought,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                                color = White
                             )
                         }
                     }

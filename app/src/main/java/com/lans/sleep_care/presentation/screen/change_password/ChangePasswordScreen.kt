@@ -1,7 +1,6 @@
 package com.lans.sleep_care.presentation.screen.change_password
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -75,7 +74,6 @@ fun ChangePasswordScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -84,7 +82,7 @@ fun ChangePasswordScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = Dimens.dp24,),
+                .padding(top = Dimens.dp24),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {

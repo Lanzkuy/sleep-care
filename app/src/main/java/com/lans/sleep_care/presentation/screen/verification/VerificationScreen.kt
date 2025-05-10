@@ -1,7 +1,6 @@
 package com.lans.sleep_care.presentation.screen.verification
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -36,7 +35,6 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
-import com.lans.sleep_care.presentation.theme.White
 import kotlinx.coroutines.delay
 import java.util.Locale
 
@@ -104,7 +102,6 @@ fun VerificationScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()

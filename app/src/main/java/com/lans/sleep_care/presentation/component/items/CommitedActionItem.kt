@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.component.items
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,11 +14,11 @@ import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -51,11 +52,14 @@ fun CommitedActionItem(
     }
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxWidth(),
+        border = BorderStroke(
+            width = Dimens.dp1,
+            color = Gray
+        ),
         colors = CardDefaults.cardColors(containerColor = White),
-        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.dp6),
         shape = RoundedLarge
     ) {
         Column(

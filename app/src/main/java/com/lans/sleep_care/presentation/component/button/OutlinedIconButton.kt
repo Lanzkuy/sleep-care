@@ -21,8 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.theme.Black
-import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
@@ -34,7 +34,7 @@ fun OutlinedIconButton(
 ) {
     OutlinedCard(
         modifier = modifier,
-        border = BorderStroke(Dimens.dp1, DarkGray),
+        border = BorderStroke(Dimens.dp1, Gray),
         colors = CardDefaults.outlinedCardColors(
             containerColor = White
         ),

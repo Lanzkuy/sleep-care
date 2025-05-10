@@ -46,11 +46,7 @@ fun MenuItem(
             Image(
                 modifier = Modifier
                     .size(Dimens.dp120)
-                    .padding()
-                    .border(
-                        width = Dimens.dp1,
-                        color = DarkGray
-                    ),
+                    .padding(),
                 painter = image,
                 contentDescription = stringResource(R.string.image),
                 contentScale = ContentScale.Crop,

@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.history
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,7 +42,6 @@ fun HistoryScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()

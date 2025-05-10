@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.sleep_diary
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -124,7 +124,6 @@ fun SleepDiaryScreen(
 
     Box(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -165,6 +164,11 @@ fun SleepDiaryScreen(
                         .size(Dimens.dp50)
                 )
             }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(Dimens.dp8)
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),

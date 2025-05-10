@@ -1,7 +1,6 @@
 package com.lans.sleep_care.presentation.screen.my_theraphy
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,12 +34,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.dialog.NoteDialog
 import com.lans.sleep_care.presentation.component.button.OutlinedIconButton
+import com.lans.sleep_care.presentation.component.dialog.NoteDialog
 import com.lans.sleep_care.presentation.component.items.ScheduleItem
 import com.lans.sleep_care.presentation.theme.Black
-import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
 
@@ -74,13 +73,12 @@ fun MyTherapyScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
 
-        if(showNoteDialog) {
+        if (showNoteDialog) {
             NoteDialog(
                 note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                 onClose = {
@@ -156,7 +154,7 @@ fun MyTherapyScreen(
                 .padding(
                     horizontal = Dimens.dp24
                 ),
-            border = BorderStroke(Dimens.dp1, DarkGray),
+            border = BorderStroke(Dimens.dp1, Gray),
             colors = CardDefaults.outlinedCardColors(
                 containerColor = White
             ),

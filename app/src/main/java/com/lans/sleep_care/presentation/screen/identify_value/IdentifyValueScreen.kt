@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.identify_value
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,7 +60,6 @@ fun IdentifyValueScreen(
 
     Box(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()

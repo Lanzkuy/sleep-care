@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.psychologist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,8 +31,8 @@ import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.form.SearchField
 import com.lans.sleep_care.presentation.component.items.PsychologistItem
 import com.lans.sleep_care.presentation.theme.Black
-import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
 
@@ -47,7 +46,6 @@ fun PsychologistScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -95,7 +93,7 @@ fun PsychologistScreen(
                 .fillMaxWidth()
                 .border(
                     width = Dimens.dp1,
-                    color = DarkGray,
+                    color = Gray,
                     shape = Rounded
                 ),
             input = state.search,
@@ -119,9 +117,9 @@ fun PsychologistScreen(
                 PsychologistItem(
                     name = name,
                     experience = 9,
-                    like = 85,
-                    onClick = { },
-                    onMessageClick = { }
+                    rating = 4.8,
+                    totalReview = 20,
+                    onClick = { }
                 )
             }
         }

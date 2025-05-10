@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.emotion_record
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,7 +52,6 @@ fun EmotionRecordScreen(
 
     Box(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()

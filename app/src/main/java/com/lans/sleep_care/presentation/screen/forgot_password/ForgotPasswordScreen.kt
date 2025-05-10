@@ -100,7 +100,6 @@ fun ForgotPasswordScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -140,20 +139,16 @@ fun ForgotPasswordScreen(
                     .fillMaxWidth()
                     .height(Dimens.dp8)
             )
-            Button(
+            LoadingButton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.dp48),
+                    .fillMaxWidth(),
+                text = stringResource(R.string.next).uppercase(),
                 shape = Rounded,
+                isLoading = state.isForgotPasswordLoading,
                 onClick = {
                     viewModel.onEvent(ForgotPasswordUIEvent.ForgotPasswordButtonClicked)
                 }
-            ) {
-                Text(
-                    text = stringResource(R.string.next).uppercase(),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
+            )
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()

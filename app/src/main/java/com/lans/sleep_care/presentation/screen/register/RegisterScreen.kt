@@ -1,6 +1,6 @@
 package com.lans.sleep_care.presentation.screen.register
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,11 +45,12 @@ import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.form.GenericDropDown
 import com.lans.sleep_care.presentation.component.form.ValidableTextField
+import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
-import com.lans.sleep_care.presentation.theme.White
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -100,7 +101,6 @@ fun RegisterScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -208,6 +208,7 @@ fun RegisterScreen(
                             navigateToLogin.invoke()
                         },
                     text = stringResource(R.string.login),
+                    color = Primary,
                     style = Typography.labelLarge
                 )
             }
@@ -274,6 +275,10 @@ fun RegisterScreen(
                                 )
                             }
                         } else null,
+                        border = BorderStroke(
+                            width = Dimens.dp1,
+                            color = DarkGray
+                        ),
                         onClick = {
                             viewModel.onEvent(RegisterUIEvent.ToggleProblem(option))
                         }

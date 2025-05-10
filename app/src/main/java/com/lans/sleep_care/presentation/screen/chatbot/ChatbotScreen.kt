@@ -67,10 +67,10 @@ fun ChatbotScreen(
             listState.animateScrollToItem(state.chatHistory.lastIndex)
         }
 
-//        if (error.isNotBlank()) {
-//            showAlert = Pair(true, error)
-//            state.error = ""
-//        }
+        if (error.isNotBlank()) {
+            showAlert = Pair(true, error)
+            state.error = ""
+        }
     }
 
     if (showAlert.first) {
@@ -85,7 +85,6 @@ fun ChatbotScreen(
 
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()

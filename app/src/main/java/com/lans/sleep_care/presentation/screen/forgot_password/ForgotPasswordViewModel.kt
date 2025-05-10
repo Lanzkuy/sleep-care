@@ -130,7 +130,7 @@ class ForgotPasswordViewModel @Inject constructor(
                             forgotPasswordResponse = response.data,
                             currentPage = 1,
                             isCountdown = System.currentTimeMillis(),
-                            isResetPasswordLoading = false
+                            isForgotPasswordLoading = false
                         )
                     }
 
@@ -138,13 +138,13 @@ class ForgotPasswordViewModel @Inject constructor(
                         _state.value = _state.value.copy(
                             error = response.message,
                             currentPage = if (response.message.contains("sudah dikirim")) 1 else 0,
-                            isResetPasswordLoading = false
+                            isForgotPasswordLoading = false
                         )
                     }
 
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
-                            isResetPasswordLoading = true
+                            isForgotPasswordLoading = true
                         )
                     }
 

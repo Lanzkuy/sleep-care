@@ -43,10 +43,10 @@ fun ScheduleItem(
     }
 
     OutlinedCard(
-        shape = RoundedLarge,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = Dimens.dp8)
+            .padding(vertical = Dimens.dp8),
+        shape = RoundedLarge
     ) {
         Box(
             modifier = Modifier

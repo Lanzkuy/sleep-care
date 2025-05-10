@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
@@ -32,7 +33,10 @@ fun HistoryItem(
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth(),
-        border = BorderStroke(Dimens.dp1, DarkGray),
+        border = BorderStroke(
+            width = Dimens.dp1,
+            color = Gray
+        ),
         colors = CardDefaults.outlinedCardColors(
             containerColor = White
         ),

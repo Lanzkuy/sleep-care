@@ -11,8 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CommitedActionViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _state = mutableStateOf(CommitedActionState())
-    val state: State<CommitedActionState> get() = _state
+    private val _state = mutableStateOf(CommitedActionUIState())
+    val state: State<CommitedActionUIState> get() = _state
 
     fun saveCommitedAction(answers: CommittedAction) {
         val newRecord = _state.value.localSavedCommitedAction.toMutableList()

@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.component.form
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,10 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +23,7 @@ import com.lans.sleep_care.domain.model.DiaryQuestion
 import com.lans.sleep_care.presentation.component.items.DiaryQuestionItem
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
+import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
 import com.lans.sleep_care.utils.getDayName
@@ -39,11 +40,14 @@ fun SleepDiary(
             .fillMaxWidth()
     ) {
         items(dates) { date ->
-            Card(
+            OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = Dimens.dp8),
-                colors = CardDefaults.cardColors(containerColor = Gray),
+                border = BorderStroke(
+                    width = Dimens.dp1,
+                    color = Gray
+                ),
                 shape = RoundedLarge
             ) {
                 Column(
@@ -59,7 +63,7 @@ fun SleepDiary(
                     )
                     Text(
                         text = stringResource(R.string.day),
-                        color = Secondary,
+                        color = Primary,
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.SemiBold
                         )
@@ -107,7 +111,7 @@ fun SleepDiary(
                     )
                     Text(
                         text = stringResource(R.string.night),
-                        color = Secondary,
+                        color = Primary,
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.SemiBold
                         )

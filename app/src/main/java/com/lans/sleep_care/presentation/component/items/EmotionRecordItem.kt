@@ -1,21 +1,24 @@
 package com.lans.sleep_care.presentation.component.items
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.EmotionRecord
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
 
@@ -31,11 +34,14 @@ fun EmotionRecordItem(record: EmotionRecord) {
         else -> Color.Gray
     }
 
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxWidth(),
+        border = BorderStroke(
+            width = Dimens.dp1,
+            color = Gray
+        ),
         colors = CardDefaults.cardColors(containerColor = White),
-        elevation = CardDefaults.cardElevation(defaultElevation = Dimens.dp6),
         shape = RoundedLarge
     ) {
         Column(
@@ -96,7 +102,9 @@ fun EmotionRecordRow(
         Text(
             text = label,
             color = DarkGray,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Bold
+            )
         )
         Text(
             text = value,

@@ -11,8 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SleepDiaryViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _state = mutableStateOf(SleepDiaryState())
-    val state: State<SleepDiaryState> get() = _state
+    private val _state = mutableStateOf(SleepDiaryUIState())
+    val state: State<SleepDiaryUIState> get() = _state
 
     fun saveAnswers(answers: Map<Pair<String, Int>, DiaryAnswer>) {
         val newAnswers = _state.value.localSavedAnswers.toMutableMap()

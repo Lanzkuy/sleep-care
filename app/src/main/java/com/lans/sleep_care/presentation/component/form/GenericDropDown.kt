@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.component.form
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -8,12 +9,17 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.lans.sleep_care.presentation.theme.DarkGray
+import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
+import com.lans.sleep_care.presentation.theme.White
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +46,12 @@ fun GenericDropDown(
             value = selected,
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = White,
+                unfocusedContainerColor = White,
+                focusedIndicatorColor = DarkGray,
+                unfocusedIndicatorColor = DarkGray
+            ),
             onValueChange = { }
         )
         ExposedDropdownMenu(

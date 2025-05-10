@@ -1,7 +1,5 @@
 package com.lans.sleep_care.presentation.screen.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,7 +45,6 @@ import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.items.MenuItem
 import com.lans.sleep_care.presentation.theme.Black
-import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
@@ -71,12 +69,12 @@ fun HomeScreen(
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     val buttonItems = listOf(
-        Triple(R.drawable.image_placeholder, R.string.psychologist, navigateToTherapist),
-        Triple(R.drawable.image_placeholder, R.string.mytherapy, navigateToMyTherapy),
-        Triple(R.drawable.image_placeholder, R.string.chatbot) {
+        Triple(R.drawable.img_placeholder, R.string.psychologist, navigateToTherapist),
+        Triple(R.drawable.img_placeholder, R.string.mytherapy, navigateToMyTherapy),
+        Triple(R.drawable.img_placeholder, R.string.chatbot) {
             navigateToChatbot(state.user.email, state.user.name)
         },
-        Triple(R.drawable.image_placeholder, R.string.history, navigateToHistory)
+        Triple(R.drawable.img_placeholder, R.string.history, navigateToHistory)
     )
 
     LaunchedEffect(Unit) {
@@ -102,10 +100,8 @@ fun HomeScreen(
         )
     }
 
-
     Column(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
@@ -119,22 +115,31 @@ fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box {
-                AsyncImage(
+                Surface(
                     modifier = Modifier
-                        .size(Dimens.dp50)
-                        .border(
-                            width = Dimens.dp1,
-                            color = DarkGray,
-                            shape = CircleShape
+                        .size(Dimens.dp50),
+                    color = White,
+                    shape = CircleShape,
+                    shadowElevation = Dimens.dp16
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .clickable { showOverflowMenu = true },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            model = null,
+                            placeholder = painterResource(R.drawable.img_user_placeholder),
+                            error = painterResource(R.drawable.img_user_placeholder),
+                            contentDescription = stringResource(R.string.image),
+                            contentScale = ContentScale.Crop,
                         )
-                        .clip(CircleShape)
-                        .clickable { showOverflowMenu = true },
-                    model = null,
-                    placeholder = painterResource(R.drawable.ic_person),
-                    error = painterResource(R.drawable.ic_person),
-                    contentDescription = stringResource(R.string.image),
-                    contentScale = ContentScale.Crop,
-                )
+                    }
+                }
                 DropdownMenu(
                     offset = DpOffset(x = Dimens.dp24, y = Dimens.dp4),
                     expanded = showOverflowMenu,

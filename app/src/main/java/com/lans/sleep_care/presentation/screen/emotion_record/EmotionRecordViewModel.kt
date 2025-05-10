@@ -11,8 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EmotionRecordViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _state = mutableStateOf(EmotionRecordState())
-    val state: State<EmotionRecordState> get() = _state
+    private val _state = mutableStateOf(EmotionRecordUIState())
+    val state: State<EmotionRecordUIState> get() = _state
 
     fun saveEmotionRecord(record: EmotionRecord) {
         val newRecord = _state.value.localSavedEmotionRecord.toMutableList()

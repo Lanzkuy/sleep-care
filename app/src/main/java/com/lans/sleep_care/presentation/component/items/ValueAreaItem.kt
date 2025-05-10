@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.component.items
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -26,6 +28,7 @@ import com.lans.sleep_care.domain.model.ValueArea
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
+import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun ValueAreaItem(
@@ -41,11 +44,14 @@ fun ValueAreaItem(
         onDataChange(ValueArea(priority, match, desire))
     }
 
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Gray),
-        elevation = CardDefaults.cardElevation(Dimens.dp6),
+        border = BorderStroke(
+            width = Dimens.dp1,
+            color = Gray
+        ),
+        colors = CardDefaults.outlinedCardColors(containerColor = White),
         shape = RoundedLarge
     ) {
         Column(

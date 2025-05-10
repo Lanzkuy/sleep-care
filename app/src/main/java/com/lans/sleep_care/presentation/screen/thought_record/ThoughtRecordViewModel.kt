@@ -11,8 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ThoughtRecordViewModel @Inject constructor(
 ) : ViewModel() {
-    private val _state = mutableStateOf(ThoughtRecordState())
-    val state: State<ThoughtRecordState> get() = _state
+    private val _state = mutableStateOf(ThoughtRecordUIState())
+    val state: State<ThoughtRecordUIState> get() = _state
 
     fun saveThoughtRecord(answers: ThoughtRecord) {
         val newRecord = _state.value.localSavedThoughtRecord.toMutableList()

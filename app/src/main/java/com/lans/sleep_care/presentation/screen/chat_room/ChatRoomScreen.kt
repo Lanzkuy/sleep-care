@@ -45,7 +45,6 @@ fun ChatRoomScreen(
 
     Box(
         modifier = Modifier
-            .background(White)
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
