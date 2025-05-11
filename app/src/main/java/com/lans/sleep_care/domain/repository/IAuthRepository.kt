@@ -1,11 +1,11 @@
 package com.lans.sleep_care.domain.repository
 
-import com.lans.sleep_care.data.source.network.dto.request.ForgotPasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
-import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
-import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
-import com.lans.sleep_care.data.source.network.dto.request.ResetPasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.LoginRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
@@ -27,11 +27,11 @@ interface IAuthRepository {
     ): ApiResponse<RegisterResponse>
 
     suspend fun forgotPassword(
-        request: ForgotPasswordRequest
+        request: PasswordForgotRequest
     ): ApiResponse<Any>
 
     suspend fun resetPassword(
-        request: ResetPasswordRequest
+        request: PasswordResetRequest
     ): ApiResponse<Any>
 
     suspend fun sendOtp(
@@ -39,6 +39,6 @@ interface IAuthRepository {
     ): ApiResponse<Any>
 
     suspend fun verifyOtp(
-        request: VerifyOtpRequest
+        request: OtpVerifyRequest
     ): ApiResponse<Any>
 }

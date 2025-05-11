@@ -1,5 +1,5 @@
 package com.lans.sleep_care.domain.usecase.auth
 
-interface StoreSessionUseCase {
+interface SaveSessionUseCase {
     suspend fun invoke(accessToken: String)
 }

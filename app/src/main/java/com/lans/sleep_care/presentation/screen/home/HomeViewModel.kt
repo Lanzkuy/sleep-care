@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
-import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
+import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
-    private val getMeUseCase: GetMeUseCase
+    private val getUserProfileUseCase: GetUserProfileUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(HomeUIState())
     val state: State<HomeUIState> get() = _state
@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
 
     fun getMe() {
         viewModelScope.launch {
-            getMeUseCase.execute().collect { response ->
+            getUserProfileUseCase.execute().collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
@@ -48,8 +48,6 @@ class HomeViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }

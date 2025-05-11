@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
 import com.lans.sleep_care.data.source.network.dto.response.toDomain
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.repository.IAuthRepository

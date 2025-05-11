@@ -69,12 +69,12 @@ fun HomeScreen(
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     val buttonItems = listOf(
-        Triple(R.drawable.img_placeholder, R.string.psychologist, navigateToTherapist),
-        Triple(R.drawable.img_placeholder, R.string.mytherapy, navigateToMyTherapy),
-        Triple(R.drawable.img_placeholder, R.string.chatbot) {
+        Triple(R.drawable.img_illustration_doctor, R.string.psychologist, navigateToTherapist),
+        Triple(R.drawable.img_illustration_therapy, R.string.mytherapy, navigateToMyTherapy),
+        Triple(R.drawable.img_illustration_chatbot, R.string.chatbot) {
             navigateToChatbot(state.user.email, state.user.name)
         },
-        Triple(R.drawable.img_placeholder, R.string.history, navigateToHistory)
+        Triple(R.drawable.img_illustration_document, R.string.history, navigateToHistory)
     )
 
     LaunchedEffect(Unit) {

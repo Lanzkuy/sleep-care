@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.user
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.ChangePasswordRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.domain.repository.IUserRepository
 import com.lans.sleep_care.domain.usecase.user.ChangePasswordUseCase
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ class ChangePasswordInteractor @Inject constructor(
             emit(
                 safeCall {
                     val response = repository.changePassword(
-                        ChangePasswordRequest(
+                        PasswordChangeRequest(
                             currentPassword = currentPassword,
                             newPassword = newPassword,
                             newPasswordConfirmation = newPasswordConfirmation

@@ -1,6 +1,6 @@
-package com.lans.sleep_care.data.source.network.dto.request
+package com.lans.sleep_care.data.source.network.dto.request.user
 
-data class UpdateProfileRequest(
+data class ProfileUpdateRequest(
     val id: Int,
     val name: String,
     val age: Int,

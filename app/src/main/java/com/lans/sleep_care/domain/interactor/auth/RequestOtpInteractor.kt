@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpRequest
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import kotlinx.coroutines.Dispatchers

@@ -187,6 +187,9 @@ fun NavGraph(
             PsychologistScreen(
                 navigateToHome = {
                     navController.navigateUp()
+                },
+                navigateToPsychologistDetail = {
+
                 }
             )
         }

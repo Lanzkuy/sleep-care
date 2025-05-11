@@ -142,8 +142,6 @@ class ProfileViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }

@@ -1,7 +1,9 @@
 package com.lans.sleep_care.presentation.screen.psychologist
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,32 +19,57 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.form.SearchField
 import com.lans.sleep_care.presentation.component.items.PsychologistItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
+import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
+import java.util.Calendar
 
 @Composable
 fun PsychologistScreen(
     viewModel: PsychologistViewModel = hiltViewModel(),
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    navigateToPsychologistDetail: () -> Unit
 ) {
-    val therapists = listOf("Test1", "Test2", "Test3")
     val state by viewModel.state
+    var showAlert by remember { mutableStateOf(Pair(false, "")) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadAllPsychologist()
+    }
+
+    if (showAlert.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_error_title),
+            message = showAlert.second,
+            onDismiss = {
+                showAlert = showAlert.copy(first = false)
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -107,20 +134,60 @@ fun PsychologistScreen(
                 .fillMaxWidth()
                 .height(Dimens.dp16)
         )
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
+                .weight(1f)
         ) {
-            items(therapists) { name ->
-                PsychologistItem(
-                    name = name,
-                    experience = 9,
-                    rating = 4.8,
-                    totalReview = 20,
-                    onClick = { }
-                )
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(Dimens.dp32)
+                            .align(Alignment.Center),
+                        color = Primary
+                    )
+                }
+
+                state.psychologists.isEmpty() -> {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .size(Dimens.dp160),
+                            painter = painterResource(R.drawable.img_illustration_nothing),
+                            contentDescription = stringResource(R.string.image)
+                        )
+                        Text(
+                            text = stringResource(R.string.nothing_here),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
+                    ) {
+                        items(state.filteredPsychologists) { psychologist ->
+                            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+                            PsychologistItem(
+                                name = psychologist.user.name,
+                                experience = currentYear - psychologist.registeredYear,
+                                rating = 4.8,
+                                totalReview = 20,
+                                onClick = {
+                                    navigateToPsychologistDetail()
+                                }
+                            )
+                        }
+                    }
+                }
             }
         }
     }

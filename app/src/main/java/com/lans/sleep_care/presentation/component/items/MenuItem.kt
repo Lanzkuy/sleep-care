@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
+import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.White
@@ -28,11 +30,11 @@ fun MenuItem(
     text: String,
     onClick: () -> Unit
 ) {
-    ElevatedCard(
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = White
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = White,
         ),
-        elevation = CardDefaults.elevatedCardElevation(
+        elevation = CardDefaults.cardElevation(
             defaultElevation = Dimens.dp8
         ),
         onClick = onClick

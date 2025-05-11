@@ -1,19 +1,20 @@
 package com.lans.sleep_care.di
 
+import com.lans.sleep_care.domain.interactor.auth.CheckAuthStatusInteractor
 import com.lans.sleep_care.domain.interactor.auth.ForgotPasswordInteractor
-import com.lans.sleep_care.domain.interactor.auth.IsAuthenticatedInteractor
 import com.lans.sleep_care.domain.interactor.auth.LoginInteractor
 import com.lans.sleep_care.domain.interactor.auth.LogoutInteractor
 import com.lans.sleep_care.domain.interactor.auth.RegisterInteractor
 import com.lans.sleep_care.domain.interactor.auth.RequestOtpInteractor
 import com.lans.sleep_care.domain.interactor.auth.ResetPasswordInteractor
-import com.lans.sleep_care.domain.interactor.auth.StoreSessionInteractor
+import com.lans.sleep_care.domain.interactor.auth.SaveSessionInteractor
 import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotAnswerInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
-import com.lans.sleep_care.domain.interactor.chatbot.StoreChatBotHistoryInteractor
+import com.lans.sleep_care.domain.interactor.chatbot.SaveChatBotHistoryInteractor
+import com.lans.sleep_care.domain.interactor.psychologist.GetAllPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.user.ChangePasswordInteractor
-import com.lans.sleep_care.domain.interactor.user.GetMeInteractor
+import com.lans.sleep_care.domain.interactor.user.GetUserProfileInteractor
 import com.lans.sleep_care.domain.interactor.user.UpdateProfileInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateAgeInteractor
 import com.lans.sleep_care.domain.interactor.validator.ValidateCurrentPasswordInteractor
@@ -25,21 +26,23 @@ import com.lans.sleep_care.domain.interactor.validator.ValidateVerificationCodeI
 import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.repository.IChatBotRepository
+import com.lans.sleep_care.domain.repository.IPsychologistRepository
 import com.lans.sleep_care.domain.repository.IUserRepository
+import com.lans.sleep_care.domain.usecase.auth.CheckAuthStatusUseCase
 import com.lans.sleep_care.domain.usecase.auth.ForgotPasswordUseCase
-import com.lans.sleep_care.domain.usecase.auth.IsAuthenticatedUseCase
 import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
 import com.lans.sleep_care.domain.usecase.auth.LogoutUseCase
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
 import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.ResetPasswordUseCase
-import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
+import com.lans.sleep_care.domain.usecase.auth.SaveSessionUseCase
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
-import com.lans.sleep_care.domain.usecase.chatbot.StoreChatBotHistoryUseCase
+import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
+import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.user.ChangePasswordUseCase
-import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
+import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import com.lans.sleep_care.domain.usecase.user.UpdateProfileUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateAgeUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidateCurrentPasswordUseCase
@@ -63,8 +66,8 @@ object UseCaseModule {
     fun provideIsAuthenticatedUseCase(
         authRepository: IAuthRepository,
         userRepository: IUserRepository
-    ): IsAuthenticatedUseCase {
-        return IsAuthenticatedInteractor(
+    ): CheckAuthStatusUseCase {
+        return CheckAuthStatusInteractor(
             authRepository,
             userRepository
         )
@@ -74,8 +77,8 @@ object UseCaseModule {
     @Singleton
     fun provideStoreSessionUseCase(
         repository: IAuthRepository
-    ): StoreSessionUseCase {
-        return StoreSessionInteractor(repository)
+    ): SaveSessionUseCase {
+        return SaveSessionInteractor(repository)
     }
 
     @Provides
@@ -138,8 +141,8 @@ object UseCaseModule {
     @Singleton
     fun provideGetMeUseCase(
         repository: IUserRepository
-    ): GetMeUseCase {
-        return GetMeInteractor(repository)
+    ): GetUserProfileUseCase {
+        return GetUserProfileInteractor(repository)
     }
 
     @Provides
@@ -170,8 +173,8 @@ object UseCaseModule {
     @Singleton
     fun provideStoreChatBotHistoryUseCase(
         repository: IChatBotRepository
-    ): StoreChatBotHistoryUseCase {
-        return StoreChatBotHistoryInteractor(repository)
+    ): SaveChatBotHistoryUseCase {
+        return SaveChatBotHistoryInteractor(repository)
     }
 
     @Provides
@@ -180,6 +183,14 @@ object UseCaseModule {
         repository: IChatBotRepository
     ): GetChatBotHistoryUseCase {
         return GetChatBotHistoryInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllPsychologistUseCase(
+        repository: IPsychologistRepository
+    ): GetAllPsychologistUseCase {
+        return GetAllPsychologistInteractor(repository)
     }
 
     @Provides

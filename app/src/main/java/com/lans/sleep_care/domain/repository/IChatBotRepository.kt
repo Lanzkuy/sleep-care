@@ -1,7 +1,7 @@
 package com.lans.sleep_care.domain.repository
 
 import com.lans.sleep_care.data.source.local.entity.ChatBotHistoryEntity
-import com.lans.sleep_care.data.source.network.dto.request.ChatBotRequest
+import com.lans.sleep_care.data.source.network.dto.request.chatbot.ChatBotRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.ChatBotResponse
 import com.lans.sleep_care.domain.model.Chat

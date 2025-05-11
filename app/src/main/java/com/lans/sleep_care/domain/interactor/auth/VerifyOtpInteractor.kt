@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ class VerifyOtpInteractor @Inject constructor(
             emit(Resource.Loading)
             emit(safeCall {
                 val response = repository.verifyOtp(
-                    VerifyOtpRequest(otp = otp, email = email)
+                    OtpVerifyRequest(otp = otp, email = email)
                 ).message
                 response == "Kode OTP berhasil diverifikasi."
             })

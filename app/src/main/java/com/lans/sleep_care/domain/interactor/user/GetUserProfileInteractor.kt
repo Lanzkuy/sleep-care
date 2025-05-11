@@ -5,16 +5,16 @@ import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.response.toDomain
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.repository.IUserRepository
-import com.lans.sleep_care.domain.usecase.user.GetMeUseCase
+import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class GetMeInteractor @Inject constructor(
+class GetUserProfileInteractor @Inject constructor(
     private val userRepository: IUserRepository
-) : GetMeUseCase, SafeApiCall {
+) : GetUserProfileUseCase, SafeApiCall {
     override suspend fun execute(): Flow<Resource<User>> {
         return flow {
             emit(Resource.Loading)

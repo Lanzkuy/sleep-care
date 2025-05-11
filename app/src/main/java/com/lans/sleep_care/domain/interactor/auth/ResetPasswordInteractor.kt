@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.ResetPasswordRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.auth.ResetPasswordUseCase
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ class ResetPasswordInteractor @Inject constructor(
             emit(
                 safeCall {
                     val response = repository.resetPassword(
-                        ResetPasswordRequest(
+                        PasswordResetRequest(
                             email = email,
                             token = token,
                             password = password,

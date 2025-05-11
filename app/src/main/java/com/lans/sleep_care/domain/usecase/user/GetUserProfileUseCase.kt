@@ -4,6 +4,6 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
-interface GetMeUseCase {
+interface GetUserProfileUseCase {
     suspend fun execute(): Flow<Resource<User>>
 }

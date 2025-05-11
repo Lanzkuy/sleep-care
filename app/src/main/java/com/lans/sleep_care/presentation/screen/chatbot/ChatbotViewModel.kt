@@ -9,7 +9,7 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.Chat
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
-import com.lans.sleep_care.domain.usecase.chatbot.StoreChatBotHistoryUseCase
+import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatbotViewModel @Inject constructor(
     private val getChatBotAnswerUseCase: GetChatBotAnswerUseCase,
-    private val storeChatBotHistoryUseCase: StoreChatBotHistoryUseCase,
+    private val saveChatBotHistoryUseCase: SaveChatBotHistoryUseCase,
     private val getChatBotHistoryUseCase: GetChatBotHistoryUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(ChatbotUIState())
@@ -45,7 +45,7 @@ class ChatbotViewModel @Inject constructor(
 
     private fun storeChat(sender: String, message: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            storeChatBotHistoryUseCase.execute(
+            saveChatBotHistoryUseCase.execute(
                 email = _state.value.email,
                 chat = Chat(
                     sender = sender,
@@ -79,8 +79,6 @@ class ChatbotViewModel @Inject constructor(
                             isBotLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }
@@ -109,8 +107,6 @@ class ChatbotViewModel @Inject constructor(
                             isHistoryLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }

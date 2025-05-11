@@ -5,9 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
 import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
-import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
+import com.lans.sleep_care.domain.usecase.auth.SaveSessionUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val validatorUseCase: ValidatorUseCase,
     private val loginUseCase: LoginUseCase,
-    private val storeSessionUseCase: StoreSessionUseCase
+    private val saveSessionUseCase: SaveSessionUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(LoginUIState())
     val state: State<LoginUIState> get() = _state
@@ -88,7 +87,7 @@ class LoginViewModel @Inject constructor(
                             isLoggedIn = response.data.user.isActive != null,
                             isLoading = false
                         )
-                        storeSessionUseCase.invoke(
+                        saveSessionUseCase.invoke(
                             accessToken = response.data.accessToken
                         )
                     }
@@ -105,8 +104,6 @@ class LoginViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }

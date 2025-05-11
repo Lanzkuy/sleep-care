@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.user
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.UpdateProfileRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.repository.IUserRepository
 import com.lans.sleep_care.domain.usecase.user.UpdateProfileUseCase
@@ -21,7 +21,7 @@ class UpdateProfileInteractor @Inject constructor(
             emit(
                 safeCall {
                     val response = repository.updateProfile(
-                        UpdateProfileRequest(
+                        ProfileUpdateRequest(
                             id = user.id,
                             name = user.name,
                             age = user.age,

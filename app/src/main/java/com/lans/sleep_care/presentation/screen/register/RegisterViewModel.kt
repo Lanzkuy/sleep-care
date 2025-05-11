@@ -8,7 +8,6 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
-import com.lans.sleep_care.utils.capitalize
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -203,8 +202,6 @@ class RegisterViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }

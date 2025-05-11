@@ -1,19 +1,18 @@
 package com.lans.sleep_care.domain.repository
 
-import com.lans.sleep_care.data.source.network.dto.request.ChangePasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.ForgotPasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.UpdateProfileRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.MeResponse
+import com.lans.sleep_care.data.source.network.dto.response.ProfileResponse
 
 interface IUserRepository {
-    suspend fun fetchProfile(): ApiResponse<MeResponse>
+    suspend fun fetchProfile(): ApiResponse<ProfileResponse>
 
     suspend fun updateProfile(
-        request: UpdateProfileRequest
+        request: ProfileUpdateRequest
     ): ApiResponse<Any>
 
     suspend fun changePassword(
-        request: ChangePasswordRequest
+        request: PasswordChangeRequest
     ): ApiResponse<Any>
 }

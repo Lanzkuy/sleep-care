@@ -1,22 +1,25 @@
 package com.lans.sleep_care.data.source.network.api
 
-import com.lans.sleep_care.data.source.network.dto.request.ChangePasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.ForgotPasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
-import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
-import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
-import com.lans.sleep_care.data.source.network.dto.request.ResetPasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.UpdateProfileRequest
-import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.LoginRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
-import com.lans.sleep_care.data.source.network.dto.response.MeResponse
+import com.lans.sleep_care.data.source.network.dto.response.ProfileResponse
+import com.lans.sleep_care.data.source.network.dto.response.PsychologistListResponse
+import com.lans.sleep_care.data.source.network.dto.response.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
-import com.lans.sleep_care.data.source.network.dto.response.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface SleepCareApi {
     @POST("login")
@@ -31,12 +34,12 @@ interface SleepCareApi {
 
     @POST("forgot-password")
     suspend fun forgotPassword(
-        @Body requestBody: ForgotPasswordRequest
+        @Body requestBody: PasswordForgotRequest
     ): ApiResponse<Any>
 
     @POST("reset-password")
     suspend fun resetPassword(
-        @Body requestBody: ResetPasswordRequest
+        @Body requestBody: PasswordResetRequest
     ): ApiResponse<Any>
 
     @POST("otp/request")
@@ -46,19 +49,32 @@ interface SleepCareApi {
 
     @POST("otp/verify")
     suspend fun verifyOtp(
-        @Body requestBody: VerifyOtpRequest
+        @Body requestBody: OtpVerifyRequest
     ): ApiResponse<Any>
 
     @GET("patient/profile")
-    suspend fun me(): ApiResponse<MeResponse>
+    suspend fun me(): ApiResponse<ProfileResponse>
 
     @PUT("patient/profile")
     suspend fun updateProfile(
-        @Body requestBody: UpdateProfileRequest
+        @Body requestBody: ProfileUpdateRequest
     ): ApiResponse<Any>
 
     @PUT("patient/password")
     suspend fun changePassword(
-        @Body requestBody: ChangePasswordRequest
+        @Body requestBody: PasswordChangeRequest
     ): ApiResponse<Any>
+
+    @GET("doctors")
+    suspend fun getAllPsychologist(
+        @Query("order_by") orderBy: String = "registered_year",
+        @Query("sort") sort: String = "asc",
+        @Query("paginate") paginate: Int = 10,
+        @Query("page") page: Int = 1
+    ): ApiResponse<PsychologistListResponse>
+
+    @GET("doctors/{id}")
+    suspend fun getPsychologist(
+        @Path("id") id: Int
+    ): ApiResponse<PsychologistResponse>
 }

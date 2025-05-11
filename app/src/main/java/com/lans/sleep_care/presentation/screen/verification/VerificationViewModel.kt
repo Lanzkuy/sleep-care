@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
 import com.lans.sleep_care.domain.usecase.auth.RequestOtpUseCase
 import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
@@ -80,8 +79,6 @@ class VerificationViewModel @Inject constructor(
                             isRequestOtpLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }
@@ -120,8 +117,6 @@ class VerificationViewModel @Inject constructor(
                             isVerificationLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }

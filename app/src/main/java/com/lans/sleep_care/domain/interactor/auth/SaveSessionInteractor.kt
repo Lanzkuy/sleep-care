@@ -1,12 +1,12 @@
 package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.domain.repository.IAuthRepository
-import com.lans.sleep_care.domain.usecase.auth.StoreSessionUseCase
+import com.lans.sleep_care.domain.usecase.auth.SaveSessionUseCase
 import javax.inject.Inject
 
-class StoreSessionInteractor @Inject constructor(
+class SaveSessionInteractor @Inject constructor(
     private val repository: IAuthRepository
-): StoreSessionUseCase {
+): SaveSessionUseCase {
     override suspend fun invoke(accessToken: String) {
         repository.saveToken(accessToken)
     }

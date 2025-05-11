@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.auth
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.ForgotPasswordRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.auth.ForgotPasswordUseCase
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ class ForgotPasswordInteractor @Inject constructor(
             emit(
                 safeCall {
                     val response = repository.forgotPassword(
-                        ForgotPasswordRequest(email)
+                        PasswordForgotRequest(email)
                     ).message
                     response == "Kode OTP berhasil dikirimkan."
                 }

@@ -2,12 +2,12 @@ package com.lans.sleep_care.data.repository
 
 import com.lans.sleep_care.data.source.local.DataStoreManager
 import com.lans.sleep_care.data.source.network.api.SleepCareApi
-import com.lans.sleep_care.data.source.network.dto.request.ForgotPasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.LoginRequest
-import com.lans.sleep_care.data.source.network.dto.request.OtpRequest
-import com.lans.sleep_care.data.source.network.dto.request.RegisterRequest
-import com.lans.sleep_care.data.source.network.dto.request.ResetPasswordRequest
-import com.lans.sleep_care.data.source.network.dto.request.VerifyOtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.LoginRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
@@ -40,11 +40,11 @@ class AuthRepository @Inject constructor(
         return api.register(request)
     }
 
-    override suspend fun forgotPassword(request: ForgotPasswordRequest): ApiResponse<Any> {
+    override suspend fun forgotPassword(request: PasswordForgotRequest): ApiResponse<Any> {
         return api.forgotPassword(request)
     }
 
-    override suspend fun resetPassword(request: ResetPasswordRequest): ApiResponse<Any> {
+    override suspend fun resetPassword(request: PasswordResetRequest): ApiResponse<Any> {
         return api.resetPassword(request)
     }
 
@@ -52,7 +52,7 @@ class AuthRepository @Inject constructor(
         return api.requestOtp(request)
     }
 
-    override suspend fun verifyOtp(request: VerifyOtpRequest): ApiResponse<Any> {
+    override suspend fun verifyOtp(request: OtpVerifyRequest): ApiResponse<Any> {
         return api.verifyOtp(request)
     }
 }

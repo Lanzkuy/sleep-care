@@ -118,8 +118,6 @@ class ChangePasswordViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }

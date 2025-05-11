@@ -147,8 +147,6 @@ class ForgotPasswordViewModel @Inject constructor(
                             isForgotPasswordLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }
@@ -189,8 +187,6 @@ class ForgotPasswordViewModel @Inject constructor(
                             isResetPasswordLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }
