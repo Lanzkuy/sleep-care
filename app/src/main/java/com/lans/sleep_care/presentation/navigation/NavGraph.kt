@@ -26,6 +26,7 @@ import com.lans.sleep_care.presentation.screen.login.LoginScreen
 import com.lans.sleep_care.presentation.screen.my_theraphy.MyTherapyScreen
 import com.lans.sleep_care.presentation.screen.profile.ProfileScreen
 import com.lans.sleep_care.presentation.screen.psychologist.PsychologistScreen
+import com.lans.sleep_care.presentation.screen.psychologist_detail.PsychologistDetailScreen
 import com.lans.sleep_care.presentation.screen.register.RegisterScreen
 import com.lans.sleep_care.presentation.screen.sleep_diary.SleepDiaryScreen
 import com.lans.sleep_care.presentation.screen.thought_record.ThoughtRecordScreen
@@ -124,7 +125,7 @@ fun NavGraph(
         composable(route = Route.HomeScreen.route) {
             HomeScreen(
                 navigateToTherapist = {
-                    navController.navigate(route = Route.TherapistScreen.route) {
+                    navController.navigate(route = Route.PsychologistScreen.route) {
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
@@ -183,12 +184,28 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.TherapistScreen.route) {
+        composable(route = Route.PsychologistScreen.route) {
             PsychologistScreen(
                 navigateToHome = {
                     navController.navigateUp()
                 },
-                navigateToPsychologistDetail = {
+                navigateToPsychologistDetail = { id ->
+                    navController.navigate(
+                        route = Route.PsychologistDetailScreen.route + "/$id"
+                    ) {
+                        popUpTo(route = Route.PsychologistScreen.route)
+                    }
+                },
+            )
+        }
+        composable(route = Route.PsychologistDetailScreen.route + "/{id}") {
+            val id = it.arguments?.getString("id") ?: ""
+            PsychologistDetailScreen(
+                id = id.toInt(),
+                navigateToPsychologist = {
+                    navController.navigateUp()
+                },
+                navigateToPayment = {
 
                 }
             )

@@ -1,4 +1,4 @@
-package com.lans.sleep_care.domain.usecase.user
+package com.lans.sleep_care.domain.usecase.psychologist
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.Psychologist

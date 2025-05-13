@@ -52,7 +52,7 @@ import java.util.Calendar
 fun PsychologistScreen(
     viewModel: PsychologistViewModel = hiltViewModel(),
     navigateToHome: () -> Unit,
-    navigateToPsychologistDetail: () -> Unit
+    navigateToPsychologistDetail: (id: String) -> Unit
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
@@ -182,7 +182,7 @@ fun PsychologistScreen(
                                 rating = 4.8,
                                 totalReview = 20,
                                 onClick = {
-                                    navigateToPsychologistDetail()
+                                    navigateToPsychologistDetail(psychologist.id.toString())
                                 }
                             )
                         }

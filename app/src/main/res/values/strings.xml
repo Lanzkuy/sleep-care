@@ -28,12 +28,16 @@
 
     <string name="name">Nama</string>
     <string name="age">Umur</string>
+    <string name="experience">Pengalaman</string>
+    <string name="rating">Rating</string>
     <string name="gender">Jenis Kelamin</string>
     <string name="man">Pria</string>
     <string name="woman">Wanita</string>
     <string name="user">User</string>
 
     <string name="psychologist">Psikolog</string>
+    <string name="psychologist_detail">Detail Psikolog</string>
+    <string name="about_psychologist">Tentang Psikolog</string>
     <string name="chat_psychologist">Chat Psikolog</string>
     <string name="chatbot">Chatbot</string>
     <string name="mytherapy">Terapiku</string>
@@ -114,4 +118,5 @@
     <string name="icon">Icon</string>
     <string name="image">Image</string>
     <string name="nothing_here">Nothing Here</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
 </resources>
