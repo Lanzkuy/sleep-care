@@ -3,6 +3,7 @@ package com.lans.sleep_care.presentation.screen.my_theraphy
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,12 +22,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,11 +45,13 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.button.OutlinedIconButton
 import com.lans.sleep_care.presentation.component.dialog.NoteDialog
+import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.items.ScheduleItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
+import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
 
@@ -64,22 +68,32 @@ fun MyTherapyScreen(
         Triple(R.drawable.ic_message, R.string.chat_psychologist, navigateToChat),
         Triple(R.drawable.ic_book, R.string.therapy_note, navigateToLogbook)
     )
-    val scheduleList = listOf(
-        TherapySchedule(
-            "24/08/2025",
-            "Topik 1",
-            "https://meet.com/jady7",
-            "tes123"
-        ),
-        TherapySchedule(
-            "31/08/2025",
-            "Topik 2",
-            "https://meet.com/jay8h",
-            ""
-        )
-    )
     val state by viewModel.state
+    var showAlert by remember { mutableStateOf(Pair(false, "")) }
     var showNoteDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadTherapySchedules()
+    }
+
+    LaunchedEffect(key1 = state.schedules, key2 = state.error) {
+        val error = state.error
+
+        if (error.isNotBlank()) {
+            showAlert = Pair(true, error)
+            state.error = ""
+        }
+    }
+
+    if (showAlert.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_error_title),
+            message = showAlert.second,
+            onDismiss = {
+                showAlert = showAlert.copy(first = false)
+            }
+        )
+    }
 
     if (showNoteDialog) {
         NoteDialog(
@@ -161,6 +175,7 @@ fun MyTherapyScreen(
             OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .padding(
                         horizontal = Dimens.dp24
                     ),
@@ -170,29 +185,48 @@ fun MyTherapyScreen(
                 ),
                 shape = RoundedCornerShape(Dimens.dp20)
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(Dimens.dp16)
-                ) {
-                    item {
-                        Text(
+                if(state.isLoading) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
+                        CircularProgressIndicator(
                             modifier = Modifier
-                                .padding(bottom = Dimens.dp12),
-                            text = stringResource(R.string.therapy_schedule),
-                            fontSize = Dimens.sp20,
-                            fontWeight = FontWeight.SemiBold
+                                .size(Dimens.dp32)
+                                .align(Alignment.Center),
+                            color = Primary
                         )
                     }
-                    items(scheduleList) { schedule ->
-                        ScheduleItem(
-                            date = schedule.date,
-                            topic = schedule.topic,
-                            link = schedule.link,
-                            note = schedule.note,
-                            onNoteClick = {
-                                showNoteDialog = true
-                            }
-                        )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(
+                                start = Dimens.dp16,
+                                top = Dimens.dp16,
+                                end = Dimens.dp16
+                            )
+                    ) {
+                        item {
+                            Text(
+                                modifier = Modifier
+                                    .padding(bottom = Dimens.dp12),
+                                text = stringResource(R.string.therapy_schedule),
+                                fontSize = Dimens.sp20,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                        items(state.schedules) { schedule ->
+                            ScheduleItem(
+                                date = schedule.date,
+                                topic = schedule.title,
+                                link = schedule.link.ifEmpty { "-" },
+                                note = schedule.note,
+                                onNoteClick = {
+                                    showNoteDialog = true
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -246,10 +280,3 @@ fun MyTherapyScreen(
         }
     }
 }
-
-data class TherapySchedule(
-    val date: String,
-    val topic: String,
-    val link: String,
-    val note: String
-)

@@ -57,7 +57,14 @@ fun generateDateRange(startDate: String, endDate: String): List<String> {
     return dates
 }
 
-fun getDayName(dateStr: String): String {
+fun parseToDate(dateStr: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val date = inputFormat.parse(dateStr)
+    val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    return outputFormat.format(date!!)
+}
+
+fun parseToDayName(dateStr: String): String {
     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val date = format.parse(dateStr) ?: return ""
     val dayFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id"))

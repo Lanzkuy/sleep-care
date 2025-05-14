@@ -25,8 +25,7 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.RoundedLarge
-import com.lans.sleep_care.presentation.theme.Secondary
-import com.lans.sleep_care.utils.getDayName
+import com.lans.sleep_care.utils.parseToDayName
 
 @Composable
 fun SleepDiary(
@@ -56,7 +55,7 @@ fun SleepDiary(
                 ) {
                     Text(
                         modifier = Modifier.padding(bottom = Dimens.dp8),
-                        text = getDayName(date),
+                        text = parseToDayName(date),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontSize = Dimens.sp20
                         )

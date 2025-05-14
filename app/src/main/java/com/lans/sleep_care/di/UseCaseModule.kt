@@ -14,6 +14,7 @@ import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.SaveChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetAllPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetPsychologistInteractor
+import com.lans.sleep_care.domain.interactor.therapy.GetTherapyScheduleInteractor
 import com.lans.sleep_care.domain.interactor.user.ChangePasswordInteractor
 import com.lans.sleep_care.domain.interactor.user.GetUserProfileInteractor
 import com.lans.sleep_care.domain.interactor.user.UpdateProfileInteractor
@@ -28,6 +29,7 @@ import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.repository.IChatBotRepository
 import com.lans.sleep_care.domain.repository.IPsychologistRepository
+import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.repository.IUserRepository
 import com.lans.sleep_care.domain.usecase.auth.CheckAuthStatusUseCase
 import com.lans.sleep_care.domain.usecase.auth.ForgotPasswordUseCase
@@ -43,6 +45,7 @@ import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
 import com.lans.sleep_care.domain.usecase.user.ChangePasswordUseCase
 import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import com.lans.sleep_care.domain.usecase.user.UpdateProfileUseCase
@@ -201,6 +204,14 @@ object UseCaseModule {
         repository: IPsychologistRepository
     ): GetPsychologistUseCase {
         return GetPsychologistInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetTherapySchedulesUseCase(
+        repository: ITherapyRepository
+    ): GetTherapySchedulesUseCase {
+        return GetTherapyScheduleInteractor(repository)
     }
 
     @Provides
