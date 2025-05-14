@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.login
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,14 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.LoadingButton
-import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
+import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
-import com.lans.sleep_care.presentation.theme.SecondaryVariant
 import com.lans.sleep_care.presentation.theme.Typography
-import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun LoginScreen(

@@ -20,7 +20,7 @@ class GetUserProfileInteractor @Inject constructor(
             emit(Resource.Loading)
             emit(safeCall {
                 val response = userRepository.fetchProfile().data
-                response?.user?.toDomain() ?: throw Exception()
+                response?.toDomain() ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)
     }

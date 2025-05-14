@@ -15,6 +15,8 @@ data class UserResponse(
     val isActive: Boolean?,
     @field:Json(name = "is_online")
     val isOnline: Boolean?,
+    @field:Json(name = "is_therapy_in_progress")
+    val isTherapyInProgress: Boolean?,
     @field:Json(name = "created_at")
     val createdAt: String,
     @field:Json(name = "deleted_at")
@@ -28,6 +30,7 @@ fun UserResponse.toDomain() = User(
     age = age,
     gender = gender,
     problems = problems ?: emptyList(),
-    isActive = isActive,
-    isOnline = isOnline
+    isActive = isActive ?: false,
+    isOnline = isOnline ?: false,
+    isTherapyInProgress = isTherapyInProgress ?: false
 )

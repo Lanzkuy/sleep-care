@@ -61,6 +61,15 @@ fun PsychologistScreen(
         viewModel.loadAllPsychologist()
     }
 
+    LaunchedEffect(key1 = state.psychologists, key2 = state.error) {
+        val error = state.error
+
+        if (error.isNotBlank()) {
+            showAlert = Pair(true, error)
+            state.error = ""
+        }
+    }
+
     if (showAlert.first) {
         ValidationAlert(
             title = stringResource(R.string.alert_error_title),
@@ -179,8 +188,8 @@ fun PsychologistScreen(
                             PsychologistItem(
                                 name = psychologist.user.name,
                                 experience = currentYear - psychologist.registeredYear,
-                                rating = 4.8,
-                                totalReview = 20,
+                                rating = psychologist.avgRating.toDouble(),
+                                totalReview = psychologist.totalRating,
                                 onClick = {
                                     navigateToPsychologistDetail(psychologist.id.toString())
                                 }

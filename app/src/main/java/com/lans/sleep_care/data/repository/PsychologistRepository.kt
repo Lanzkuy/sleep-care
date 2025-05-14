@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class PsychologistRepository @Inject constructor(
     private val api: SleepCareApi
-): IPsychologistRepository {
+) : IPsychologistRepository {
     override suspend fun fetchAllPsychologist(): ApiResponse<PsychologistListResponse> {
         return api.getAllPsychologist()
     }

@@ -267,7 +267,7 @@ fun PsychologistDetailScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = Dimens.dp4),
-                            text = "4.8",
+                            text = "${state.psychologist.avgRating}(${state.psychologist.totalRating})",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.SemiBold
@@ -301,7 +301,9 @@ fun PsychologistDetailScreen(
                         ),
                     text = stringResource(R.string.about_psychologist),
                     textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    )
                 )
                 Text(
                     modifier = Modifier
@@ -311,7 +313,7 @@ fun PsychologistDetailScreen(
                             end = Dimens.dp16,
                             bottom = Dimens.dp16
                         ),
-                    text = stringResource(R.string.app_name),
+                    text = state.psychologist.about.ifBlank { "-" },
                     textAlign = TextAlign.Justify,
                     style = MaterialTheme.typography.bodyLarge
                 )

@@ -1,7 +1,6 @@
 package com.lans.sleep_care.presentation.screen.forgot_password
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,7 +36,6 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.Typography
-import com.lans.sleep_care.presentation.theme.White
 import kotlinx.coroutines.delay
 import java.util.Locale
 
@@ -142,7 +139,7 @@ fun ForgotPasswordScreen(
             LoadingButton(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = stringResource(R.string.next).uppercase(),
+                text = stringResource(R.string.send).uppercase(),
                 shape = Rounded,
                 isLoading = state.isForgotPasswordLoading,
                 onClick = {

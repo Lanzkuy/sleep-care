@@ -9,6 +9,7 @@ data class User(
     val age: Int = 0,
     val gender: String = "",
     val problems: List<String> = emptyList(),
-    val isActive: Boolean? = false,
-    val isOnline: Boolean? = false,
+    val isActive: Boolean = false,
+    val isOnline: Boolean = false,
+    val isTherapyInProgress: Boolean = false
 )

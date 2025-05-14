@@ -3,10 +3,10 @@ package com.lans.sleep_care.domain.repository
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.ProfileResponse
+import com.lans.sleep_care.data.source.network.dto.response.UserResponse
 
 interface IUserRepository {
-    suspend fun fetchProfile(): ApiResponse<ProfileResponse>
+    suspend fun fetchProfile(): ApiResponse<UserResponse>
 
     suspend fun updateProfile(
         request: ProfileUpdateRequest

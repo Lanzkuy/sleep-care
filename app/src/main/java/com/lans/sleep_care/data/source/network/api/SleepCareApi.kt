@@ -1,19 +1,19 @@
 package com.lans.sleep_care.data.source.network.api
 
-import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
-import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.LoginRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.OtpRequest
-import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
-import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
-import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
+import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
-import com.lans.sleep_care.data.source.network.dto.response.ProfileResponse
 import com.lans.sleep_care.data.source.network.dto.response.PsychologistListResponse
 import com.lans.sleep_care.data.source.network.dto.response.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
+import com.lans.sleep_care.data.source.network.dto.response.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -53,7 +53,7 @@ interface SleepCareApi {
     ): ApiResponse<Any>
 
     @GET("patient/profile")
-    suspend fun me(): ApiResponse<ProfileResponse>
+    suspend fun me(): ApiResponse<UserResponse>
 
     @PUT("patient/profile")
     suspend fun updateProfile(

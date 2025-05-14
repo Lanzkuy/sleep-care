@@ -53,7 +53,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToTherapist: () -> Unit,
-    navigateToMyTherapy: () -> Unit,
+    navigateToMyTherapy: (isTherapyInProgress: Boolean) -> Unit,
     navigateToChatbot: (name: String, email: String) -> Unit,
     navigateToHistory: () -> Unit,
     navigateToProfile: (
@@ -68,9 +68,12 @@ fun HomeScreen(
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
     var showOverflowMenu by remember { mutableStateOf(false) }
+    var showLogoutConfirmation by remember { mutableStateOf(Pair(false, "")) }
     val buttonItems = listOf(
         Triple(R.drawable.img_illustration_doctor, R.string.psychologist, navigateToTherapist),
-        Triple(R.drawable.img_illustration_therapy, R.string.mytherapy, navigateToMyTherapy),
+        Triple(R.drawable.img_illustration_therapy, R.string.mytherapy) {
+            navigateToMyTherapy(state.user.isTherapyInProgress)
+        },
         Triple(R.drawable.img_illustration_chatbot, R.string.chatbot) {
             navigateToChatbot(state.user.email, state.user.name)
         },
@@ -96,6 +99,20 @@ fun HomeScreen(
             message = showAlert.second,
             onDismiss = {
                 showAlert = showAlert.copy(first = false)
+            }
+        )
+    }
+
+    if (showLogoutConfirmation.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_warning_title),
+            message = showLogoutConfirmation.second,
+            confirmButtonText = stringResource(R.string.yes),
+            onDismiss = {
+                showLogoutConfirmation = showAlert.copy(first = false)
+            },
+            onConfirm = {
+                viewModel.onEvent(HomeUIEvent.LogoutButtonClicked)
             }
         )
     }
@@ -178,7 +195,9 @@ fun HomeScreen(
                     lineHeight = Dimens.sp24
                 )
                 Text(
-                    text = state.user.name.ifEmpty { stringResource(R.string.user) },
+                    text = state.user.name
+                        .split(" ")[0]
+                            .ifEmpty { stringResource(R.string.user) },
                     fontSize = Dimens.sp24,
                     fontWeight = FontWeight.Bold,
                     lineHeight = Dimens.sp28
@@ -192,7 +211,7 @@ fun HomeScreen(
                 icon = Icons.AutoMirrored.Default.Logout,
                 shape = Rounded,
                 onClick = {
-                    viewModel.onEvent(HomeUIEvent.LogoutButtonClicked)
+                    showLogoutConfirmation = Pair(true, "Apakah anda ingin logout?")
                 }
             )
         }

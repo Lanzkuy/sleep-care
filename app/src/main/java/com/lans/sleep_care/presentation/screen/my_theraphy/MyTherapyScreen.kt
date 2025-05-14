@@ -1,6 +1,7 @@
 package com.lans.sleep_care.presentation.screen.my_theraphy
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,12 +13,17 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +45,7 @@ import com.lans.sleep_care.presentation.component.button.OutlinedIconButton
 import com.lans.sleep_care.presentation.component.dialog.NoteDialog
 import com.lans.sleep_care.presentation.component.items.ScheduleItem
 import com.lans.sleep_care.presentation.theme.Black
+import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Rounded
@@ -46,7 +54,9 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun MyTherapyScreen(
     viewModel: MyTherapyViewModel = hiltViewModel(),
+    isTherapyInProgress: Boolean,
     navigateToHome: () -> Unit,
+    navigateToPsychologist: () -> Unit,
     navigateToChat: () -> Unit,
     navigateToLogbook: () -> Unit
 ) {
@@ -71,22 +81,21 @@ fun MyTherapyScreen(
     val state by viewModel.state
     var showNoteDialog by remember { mutableStateOf(false) }
 
+    if (showNoteDialog) {
+        NoteDialog(
+            note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            onClose = {
+                showNoteDialog = false
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
     ) {
-
-        if (showNoteDialog) {
-            NoteDialog(
-                note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                onClose = {
-                    showNoteDialog = false
-                }
-            )
-        }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -123,65 +132,114 @@ fun MyTherapyScreen(
                     .size(Dimens.dp50)
             )
         }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp16)
-        )
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Dimens.dp24),
-            verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
-        ) {
-            items(buttonItems) { (icon, name, action) ->
-                OutlinedIconButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    icon = painterResource(icon),
-                    name = stringResource(name),
-                    onClick = { action.invoke() }
-                )
-            }
-        }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp16)
-        )
-        OutlinedCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = Dimens.dp24
-                ),
-            border = BorderStroke(Dimens.dp1, Gray),
-            colors = CardDefaults.outlinedCardColors(
-                containerColor = White
-            ),
-            shape = RoundedCornerShape(Dimens.dp20)
-        ) {
+        if (isTherapyInProgress) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(Dimens.dp16)
+            )
             LazyColumn(
                 modifier = Modifier
-                    .padding(Dimens.dp16)
+                    .fillMaxWidth()
+                    .padding(horizontal = Dimens.dp24),
+                verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
             ) {
-                item {
-                    Text(
-                        modifier = Modifier
-                            .padding(bottom = Dimens.dp12),
-                        text = stringResource(R.string.therapy_schedule),
-                        fontSize = Dimens.sp20,
-                        fontWeight = FontWeight.SemiBold
+                items(buttonItems) { (icon, name, action) ->
+                    OutlinedIconButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        icon = painterResource(icon),
+                        name = stringResource(name),
+                        onClick = { action.invoke() }
                     )
                 }
-                items(scheduleList) { schedule ->
-                    ScheduleItem(
-                        date = schedule.date,
-                        topic = schedule.topic,
-                        link = schedule.link,
-                        note = schedule.note,
-                        onNoteClick = {
-                            showNoteDialog = true
-                        }
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(Dimens.dp16)
+            )
+            OutlinedCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = Dimens.dp24
+                    ),
+                border = BorderStroke(Dimens.dp1, Gray),
+                colors = CardDefaults.outlinedCardColors(
+                    containerColor = White
+                ),
+                shape = RoundedCornerShape(Dimens.dp20)
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(Dimens.dp16)
+                ) {
+                    item {
+                        Text(
+                            modifier = Modifier
+                                .padding(bottom = Dimens.dp12),
+                            text = stringResource(R.string.therapy_schedule),
+                            fontSize = Dimens.sp20,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    items(scheduleList) { schedule ->
+                        ScheduleItem(
+                            date = schedule.date,
+                            topic = schedule.topic,
+                            link = schedule.link,
+                            note = schedule.note,
+                            onNoteClick = {
+                                showNoteDialog = true
+                            }
+                        )
+                    }
+                }
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .width(Dimens.dp300)
+                        .height(Dimens.dp240)
+                        .padding(end = Dimens.dp16),
+                    painter = painterResource(R.drawable.img_illustration_schedule),
+                    contentDescription = stringResource(R.string.image),
+                    contentScale = ContentScale.Crop,
+                )
+                Text(
+                    text = stringResource(R.string.no_therapy_session),
+                    textAlign = TextAlign.Center,
+                    color = DarkGray,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(Dimens.dp16)
+                )
+                Button(
+                    modifier = Modifier
+                        .width(Dimens.dp300)
+                        .height(Dimens.dp48),
+                    shape = Rounded,
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = Dimens.dp4
+                    ),
+                    onClick = {
+                        navigateToPsychologist.invoke()
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.order_therapy).uppercase(),
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
             }

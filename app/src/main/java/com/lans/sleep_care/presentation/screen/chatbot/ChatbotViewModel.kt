@@ -36,6 +36,10 @@ class ChatbotViewModel @Inject constructor(
 
             is ChatbotUIEvent.SendButtonClicked -> {
                 val message = _state.value.message.value
+                if(message.isBlank()) {
+                    return
+                }
+
                 storeChat(sender = _state.value.name, message = message)
                 _state.value = _state.value.copy(message = InputWrapper())
                 getAnswer(message)

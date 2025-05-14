@@ -10,9 +10,9 @@
     <string name="change_password">Ubah Kata Sandi</string>
     <string name="current_password">Kata Sandi Saat Ini</string>
     <string name="new_password_confirmation">Konfirmasi Kata Sandi Baru</string>
-    <string name="login">Login</string>
+    <string name="login">Masuk</string>
     <string name="login_description">Silakan masuk ke akun Anda</string>
-    <string name="register">Register</string>
+    <string name="register">Daftar</string>
     <string name="register_description">Daftar untuk membuat akun</string>
     <string name="verification">Verifikasi</string>
     <string name="verification_description">Masukkan kode yang telah dikirimkan ke</string>
@@ -47,6 +47,7 @@
     <string name="history">Riwayat</string>
     <string name="message">Pesan</string>
     <string name="problem">Permasalahan</string>
+    <string name="no_therapy_session">Belum ada sesi terapi yang dijadwalkan.</string>
 
     <string name="logbook">Catatan Terapi</string>
     <string name="sleep_diary">Catatan Tidur</string>
@@ -106,12 +107,15 @@
     <string name="ok">OK</string>
     <string name="resend">Kirim Ulang</string>
     <string name="send">Kirim</string>
-    <string name="next">Next</string>
+    <string name="next">Selanjutnya</string>
+    <string name="order_therapy">Pesan Terapi</string>
     <string name="search">Cari</string>
     <string name="detail">Detail</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="update">Perbaharui</string>
+    <string name="alert_default_title">Alert</string>
+    <string name="alert_warning_title">Perhatian</string>
     <string name="alert_error_title">Terjadi Kesalahan</string>
 
     <string name="search_icon">Search Icon</string>

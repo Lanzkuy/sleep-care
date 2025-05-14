@@ -26,7 +26,7 @@ class CheckAuthStatusInteractor @Inject constructor(
                 }
 
                 val result = safeCall {
-                    val user = userRepository.fetchProfile().data?.user
+                    val user = userRepository.fetchProfile().data
                     val isUserValid = user != null
                     if (!isUserValid) {
                         authRepository.deleteToken()

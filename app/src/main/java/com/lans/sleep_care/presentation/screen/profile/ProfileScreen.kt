@@ -1,6 +1,7 @@
 package com.lans.sleep_care.presentation.screen.profile
 
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -43,6 +44,7 @@ import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.form.GenericDropDown
 import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.theme.Black
+import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
@@ -218,6 +220,10 @@ fun ProfileScreen(
                             )
                         }
                     } else null,
+                    border = BorderStroke(
+                        width = Dimens.dp1,
+                        color = DarkGray
+                    ),
                     onClick = {
                         viewModel.onEvent(ProfileUIEvent.ToggleProblem(option))
                     }
