@@ -53,7 +53,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToTherapist: () -> Unit,
-    navigateToMyTherapy: (isTherapyInProgress: Boolean) -> Unit,
+    navigateToMyTherapy: (id: String, isTherapyInProgress: Boolean) -> Unit,
     navigateToChatbot: (name: String, email: String) -> Unit,
     navigateToHistory: () -> Unit,
     navigateToProfile: (
@@ -72,7 +72,7 @@ fun HomeScreen(
     val buttonItems = listOf(
         Triple(R.drawable.img_illustration_doctor, R.string.psychologist, navigateToTherapist),
         Triple(R.drawable.img_illustration_therapy, R.string.mytherapy) {
-            navigateToMyTherapy(state.user.isTherapyInProgress)
+            navigateToMyTherapy(state.user.id.toString(), state.user.isTherapyInProgress)
         },
         Triple(R.drawable.img_illustration_chatbot, R.string.chatbot) {
             navigateToChatbot(state.user.email, state.user.name)

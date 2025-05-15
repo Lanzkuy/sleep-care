@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.chatbot
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.local.entity.toDomain
-import com.lans.sleep_care.domain.model.Chat
+import com.lans.sleep_care.domain.model.ChatBot
 import com.lans.sleep_care.domain.repository.IChatBotRepository
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class GetChatBotHistoryInteractor @Inject constructor(
     private val repository: IChatBotRepository
 ) : GetChatBotHistoryUseCase {
-    override suspend fun execute(email: String): Flow<Resource<List<Chat>>> {
+    override suspend fun execute(email: String): Flow<Resource<List<ChatBot>>> {
         return flow {
             emit(Resource.Loading)
             repository.fetchHistory(email)

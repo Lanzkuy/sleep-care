@@ -2,9 +2,11 @@ package com.lans.sleep_care.data.source.network.dto.response
 
 import com.lans.sleep_care.domain.model.TherapySchedule
 import com.lans.sleep_care.utils.parseToDate
+import com.squareup.moshi.Json
 
 data class ScheduleResponse(
     val id: Int,
+    @field:Json(name = "therapy_id")
     val therapyId: Int,
     val title: String,
     val note: String?,

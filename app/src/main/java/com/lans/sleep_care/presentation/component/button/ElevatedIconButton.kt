@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ fun ElevatedIconButton(
     tint: Color,
     icon: ImageVector,
     shape: Shape,
+    isLoading: Boolean = false,
     onClick: () -> Unit
 ) {
     Surface(
@@ -37,15 +39,22 @@ fun ElevatedIconButton(
             modifier = Modifier
                 .size(Dimens.dp16)
                 .clip(CircleShape)
-                .clickable { onClick.invoke() }
+                .clickable { onClick.invoke() },
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.Center),
-                imageVector = icon,
-                tint = tint,
-                contentDescription = stringResource(R.string.icon),
-            )
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(Dimens.dp24),
+                    color = Color.White
+                )
+            } else {
+                Icon(
+                    imageVector = icon,
+                    tint = tint,
+                    contentDescription = stringResource(R.string.icon),
+                )
+            }
         }
     }
 }
@@ -57,6 +66,7 @@ fun ElevatedIconButton(
     tint: Color,
     icon: Painter,
     shape: Shape,
+    isLoading: Boolean = false,
     onClick: () -> Unit
 ) {
     Surface(
@@ -69,15 +79,22 @@ fun ElevatedIconButton(
             modifier = Modifier
                 .size(Dimens.dp16)
                 .clip(CircleShape)
-                .clickable { onClick.invoke() }
+                .clickable { onClick.invoke() },
+            contentAlignment = Alignment.Center
         ) {
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.Center),
-                painter = icon,
-                tint = tint,
-                contentDescription = stringResource(R.string.icon),
-            )
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(Dimens.dp24),
+                    color = Color.White
+                )
+            } else {
+                Icon(
+                    painter = icon,
+                    tint = tint,
+                    contentDescription = stringResource(R.string.icon),
+                )
+            }
         }
     }
 }

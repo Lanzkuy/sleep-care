@@ -1,7 +1,7 @@
 package com.lans.sleep_care.domain.usecase.chatbot
 
-import com.lans.sleep_care.domain.model.Chat
+import com.lans.sleep_care.domain.model.ChatBot
 
 interface SaveChatBotHistoryUseCase {
-    suspend fun execute(email: String, chat: Chat)
+    suspend fun execute(email: String, chatBot: ChatBot)
 }

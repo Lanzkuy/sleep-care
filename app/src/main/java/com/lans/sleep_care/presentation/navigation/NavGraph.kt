@@ -129,8 +129,8 @@ fun NavGraph(
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
-                navigateToMyTherapy = { isTherapyInProgress ->
-                    navController.navigate(route = Route.MyTherapyScreen.route + "/$isTherapyInProgress") {
+                navigateToMyTherapy = { id, isTherapyInProgress ->
+                    navController.navigate(route = Route.MyTherapyScreen.route + "/$id/$isTherapyInProgress") {
                         popUpTo(route = Route.HomeScreen.route)
                     }
                 },
@@ -210,10 +210,12 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.MyTherapyScreen.route + "/{isTherapyInProgress}") {
+        composable(route = Route.MyTherapyScreen.route + "/{id}/{isTherapyInProgress}") {
+            val id = it.arguments?.getString("id") ?: ""
             val isTherapyInProgress = it.arguments?.getString("isTherapyInProgress")?.toBoolean() ?: false
             MyTherapyScreen(
                 isTherapyInProgress = isTherapyInProgress,
+                id = id,
                 navigateToHome = {
                     navController.navigateUp()
                 },
@@ -222,8 +224,8 @@ fun NavGraph(
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 },
-                navigateToChat = {
-                    navController.navigate(route = Route.ChatRoomScreen.route) {
+                navigateToChat = { therapyId ->
+                    navController.navigate(route = Route.ChatRoomScreen.route+ "/$id/$therapyId") {
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 },
@@ -234,8 +236,12 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.ChatRoomScreen.route) {
+        composable(route = Route.ChatRoomScreen.route + "/{id}/{therapyId}") {
+            val id = it.arguments?.getString("id") ?: ""
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
             ChatRoomScreen(
+                id = id,
+                therapyId = therapyId,
                 navigateToMyTheraphy = {
                     navController.navigateUp()
                 }

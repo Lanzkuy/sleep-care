@@ -3,7 +3,7 @@ package com.lans.sleep_care.data.source.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lans.sleep_care.domain.model.Chat
+import com.lans.sleep_care.domain.model.ChatBot
 
 @Entity(tableName = "chatbot_history")
 data class ChatBotHistoryEntity(
@@ -16,7 +16,7 @@ data class ChatBotHistoryEntity(
     val timestamp: Long = System.currentTimeMillis()
 )
 
-fun ChatBotHistoryEntity.toDomain() = Chat(
+fun ChatBotHistoryEntity.toDomain() = ChatBot(
     sender = sender,
     message = message,
     timestamp = timestamp

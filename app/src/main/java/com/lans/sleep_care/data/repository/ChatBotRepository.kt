@@ -6,7 +6,7 @@ import com.lans.sleep_care.data.source.network.api.ChatBotApi
 import com.lans.sleep_care.data.source.network.dto.request.chatbot.ChatBotRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.ChatBotResponse
-import com.lans.sleep_care.domain.model.Chat
+import com.lans.sleep_care.domain.model.ChatBot
 import com.lans.sleep_care.domain.model.toEntity
 import com.lans.sleep_care.domain.repository.IChatBotRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +16,8 @@ class ChatBotRepository @Inject constructor(
     private val api: ChatBotApi,
     private val dao: ChatBotHistoryDao
 ) : IChatBotRepository {
-    override suspend fun saveChat(email: String, chat: Chat) {
-        dao.create(chat.toEntity().copy(email = email))
+    override suspend fun saveChat(email: String, chatBot: ChatBot) {
+        dao.create(chatBot.toEntity().copy(email = email))
     }
 
     override suspend fun fetchHistory(email: String): Flow<List<ChatBotHistoryEntity>> {

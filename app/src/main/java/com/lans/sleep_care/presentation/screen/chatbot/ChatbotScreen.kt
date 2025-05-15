@@ -2,6 +2,7 @@ package com.lans.sleep_care.presentation.screen.chatbot
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -60,11 +62,11 @@ fun ChatbotScreen(
         viewModel.getChatHistory()
     }
 
-    LaunchedEffect(key1 = state.chatHistory.size, key2 = state.error) {
+    LaunchedEffect(key1 = state.chatBotHistory.size, key2 = state.error) {
         val error = state.error
 
-        if (state.chatHistory.isNotEmpty()) {
-            listState.animateScrollToItem(state.chatHistory.lastIndex)
+        if (state.chatBotHistory.isNotEmpty()) {
+            listState.animateScrollToItem(state.chatBotHistory.lastIndex)
         }
 
         if (error.isNotBlank()) {
@@ -88,6 +90,7 @@ fun ChatbotScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
+            .imePadding()
             .padding(
                 start = Dimens.dp24,
                 top = Dimens.dp24,
@@ -125,24 +128,39 @@ fun ChatbotScreen(
                     .size(Dimens.dp50)
             )
         }
-        LazyColumn(
-            modifier = Modifier
+        if (state.isHistoryLoading) {
+            Box(
+                modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(vertical = Dimens.dp16),
-            state = listState,
-            verticalArrangement = Arrangement.spacedBy(Dimens.dp4)
-        ) {
-            items(state.chatHistory) { chat ->
-                val isUser = chat.sender != "bot"
-                ChatBubble(
-                    message = chat.message,
-                    isUser = isUser
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(Dimens.dp32)
+                        .align(Alignment.Center),
+                    color = Primary
                 )
             }
-            if (state.isBotLoading) {
-                item {
-                    TypingIndicator()
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(vertical = Dimens.dp16),
+                state = listState,
+                verticalArrangement = Arrangement.spacedBy(Dimens.dp4)
+            ) {
+                items(state.chatBotHistory) { chat ->
+                    val isUser = chat.sender != "bot"
+                    ChatBubble(
+                        message = chat.message,
+                        isUser = isUser
+                    )
+                }
+                if (state.isBotLoading) {
+                    item {
+                        TypingIndicator()
+                    }
                 }
             }
         }

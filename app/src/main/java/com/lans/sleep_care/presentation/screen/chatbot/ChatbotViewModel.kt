@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.instagram_clone.domain.model.InputWrapper
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.domain.model.Chat
+import com.lans.sleep_care.domain.model.ChatBot
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
@@ -47,15 +47,31 @@ class ChatbotViewModel @Inject constructor(
         }
     }
 
-    private fun storeChat(sender: String, message: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            saveChatBotHistoryUseCase.execute(
-                email = _state.value.email,
-                chat = Chat(
-                    sender = sender,
-                    message = message,
-                )
-            )
+    fun getChatHistory() {
+        viewModelScope.launch {
+            getChatBotHistoryUseCase.execute(_state.value.email).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            chatBotHistory = response.data.toMutableList(),
+                            isHistoryLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isHistoryLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isHistoryLoading = true
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -88,31 +104,15 @@ class ChatbotViewModel @Inject constructor(
         }
     }
 
-    fun getChatHistory() {
-        viewModelScope.launch {
-            getChatBotHistoryUseCase.execute(_state.value.email).collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            chatHistory = response.data.toMutableList(),
-                            isHistoryLoading = false
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            error = response.message,
-                            isHistoryLoading = false
-                        )
-                    }
-
-                    is Resource.Loading -> {
-                        _state.value = _state.value.copy(
-                            isHistoryLoading = true
-                        )
-                    }
-                }
-            }
+    private fun storeChat(sender: String, message: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            saveChatBotHistoryUseCase.execute(
+                email = _state.value.email,
+                chatBot = ChatBot(
+                    sender = sender,
+                    message = message,
+                )
+            )
         }
     }
 }

@@ -1,16 +1,10 @@
 package com.lans.sleep_care.domain.model
 
-import com.lans.sleep_care.data.source.local.entity.ChatBotHistoryEntity
-
 data class Chat(
-    val sender: String,
-    val message: String,
-    val timestamp: Long = System.currentTimeMillis()
-)
-
-fun Chat.toEntity() = ChatBotHistoryEntity(
-    email = "",
-    sender = sender,
-    message = message,
-    timestamp = timestamp
+    val id: Int = 0,
+    val therapyId: Int = 0,
+    val senderId: Int = 0,
+    val receiverId: Int = 0,
+    val message: String = "",
+    val readAt: String = ""
 )

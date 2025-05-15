@@ -14,7 +14,9 @@ import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.SaveChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetAllPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetPsychologistInteractor
+import com.lans.sleep_care.domain.interactor.therapy.GetChatHistoryInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetTherapyScheduleInteractor
+import com.lans.sleep_care.domain.interactor.therapy.SendChatInteractor
 import com.lans.sleep_care.domain.interactor.user.ChangePasswordInteractor
 import com.lans.sleep_care.domain.interactor.user.GetUserProfileInteractor
 import com.lans.sleep_care.domain.interactor.user.UpdateProfileInteractor
@@ -45,7 +47,9 @@ import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetChatHistoryUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
+import com.lans.sleep_care.domain.usecase.therapy.SendChatUseCase
 import com.lans.sleep_care.domain.usecase.user.ChangePasswordUseCase
 import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import com.lans.sleep_care.domain.usecase.user.UpdateProfileUseCase
@@ -212,6 +216,22 @@ object UseCaseModule {
         repository: ITherapyRepository
     ): GetTherapySchedulesUseCase {
         return GetTherapyScheduleInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetChatHistoryUseCase(
+        repository: ITherapyRepository
+    ): GetChatHistoryUseCase {
+        return GetChatHistoryInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSendChatUseCase(
+        repository: ITherapyRepository
+    ): SendChatUseCase {
+        return SendChatInteractor(repository)
     }
 
     @Provides

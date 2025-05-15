@@ -6,15 +6,17 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
+import com.lans.sleep_care.data.source.network.dto.response.ChatListResponse
+import com.lans.sleep_care.data.source.network.dto.response.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
 import com.lans.sleep_care.data.source.network.dto.response.PsychologistListResponse
 import com.lans.sleep_care.data.source.network.dto.response.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
 import com.lans.sleep_care.data.source.network.dto.response.ScheduleListResponse
-import com.lans.sleep_care.data.source.network.dto.response.ScheduleResponse
 import com.lans.sleep_care.data.source.network.dto.response.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -82,4 +84,12 @@ interface SleepCareApi {
 
     @GET("therapy/schedules")
     suspend fun getSchedules(): ApiResponse<ScheduleListResponse>
+
+    @GET("therapy/chats")
+    suspend fun getChatHistory(): ApiResponse<ChatListResponse>
+
+    @POST("therapy/chats")
+    suspend fun sendChat(
+        @Body requestBody: ChatRequest
+    ): ApiResponse<ChatResponse>
 }
