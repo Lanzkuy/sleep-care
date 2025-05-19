@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons.extended)
     implementation(libs.coil.compose)
+    implementation(libs.midtrans.uikit.sandbox)
     implementation(libs.legacy.support.v4)
     implementation(libs.bundles.dagger.hilt)
     implementation(libs.preferences.datastore)

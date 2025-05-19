@@ -12,6 +12,7 @@ appcompat = "1.7.0"
 material = "1.12.0"
 legacy-support-v4 = "1.0.0"
 coil = "2.5.0"
+midtrans-sandbox = "2.0.0-SANDBOX"
 
 # Navigation & Lifecycle
 navigation = "2.8.9"
@@ -51,6 +52,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+midtrans-uikit-sandbox = { module = "com.midtrans:uikit", version.ref = "midtrans-sandbox" }
 
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
