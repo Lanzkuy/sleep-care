@@ -58,17 +58,19 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun MyTherapyScreen(
     viewModel: MyTherapyViewModel = hiltViewModel(),
-    id: String,
     isTherapyInProgress: Boolean,
     navigateToHome: () -> Unit,
     navigateToPsychologist: () -> Unit,
-    navigateToChat: (therapyId: String) -> Unit,
+    navigateToChat: (therapyId: String, psychologistName: String) -> Unit,
     navigateToLogbook: () -> Unit
 ) {
     val state by viewModel.state
     val buttonItems = listOf(
         Triple(R.drawable.ic_message, R.string.chat_psychologist) {
-            navigateToChat.invoke(state.schedules[0].therapyId.toString())
+            navigateToChat.invoke(
+                state.schedules[0].therapyId.toString(),
+                state.psychologist.user.name
+            )
         },
         Triple(R.drawable.ic_book, R.string.therapy_note, navigateToLogbook)
     )
@@ -76,6 +78,7 @@ fun MyTherapyScreen(
     var showNoteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
+        viewModel.loadTherapy()
         viewModel.loadTherapySchedules()
     }
 
@@ -188,7 +191,7 @@ fun MyTherapyScreen(
                 ),
                 shape = RoundedCornerShape(Dimens.dp20)
             ) {
-                if (state.isLoading) {
+                if (state.isScheduleLoading) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()

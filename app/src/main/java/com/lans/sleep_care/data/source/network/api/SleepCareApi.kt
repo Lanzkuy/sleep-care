@@ -17,6 +17,7 @@ import com.lans.sleep_care.data.source.network.dto.response.PsychologistListResp
 import com.lans.sleep_care.data.source.network.dto.response.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
 import com.lans.sleep_care.data.source.network.dto.response.ScheduleListResponse
+import com.lans.sleep_care.data.source.network.dto.response.TherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -81,6 +82,9 @@ interface SleepCareApi {
     suspend fun getPsychologist(
         @Path("id") id: Int
     ): ApiResponse<PsychologistResponse>
+
+    @GET("therapies?status=in_progress")
+    suspend fun getActiveTherapy(): ApiResponse<List<TherapyResponse>>
 
     @GET("therapy/schedules")
     suspend fun getSchedules(): ApiResponse<ScheduleListResponse>

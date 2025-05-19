@@ -53,11 +53,11 @@
     <string name="sleep_diary">Catatan Tidur</string>
     <string name="identify_value">Identifikasi Nilai Pribadi</string>
     <string name="thought_record">Catatan Pikiran</string>
-    <string name="add_thought_record">Tambah Thought Record</string>
+    <string name="add_thought_record">Tambah Catatan Pikiran</string>
     <string name="emotion_record">Catatan Emosi</string>
     <string name="add_emotion_record">Tambah Catatan Emosi</string>
     <string name="commited_action">Tindakan Berkomitmen</string>
-    <string name="add_commited_action">Tambah Committed Action</string>
+    <string name="add_commited_action">Tambah Tindakan Berkomitmen</string>
 
     <string name="thought">Pemikiran</string>
     <string name="situation">Situasi</string>

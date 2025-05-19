@@ -50,6 +50,7 @@ fun ChatRoomScreen(
     viewModel: ChatRoomViewModel = hiltViewModel(),
     id: String,
     therapyId: String,
+    psychologistName: String,
     navigateToMyTheraphy: () -> Unit
 ) {
     val state by viewModel.state
@@ -122,7 +123,9 @@ fun ChatRoomScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                text = stringResource(R.string.psychologist),
+                text = psychologistName
+                    .split(" ")[0]
+                    .ifEmpty { stringResource(R.string.user) },
                 textAlign = TextAlign.Center,
                 fontSize = Dimens.sp24,
                 fontWeight = FontWeight.Bold
