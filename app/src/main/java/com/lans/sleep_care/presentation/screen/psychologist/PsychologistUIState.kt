@@ -6,6 +6,7 @@ import com.lans.sleep_care.domain.model.Psychologist
 data class PsychologistUIState(
     var search: InputWrapper = InputWrapper(),
     var isLoading: Boolean = false,
+    val isPaginating: Boolean = false,
     var error: String = "",
     var psychologists: List<Psychologist> = emptyList(),
     var filteredPsychologists: List<Psychologist> = emptyList()

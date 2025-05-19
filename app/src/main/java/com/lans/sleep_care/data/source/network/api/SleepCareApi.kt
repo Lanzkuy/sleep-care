@@ -6,6 +6,7 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.psychologist.PsychologistListRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
@@ -24,7 +25,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface SleepCareApi {
     @POST("login")
@@ -72,10 +73,7 @@ interface SleepCareApi {
 
     @GET("doctors")
     suspend fun getAllPsychologist(
-        @Query("order_by") orderBy: String = "registered_year",
-        @Query("sort") sort: String = "asc",
-        @Query("paginate") paginate: Int = 10,
-        @Query("page") page: Int = 1
+        @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
     ): ApiResponse<PsychologistListResponse>
 
     @GET("doctors/{id}")

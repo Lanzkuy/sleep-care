@@ -5,5 +5,5 @@ import com.lans.sleep_care.domain.model.Psychologist
 import kotlinx.coroutines.flow.Flow
 
 interface GetAllPsychologistUseCase {
-    suspend fun execute(): Flow<Resource<List<Psychologist>>>
+    suspend fun execute(page: Int): Flow<Resource<List<Psychologist>>>
 }

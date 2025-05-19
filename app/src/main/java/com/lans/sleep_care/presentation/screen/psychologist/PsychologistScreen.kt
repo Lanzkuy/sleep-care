@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -55,10 +57,22 @@ fun PsychologistScreen(
     navigateToPsychologistDetail: (id: String) -> Unit
 ) {
     val state by viewModel.state
+    val listState = rememberLazyListState()
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
         viewModel.loadAllPsychologist()
+    }
+
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            lastVisible
+        }.collect { lastVisibleIndex ->
+            if (lastVisibleIndex >= state.filteredPsychologists.size - 3) {
+                viewModel.loadAllPsychologist()
+            }
+        }
     }
 
     LaunchedEffect(key1 = state.psychologists, key2 = state.error) {
@@ -180,6 +194,7 @@ fun PsychologistScreen(
 
                 else -> {
                     LazyColumn(
+                        state = listState,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
                     ) {
@@ -194,6 +209,17 @@ fun PsychologistScreen(
                                     navigateToPsychologistDetail(psychologist.id.toString())
                                 }
                             )
+                        }
+
+                        if (state.isPaginating) {
+                            item {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .padding(Dimens.dp16)
+                                        .size(Dimens.dp32),
+                                    color = Primary
+                                )
+                            }
                         }
                     }
                 }

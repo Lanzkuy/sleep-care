@@ -18,6 +18,10 @@ class PsychologistViewModel @Inject constructor(
     private val _state = mutableStateOf(PsychologistUIState())
     val state: State<PsychologistUIState> get() = _state
 
+    private var currentPage = 1
+    private var isLastPage = false
+    private var isLoadingMore = false
+
     fun onEvent(event: PsychologistUIEvent) {
         if (event is PsychologistUIEvent.SearchChanged) {
             _state.value = _state.value.copy(
@@ -46,30 +50,47 @@ class PsychologistViewModel @Inject constructor(
     }
 
     fun loadAllPsychologist() {
+        if (isLoadingMore || isLastPage) return
+        isLoadingMore = true
+
         viewModelScope.launch {
-            getAllPsychologistUseCase.execute().collect { response ->
+            getAllPsychologistUseCase.execute(currentPage).collect { response ->
                 when (response) {
                     is Resource.Success -> {
+                        val newData = response.data
+
+                        if (newData.isEmpty()) {
+                            isLastPage = true
+                        } else {
+                            val updatedList = _state.value.psychologists + newData
+                            _state.value = _state.value.copy(
+                                psychologists = updatedList,
+                                filteredPsychologists = updatedList
+                            )
+                            currentPage++
+                        }
+
                         _state.value = _state.value.copy(
-                            psychologists = response.data,
-                            filteredPsychologists = response.data,
-                            isLoading = false
+                            isLoading = false,
+                            isPaginating = false
                         )
                     }
 
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
-                            error = response.message,
-                            isLoading = false
+                            error = response.message
                         )
                     }
 
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
-                            isLoading = true
+                            isLoading = currentPage == 1,
+                            isPaginating = currentPage != 1
                         )
                     }
                 }
+
+                isLoadingMore = false
             }
         }
     }
