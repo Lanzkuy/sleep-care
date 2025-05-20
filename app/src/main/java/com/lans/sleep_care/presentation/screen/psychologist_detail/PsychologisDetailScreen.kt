@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.screen.psychologist_detail
 
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +47,7 @@ import coil.compose.AsyncImage
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
+import com.lans.sleep_care.presentation.screen.payment.PaymentActivity
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
@@ -57,15 +60,24 @@ import java.util.Calendar
 fun PsychologistDetailScreen(
     viewModel: PsychologistDetailViewModel = hiltViewModel(),
     id: Int,
-    navigateToPsychologist: () -> Unit,
-    navigateToPayment: () -> Unit
+    navigateToPsychologist: () -> Unit
 ) {
+    val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
     LaunchedEffect(Unit) {
         viewModel.loadPsychologist(id)
+    }
+
+    LaunchedEffect(key1 = state.error) {
+        val error = state.error
+
+        if (error.isNotBlank()) {
+            showAlert = Pair(true, error)
+            state.error = ""
+        }
     }
 
     if (showAlert.first) {
@@ -329,7 +341,10 @@ fun PsychologistDetailScreen(
                     .height(Dimens.dp48),
                 shape = Rounded,
                 onClick = {
-
+                    val intent = Intent(context, PaymentActivity::class.java).apply {
+                        putExtra("psychologistId", state.psychologist.id)
+                    }
+                    context.startActivity(intent)
                 }
             ) {
                 Text(

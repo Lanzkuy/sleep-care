@@ -6,7 +6,6 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
-import com.lans.sleep_care.data.source.network.dto.request.psychologist.PsychologistListRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
@@ -19,12 +18,14 @@ import com.lans.sleep_care.data.source.network.dto.response.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
 import com.lans.sleep_care.data.source.network.dto.response.ScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.TherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.TransactionStatusResponse
 import com.lans.sleep_care.data.source.network.dto.response.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 interface SleepCareApi {
@@ -94,4 +95,9 @@ interface SleepCareApi {
     suspend fun sendChat(
         @Body requestBody: ChatRequest
     ): ApiResponse<ChatResponse>
+
+    @GET("midtrans-status")
+    suspend fun checkTransactionStatus(
+        @Query("order_id") orderId: String
+    ): TransactionStatusResponse
 }

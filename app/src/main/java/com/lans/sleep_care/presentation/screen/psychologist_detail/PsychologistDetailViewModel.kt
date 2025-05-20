@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
+import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,12 +17,6 @@ class PsychologistDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = mutableStateOf(PsychologistDetailUIState())
     val state: State<PsychologistDetailUIState> get() = _state
-
-    fun onEvent(event: PsychologistDetailUIEvent) {
-        if (event is PsychologistDetailUIEvent.OrderButtonClicked) {
-
-        }
-    }
 
     fun loadPsychologist(id: Int) {
         viewModelScope.launch {
@@ -49,12 +43,6 @@ class PsychologistDetailViewModel @Inject constructor(
                     }
                 }
             }
-        }
-    }
-
-    fun order() {
-        viewModelScope.launch {
-
         }
     }
 }

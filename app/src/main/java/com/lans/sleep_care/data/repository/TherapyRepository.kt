@@ -7,6 +7,7 @@ import com.lans.sleep_care.data.source.network.dto.response.ChatListResponse
 import com.lans.sleep_care.data.source.network.dto.response.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.ScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.TherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.TransactionStatusResponse
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import javax.inject.Inject
 
@@ -23,6 +24,10 @@ class TherapyRepository @Inject constructor(
 
     override suspend fun fetchChatHistory(): ApiResponse<ChatListResponse> {
         return api.getChatHistory()
+    }
+
+    override suspend fun fetchTransactionStatus(orderId: String): TransactionStatusResponse {
+        return api.checkTransactionStatus(orderId)
     }
 
     override suspend fun sendChat(request: ChatRequest): ApiResponse<ChatResponse> {

@@ -204,15 +204,13 @@ fun NavGraph(
                 id = id.toInt(),
                 navigateToPsychologist = {
                     navController.navigateUp()
-                },
-                navigateToPayment = {
-
                 }
             )
         }
         composable(route = Route.MyTherapyScreen.route + "/{id}/{isTherapyInProgress}") {
             val id = it.arguments?.getString("id") ?: ""
-            val isTherapyInProgress = it.arguments?.getString("isTherapyInProgress")?.toBoolean() ?: false
+            val isTherapyInProgress =
+                it.arguments?.getString("isTherapyInProgress")?.toBoolean() ?: false
             MyTherapyScreen(
                 isTherapyInProgress = isTherapyInProgress,
                 navigateToHome = {
@@ -224,7 +222,7 @@ fun NavGraph(
                     }
                 },
                 navigateToChat = { therapyId, psychologistName ->
-                    navController.navigate(route = Route.ChatRoomScreen.route+ "/$id/$therapyId/$psychologistName") {
+                    navController.navigate(route = Route.ChatRoomScreen.route + "/$id/$therapyId/$psychologistName") {
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 },

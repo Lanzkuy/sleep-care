@@ -26,6 +26,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.screen.payment.PaymentActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SleepCare" />
     </application>
 
 </manifest>
