@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.user
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.response.toDomain
+import com.lans.sleep_care.data.source.network.dto.response.user.toDomain
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.repository.IUserRepository
 import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase

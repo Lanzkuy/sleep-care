@@ -3,7 +3,7 @@ package com.lans.sleep_care.domain.interactor.auth
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
-import com.lans.sleep_care.data.source.network.dto.response.toDomain
+import com.lans.sleep_care.data.source.network.dto.response.user.toDomain
 import com.lans.sleep_care.domain.model.User
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
@@ -15,13 +15,13 @@ import javax.inject.Inject
 
 class RegisterInteractor @Inject constructor(
     private val repository: IAuthRepository
-): RegisterUseCase, SafeApiCall {
+) : RegisterUseCase, SafeApiCall {
     override suspend fun execute(
         user: User,
         password: String,
         passwordConfirmation: String
     ): Flow<Resource<User>> {
-        return flow{
+        return flow {
             emit(Resource.Loading)
             emit(safeCall {
                 val response = repository.fetchRegister(

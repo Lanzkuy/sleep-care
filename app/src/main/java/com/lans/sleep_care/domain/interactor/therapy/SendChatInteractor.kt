@@ -3,7 +3,7 @@ package com.lans.sleep_care.domain.interactor.therapy
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
-import com.lans.sleep_care.data.source.network.dto.response.toDomain
+import com.lans.sleep_care.data.source.network.dto.response.chat.toDomain
 import com.lans.sleep_care.domain.model.Chat
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.usecase.therapy.SendChatUseCase

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
-import com.lans.sleep_care.domain.usecase.therapy.GetTransactionStatusUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetPaymentStatusUseCase
 import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    private val getTransactionStatusUseCase: GetTransactionStatusUseCase,
+    private val getPaymentStatusUseCase: GetPaymentStatusUseCase,
     private val getPsychologistUseCase: GetPsychologistUseCase,
     private val getUserProfileUseCase: GetUserProfileUseCase
 ) : ViewModel() {
@@ -33,7 +33,7 @@ class PaymentViewModel @Inject constructor(
             var isCompleted = false
 
             while (!isCompleted) {
-                getTransactionStatusUseCase.execute(orderId).collect { response ->
+                getPaymentStatusUseCase.execute(orderId).collect { response ->
                     when (response) {
                         is Resource.Success -> {
                             val status = response.data

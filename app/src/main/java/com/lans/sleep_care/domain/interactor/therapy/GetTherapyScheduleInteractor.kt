@@ -2,7 +2,8 @@ package com.lans.sleep_care.domain.interactor.therapy
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.response.toDomain
+import com.lans.sleep_care.data.source.network.dto.response.auth.toDomain
+import com.lans.sleep_care.data.source.network.dto.response.therapy.toDomain
 import com.lans.sleep_care.domain.model.TherapySchedule
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
@@ -20,7 +21,7 @@ class GetTherapyScheduleInteractor @Inject constructor(
             emit(Resource.Loading)
             emit(
                 safeCall {
-                    val response = repository.fetchSchedules().data
+                    val response = repository.fetchTherapySchedules().data
                     response?.schedules?.map { it.toDomain() } ?: throw Exception()
                 }
             )

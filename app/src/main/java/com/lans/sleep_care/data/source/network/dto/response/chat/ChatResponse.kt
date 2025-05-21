@@ -1,7 +1,6 @@
-package com.lans.sleep_care.data.source.network.dto.response
+package com.lans.sleep_care.data.source.network.dto.response.chat
 
 import com.lans.sleep_care.domain.model.Chat
-import com.lans.sleep_care.domain.model.ChatBot
 import com.squareup.moshi.Json
 
 data class ChatResponse(

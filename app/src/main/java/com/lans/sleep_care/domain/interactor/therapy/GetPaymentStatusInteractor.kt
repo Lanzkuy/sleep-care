@@ -2,19 +2,19 @@ package com.lans.sleep_care.domain.interactor.therapy
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.repository.ITherapyRepository
-import com.lans.sleep_care.domain.usecase.therapy.GetTransactionStatusUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetPaymentStatusUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetTransactionStatusInteractor @Inject constructor(
+class GetPaymentStatusInteractor @Inject constructor(
     private val repository: ITherapyRepository
-) : GetTransactionStatusUseCase {
+) : GetPaymentStatusUseCase {
     override suspend fun execute(orderId: String): Flow<Resource<String>> {
         return flow {
             emit(Resource.Loading)
-            val response = repository.fetchTransactionStatus(orderId)
+            val response = repository.fetchPaymentStatus(orderId)
             if(response.statusCode == "200") {
                 emit(Resource.Success(response.transactionStatus))
             }

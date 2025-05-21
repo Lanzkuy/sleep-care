@@ -1,5 +1,7 @@
-package com.lans.sleep_care.data.source.network.dto.response
+package com.lans.sleep_care.data.source.network.dto.response.auth
 
+import com.lans.sleep_care.data.source.network.dto.response.user.UserResponse
+import com.lans.sleep_care.data.source.network.dto.response.user.toDomain
 import com.lans.sleep_care.domain.model.Session
 import com.squareup.moshi.Json
 

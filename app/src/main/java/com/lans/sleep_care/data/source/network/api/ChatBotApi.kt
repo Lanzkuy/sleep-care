@@ -1,8 +1,8 @@
 package com.lans.sleep_care.data.source.network.api
 
-import com.lans.sleep_care.data.source.network.dto.request.chatbot.ChatBotRequest
+import com.lans.sleep_care.data.source.network.dto.request.chat.ChatBotRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.ChatBotResponse
+import com.lans.sleep_care.data.source.network.dto.response.chat.ChatBotResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 

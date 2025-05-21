@@ -1,5 +1,6 @@
-package com.lans.sleep_care.data.source.network.dto.response
+package com.lans.sleep_care.data.source.network.dto.response.psychologist
 
+import com.lans.sleep_care.data.source.network.dto.response.user.UserResponse
 import com.lans.sleep_care.domain.model.Psychologist
 import com.lans.sleep_care.domain.model.User
 import com.squareup.moshi.Json

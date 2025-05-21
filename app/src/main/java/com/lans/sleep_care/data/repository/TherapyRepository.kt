@@ -3,11 +3,11 @@ package com.lans.sleep_care.data.repository
 import com.lans.sleep_care.data.source.network.api.SleepCareApi
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.ChatListResponse
-import com.lans.sleep_care.data.source.network.dto.response.ChatResponse
-import com.lans.sleep_care.data.source.network.dto.response.ScheduleListResponse
-import com.lans.sleep_care.data.source.network.dto.response.TherapyResponse
-import com.lans.sleep_care.data.source.network.dto.response.TransactionStatusResponse
+import com.lans.sleep_care.data.source.network.dto.response.chat.ChatListResponse
+import com.lans.sleep_care.data.source.network.dto.response.chat.ChatResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentStatusResponse
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class TherapyRepository @Inject constructor(
         return api.getActiveTherapy()
     }
 
-    override suspend fun fetchSchedules(): ApiResponse<ScheduleListResponse> {
+    override suspend fun fetchTherapySchedules(): ApiResponse<TherapyScheduleListResponse> {
         return api.getSchedules()
     }
 
@@ -26,8 +26,8 @@ class TherapyRepository @Inject constructor(
         return api.getChatHistory()
     }
 
-    override suspend fun fetchTransactionStatus(orderId: String): TransactionStatusResponse {
-        return api.checkTransactionStatus(orderId)
+    override suspend fun fetchPaymentStatus(orderId: String): PaymentStatusResponse {
+        return api.getMidtransStatus(orderId)
     }
 
     override suspend fun sendChat(request: ChatRequest): ApiResponse<ChatResponse> {

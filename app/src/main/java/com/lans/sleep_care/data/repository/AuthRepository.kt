@@ -9,8 +9,8 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
-import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
+import com.lans.sleep_care.data.source.network.dto.response.auth.LoginResponse
+import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

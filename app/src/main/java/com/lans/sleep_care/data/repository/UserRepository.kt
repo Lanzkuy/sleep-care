@@ -4,7 +4,7 @@ import com.lans.sleep_care.data.source.network.api.SleepCareApi
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.UserResponse
+import com.lans.sleep_care.data.source.network.dto.response.user.UserResponse
 import com.lans.sleep_care.domain.repository.IUserRepository
 import javax.inject.Inject
 

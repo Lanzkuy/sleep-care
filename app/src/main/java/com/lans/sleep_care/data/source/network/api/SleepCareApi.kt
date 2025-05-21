@@ -6,20 +6,22 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.ChatListResponse
-import com.lans.sleep_care.data.source.network.dto.response.ChatResponse
-import com.lans.sleep_care.data.source.network.dto.response.LoginResponse
-import com.lans.sleep_care.data.source.network.dto.response.PsychologistListResponse
-import com.lans.sleep_care.data.source.network.dto.response.PsychologistResponse
-import com.lans.sleep_care.data.source.network.dto.response.RegisterResponse
-import com.lans.sleep_care.data.source.network.dto.response.ScheduleListResponse
-import com.lans.sleep_care.data.source.network.dto.response.TherapyResponse
-import com.lans.sleep_care.data.source.network.dto.response.TransactionStatusResponse
-import com.lans.sleep_care.data.source.network.dto.response.UserResponse
+import com.lans.sleep_care.data.source.network.dto.response.chat.ChatListResponse
+import com.lans.sleep_care.data.source.network.dto.response.chat.ChatResponse
+import com.lans.sleep_care.data.source.network.dto.response.auth.LoginResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistListResponse
+import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistResponse
+import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentStatusResponse
+import com.lans.sleep_care.data.source.network.dto.response.user.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -86,7 +88,7 @@ interface SleepCareApi {
     suspend fun getActiveTherapy(): ApiResponse<List<TherapyResponse>>
 
     @GET("therapy/schedules")
-    suspend fun getSchedules(): ApiResponse<ScheduleListResponse>
+    suspend fun getSchedules(): ApiResponse<TherapyScheduleListResponse>
 
     @GET("therapy/chats")
     suspend fun getChatHistory(): ApiResponse<ChatListResponse>
@@ -96,8 +98,13 @@ interface SleepCareApi {
         @Body requestBody: ChatRequest
     ): ApiResponse<ChatResponse>
 
+    @POST("charge")
+    suspend fun sendMidtransCharge(
+        @Body requestBody: PaymentRequest
+    ): PaymentResponse
+
     @GET("midtrans-status")
-    suspend fun checkTransactionStatus(
+    suspend fun getMidtransStatus(
         @Query("order_id") orderId: String
-    ): TransactionStatusResponse
+    ): PaymentStatusResponse
 }

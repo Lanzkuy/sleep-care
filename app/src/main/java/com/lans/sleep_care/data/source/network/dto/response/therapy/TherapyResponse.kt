@@ -1,4 +1,4 @@
-package com.lans.sleep_care.data.source.network.dto.response
+package com.lans.sleep_care.data.source.network.dto.response.therapy
 
 import com.lans.sleep_care.domain.model.Therapy
 import com.squareup.moshi.Json

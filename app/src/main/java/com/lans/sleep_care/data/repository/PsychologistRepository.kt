@@ -4,8 +4,8 @@ import com.lans.sleep_care.data.source.network.api.SleepCareApi
 import com.lans.sleep_care.data.source.network.dto.request.psychologist.PsychologistListRequest
 import com.lans.sleep_care.data.source.network.dto.request.psychologist.toQueryMap
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.PsychologistListResponse
-import com.lans.sleep_care.data.source.network.dto.response.PsychologistResponse
+import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistListResponse
+import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistResponse
 import com.lans.sleep_care.domain.repository.IPsychologistRepository
 import javax.inject.Inject
 
