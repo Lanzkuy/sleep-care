@@ -7,5 +7,6 @@ import com.lans.sleep_care.data.source.network.dto.response.psychologist.Psychol
 
 interface IPsychologistRepository {
     suspend fun fetchAllPsychologist(request: PsychologistListRequest): ApiResponse<PsychologistListResponse>
+
     suspend fun fetchPsychologist(id: Int): ApiResponse<PsychologistResponse>
 }

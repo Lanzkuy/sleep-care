@@ -13,7 +13,7 @@ data class TherapyResponse(
     val startDate: String,
     @field:Json(name = "end_date")
     val endDate: String,
-    val status: String,
+    val status: String?,
     @field:Json(name = "doctor_fee")
     val doctorFee: Int,
     @field:Json(name = "application_fee")
@@ -27,7 +27,7 @@ fun TherapyResponse.toDomain() = Therapy(
     patientId = patientId,
     startDate = startDate,
     endDate = endDate,
-    status = status,
+    status = status ?: "pending",
     doctorFee = doctorFee,
     applicationFee = applicationFee,
     comment = comment ?: ""

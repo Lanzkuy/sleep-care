@@ -2,6 +2,7 @@ package com.lans.sleep_care.di
 
 import com.lans.sleep_care.data.repository.AuthRepository
 import com.lans.sleep_care.data.repository.ChatBotRepository
+import com.lans.sleep_care.data.repository.PaymentRepository
 import com.lans.sleep_care.data.repository.PsychologistRepository
 import com.lans.sleep_care.data.repository.TherapyRepository
 import com.lans.sleep_care.data.repository.UserRepository
@@ -11,6 +12,7 @@ import com.lans.sleep_care.data.source.network.api.ChatBotApi
 import com.lans.sleep_care.data.source.network.api.SleepCareApi
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.repository.IChatBotRepository
+import com.lans.sleep_care.domain.repository.IPaymentRepository
 import com.lans.sleep_care.domain.repository.IPsychologistRepository
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.repository.IUserRepository
@@ -27,11 +29,11 @@ object RepositoryModule {
     @Singleton
     fun provideAuthRepository(
         api: SleepCareApi,
-        dateStoreManager: DataStoreManager
+        dataStoreManager: DataStoreManager
     ): IAuthRepository {
         return AuthRepository(
             api,
-            dateStoreManager
+            dataStoreManager
         )
     }
 
@@ -66,5 +68,14 @@ object RepositoryModule {
         api: SleepCareApi
     ): ITherapyRepository {
         return TherapyRepository(api)
+    }
+
+    @Provides
+    @Singleton
+    fun providePaymentRepository(
+        api: SleepCareApi,
+        dataStoreManager: DataStoreManager
+    ): IPaymentRepository {
+        return PaymentRepository(api, dataStoreManager)
     }
 }

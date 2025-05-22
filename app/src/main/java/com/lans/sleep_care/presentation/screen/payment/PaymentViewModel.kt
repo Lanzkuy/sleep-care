@@ -3,9 +3,9 @@ package com.lans.sleep_care.presentation.screen.payment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
-import com.lans.sleep_care.domain.usecase.therapy.GetPaymentStatusUseCase
-import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
+import com.lans.sleep_care.domain.usecase.payment.RemovePaymentSessionUseCase
+import com.lans.sleep_care.domain.usecase.payment.SavePaymentSessionUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,30 +17,36 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    private val getPaymentStatusUseCase: GetPaymentStatusUseCase,
-    private val getPsychologistUseCase: GetPsychologistUseCase,
-    private val getUserProfileUseCase: GetUserProfileUseCase
+    private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase,
+    private val savePaymentSessionUseCase: SavePaymentSessionUseCase,
+    private val removePaymentSessionUseCase: RemovePaymentSessionUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(PaymentUIState())
     val state: StateFlow<PaymentUIState> get() = _state
 
+    private var hasStartedPolling = false
     private var pollingJob: Job? = null
 
-    fun startPollingTransaction(orderId: String) {
-        pollingJob?.cancel()
+    fun startPollingTransaction() {
+        if (hasStartedPolling) return
+        hasStartedPolling = true
 
+        pollingJob?.cancel()
         pollingJob = viewModelScope.launch {
             var isCompleted = false
 
             while (!isCompleted) {
-                getPaymentStatusUseCase.execute(orderId).collect { response ->
+                getOrderTherapyStatusUseCase.execute().collect { response ->
                     when (response) {
                         is Resource.Success -> {
-                            val status = response.data
+                            val status = response.data.paymentStatus
                             _state.update {
                                 it.copy(paymentStatus = status, isLoading = false)
                             }
-                            isCompleted = true
+
+                            if (status == "settlement") {
+                                isCompleted = true
+                            }
                         }
 
                         is Resource.Error -> {
@@ -64,70 +70,23 @@ class PaymentViewModel @Inject constructor(
     }
 
     fun stopPollingTransaction() {
+        hasStartedPolling = false
         pollingJob?.cancel()
     }
 
-    fun loadPsychologist(id: Int) {
+    fun savePaymentToken(paymentToken: String, orderId: String, psychologistId: Int) {
         viewModelScope.launch {
-            getPsychologistUseCase.execute(id).collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.update {
-                            it.copy(
-                                psychologist = response.data,
-                                isLoading = false
-                            )
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        _state.update {
-                            it.copy(
-                                error = response.message,
-                                isLoading = false
-                            )
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        _state.update {
-                            it.copy(isLoading = true)
-                        }
-                    }
-                }
-            }
+            savePaymentSessionUseCase.invoke(
+                paymentToken = paymentToken,
+                orderId = orderId,
+                psychologistId = psychologistId
+            )
         }
     }
 
-    fun getUser() {
+    fun removePaymentToken() {
         viewModelScope.launch {
-            getUserProfileUseCase.execute().collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.update {
-                            it.copy(
-                                user = response.data,
-                                isLoading = false
-                            )
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        _state.update {
-                            it.copy(
-                                error = response.message,
-                                isLoading = false
-                            )
-                        }
-                    }
-
-                    is Resource.Loading -> {
-                        _state.update {
-                            it.copy(isLoading = true)
-                        }
-                    }
-                }
-            }
+            removePaymentSessionUseCase.execute()
         }
     }
 }

@@ -8,6 +8,7 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetReq
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
 import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
+import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
@@ -20,14 +21,14 @@ import com.lans.sleep_care.data.source.network.dto.response.psychologist.Psychol
 import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
-import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentStatusResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleResponse
 import com.lans.sleep_care.data.source.network.dto.response.user.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 interface SleepCareApi {
@@ -85,10 +86,12 @@ interface SleepCareApi {
     ): ApiResponse<PsychologistResponse>
 
     @GET("therapies?status=in_progress")
-    suspend fun getActiveTherapy(): ApiResponse<List<TherapyResponse>>
+    suspend fun getActiveTherapy(): ApiResponse<TherapyResponse>
 
-    @GET("therapy/schedules")
-    suspend fun getSchedules(): ApiResponse<TherapyScheduleListResponse>
+    @GET("therapy/schedules/{id}")
+    suspend fun getSchedules(
+        @Path("id") id: Int
+    ): ApiResponse<TherapyScheduleListResponse>
 
     @GET("therapy/chats")
     suspend fun getChatHistory(): ApiResponse<ChatListResponse>
@@ -98,13 +101,16 @@ interface SleepCareApi {
         @Body requestBody: ChatRequest
     ): ApiResponse<ChatResponse>
 
-    @POST("charge")
+    @GET("therapy/orders")
+    suspend fun getOrderStatus(): ApiResponse<List<OrderTherapyResponse>>
+
+    @POST("therapy/orders")
+    suspend fun createOrder(
+        @Body requestBody: OrderTherapyRequest
+    ): ApiResponse<OrderTherapyResponse>
+
+    @POST("midtrans/charge")
     suspend fun sendMidtransCharge(
         @Body requestBody: PaymentRequest
     ): PaymentResponse
-
-    @GET("midtrans-status")
-    suspend fun getMidtransStatus(
-        @Query("order_id") orderId: String
-    ): PaymentStatusResponse
 }

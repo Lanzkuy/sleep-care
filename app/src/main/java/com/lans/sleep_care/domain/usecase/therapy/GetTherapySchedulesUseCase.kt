@@ -5,5 +5,5 @@ import com.lans.sleep_care.domain.model.TherapySchedule
 import kotlinx.coroutines.flow.Flow
 
 interface GetTherapySchedulesUseCase {
-    suspend fun execute(): Flow<Resource<List<TherapySchedule>>>
+    suspend fun execute(therapyId: Int): Flow<Resource<List<TherapySchedule>>>
 }

@@ -36,6 +36,7 @@
     <string name="user">User</string>
 
     <string name="psychologist">Psikolog</string>
+    <string name="search_psychologist">Cari psikolog</string>
     <string name="psychologist_detail">Detail Psikolog</string>
     <string name="about_psychologist">Tentang Psikolog</string>
     <string name="chat_psychologist">Chat Psikolog</string>

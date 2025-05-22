@@ -5,7 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
+import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
+import com.lans.sleep_care.domain.usecase.payment.GetPaymentSessionUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
+import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
 import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,10 +17,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PsychologistDetailViewModel @Inject constructor(
-    private val getPsychologistUseCase: GetPsychologistUseCase
+    private val getPsychologistUseCase: GetPsychologistUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase,
+    private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase,
+    private val getPaymentSessionUseCase: GetPaymentSessionUseCase,
+    private val createOrderTherapyUseCase: CreateOrderTherapyUseCase,
+    private val createPaymentChargeUseCase: CreatePaymentChargeUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(PsychologistDetailUIState())
     val state: State<PsychologistDetailUIState> get() = _state
+
+    fun onEvent(event: PsychologistDetailUIEvent) {
+        if (event is PsychologistDetailUIEvent.OrderButtonClicked) {
+            createOrderTherapy()
+        }
+    }
 
     fun loadPsychologist(id: Int) {
         viewModelScope.launch {
@@ -39,6 +54,149 @@ class PsychologistDetailViewModel @Inject constructor(
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
                             isLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun loadUser() {
+        viewModelScope.launch {
+            getUserProfileUseCase.execute().collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            user = response.data,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getOrderTherapyStatus() {
+        viewModelScope.launch {
+            getOrderTherapyStatusUseCase.execute().collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            order = response.data,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getPaymentSession() {
+        viewModelScope.launch {
+            getPaymentSessionUseCase.execute().collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            paymentSession = response.data,
+                            isButtonLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isButtonLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isButtonLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createOrderTherapy() {
+        viewModelScope.launch {
+            createOrderTherapyUseCase.execute(_state.value.psychologist.id).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            order = response.data,
+                            isButtonLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isButtonLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isButtonLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun createPaymentCharge() {
+        viewModelScope.launch {
+            createPaymentChargeUseCase.execute(
+                orderId = _state.value.order.id,
+                user = _state.value.user
+            ).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            paymentToken = response.data.first,
+                            isButtonLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isButtonLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isButtonLoading = true
                         )
                     }
                 }

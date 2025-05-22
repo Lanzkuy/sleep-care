@@ -29,7 +29,7 @@ class AuthRepository @Inject constructor(
     }
 
     override suspend fun deleteToken() {
-        dataStoreManager.clear()
+        dataStoreManager.deleteAccessToken()
     }
 
     override suspend fun fetchLogin(request: LoginRequest): ApiResponse<LoginResponse> {

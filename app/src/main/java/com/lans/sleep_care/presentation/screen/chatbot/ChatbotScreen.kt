@@ -90,7 +90,6 @@ fun ChatbotScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .imePadding()
             .padding(
                 start = Dimens.dp24,
                 top = Dimens.dp24,

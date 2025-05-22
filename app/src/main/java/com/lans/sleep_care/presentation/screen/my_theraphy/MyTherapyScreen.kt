@@ -79,7 +79,6 @@ fun MyTherapyScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadTherapy()
-        viewModel.loadTherapySchedules()
     }
 
     LaunchedEffect(key1 = state.schedules, key2 = state.error) {
@@ -191,6 +190,16 @@ fun MyTherapyScreen(
                 ),
                 shape = RoundedCornerShape(Dimens.dp20)
             ) {
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = Dimens.dp16,
+                            vertical = Dimens.dp12
+                        ),
+                    text = stringResource(R.string.therapy_schedule),
+                    fontSize = Dimens.sp20,
+                    fontWeight = FontWeight.SemiBold
+                )
                 if (state.isScheduleLoading) {
                     Box(
                         modifier = Modifier
@@ -209,19 +218,9 @@ fun MyTherapyScreen(
                         modifier = Modifier
                             .padding(
                                 start = Dimens.dp16,
-                                top = Dimens.dp16,
                                 end = Dimens.dp16
                             )
                     ) {
-                        item {
-                            Text(
-                                modifier = Modifier
-                                    .padding(bottom = Dimens.dp12),
-                                text = stringResource(R.string.therapy_schedule),
-                                fontSize = Dimens.sp20,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
                         items(state.schedules) { schedule ->
                             ScheduleItem(
                                 date = schedule.date,

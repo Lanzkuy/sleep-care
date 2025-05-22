@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.screen.payment.PaymentActivity
 import com.lans.sleep_care.presentation.theme.Black
@@ -69,6 +69,45 @@ fun PsychologistDetailScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadPsychologist(id)
+        viewModel.loadUser()
+        viewModel.getOrderTherapyStatus()
+    }
+
+    LaunchedEffect(key1 = state.order) {
+        val order = state.order
+
+        if (order.id.isNotEmpty() && order.paymentStatus == "pending") {
+            viewModel.getPaymentSession()
+        }
+    }
+
+    LaunchedEffect(key1 = state.paymentSession) {
+        val paymentSession = state.paymentSession
+
+        if (paymentSession.first.isNotEmpty() &&
+            paymentSession.second == state.order.id &&
+            paymentSession.third == state.psychologist.id
+        ) {
+            val intent = Intent(context, PaymentActivity::class.java).apply {
+                putExtra("token", paymentSession.first)
+                putExtra("orderId", paymentSession.second)
+                putExtra("psychologistId", paymentSession.third)
+            }
+            context.startActivity(intent)
+        }
+    }
+
+    LaunchedEffect(key1 = state.paymentToken) {
+        val paymentToken = state.paymentToken
+
+        if (paymentToken.isNotEmpty()) {
+            val intent = Intent(context, PaymentActivity::class.java).apply {
+                putExtra("token", paymentToken)
+                putExtra("orderId", state.order.id)
+                putExtra("psychologistId", state.psychologist.id)
+            }
+            context.startActivity(intent)
+        }
     }
 
     LaunchedEffect(key1 = state.error) {
@@ -335,23 +374,17 @@ fun PsychologistDetailScreen(
                     .fillMaxWidth()
                     .height(Dimens.dp16)
             )
-            Button(
+            LoadingButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(Dimens.dp48),
+                text = stringResource(R.string.message),
                 shape = Rounded,
+                isLoading = state.isButtonLoading,
                 onClick = {
-                    val intent = Intent(context, PaymentActivity::class.java).apply {
-                        putExtra("psychologistId", state.psychologist.id)
-                    }
-                    context.startActivity(intent)
+                    viewModel.onEvent(PsychologistDetailUIEvent.OrderButtonClicked)
                 }
-            ) {
-                Text(
-                    text = stringResource(R.string.message).uppercase(),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
+            )
         }
     }
 }

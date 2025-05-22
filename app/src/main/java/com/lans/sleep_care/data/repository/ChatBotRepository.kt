@@ -16,15 +16,15 @@ class ChatBotRepository @Inject constructor(
     private val api: ChatBotApi,
     private val dao: ChatBotHistoryDao
 ) : IChatBotRepository {
-    override suspend fun saveChat(email: String, chatBot: ChatBot) {
-        dao.create(chatBot.toEntity().copy(email = email))
-    }
-
     override suspend fun fetchHistory(email: String): Flow<List<ChatBotHistoryEntity>> {
         return dao.getAllHistories(email)
     }
 
     override suspend fun fetchAnswer(request: ChatBotRequest): ApiResponse<ChatBotResponse> {
         return api.chat(request)
+    }
+
+    override suspend fun saveChat(email: String, chatBot: ChatBot) {
+        dao.create(chatBot.toEntity().copy(email = email))
     }
 }

@@ -3,6 +3,7 @@ package com.lans.sleep_care.domain.interactor.therapy
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.response.auth.toDomain
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.toDomain
 import com.lans.sleep_care.domain.model.TherapySchedule
 import com.lans.sleep_care.domain.repository.ITherapyRepository
@@ -16,12 +17,12 @@ import javax.inject.Inject
 class GetTherapyScheduleInteractor @Inject constructor(
     private val repository: ITherapyRepository
 ) : GetTherapySchedulesUseCase, SafeApiCall {
-    override suspend fun execute(): Flow<Resource<List<TherapySchedule>>> {
+    override suspend fun execute(therapyId: Int): Flow<Resource<List<TherapySchedule>>> {
         return flow {
             emit(Resource.Loading)
             emit(
                 safeCall {
-                    val response = repository.fetchTherapySchedules().data
+                    val response = repository.fetchTherapySchedules(therapyId).data
                     response?.schedules?.map { it.toDomain() } ?: throw Exception()
                 }
             )

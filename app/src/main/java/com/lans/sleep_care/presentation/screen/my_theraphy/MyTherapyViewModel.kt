@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
-import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetActiveTherapyUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,6 +30,7 @@ class MyTherapyViewModel @Inject constructor(
                             therapy = response.data
                         )
                         loadPsychologist(response.data.doctorId)
+                        loadTherapySchedules(response.data.id)
                     }
 
                     is Resource.Error -> {
@@ -49,36 +50,6 @@ class MyTherapyViewModel @Inject constructor(
             }
         }
     }
-
-    fun loadTherapySchedules() {
-        viewModelScope.launch {
-            getTherapySchedulesUseCase.execute().collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            schedules = response.data,
-                            isScheduleLoading = false
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        val message = response.message
-                        _state.value = _state.value.copy(
-                            error = message.takeIf { it != "Terapi tidak ditemukan." } ?: "",
-                            isScheduleLoading = false
-                        )
-                    }
-
-                    is Resource.Loading -> {
-                        _state.value = _state.value.copy(
-                            isScheduleLoading = true
-                        )
-                    }
-                }
-            }
-        }
-    }
-
 
     private fun loadPsychologist(id: Int) {
         viewModelScope.launch {
@@ -101,6 +72,35 @@ class MyTherapyViewModel @Inject constructor(
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
                             isTherapyLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadTherapySchedules(therapyId: Int) {
+        viewModelScope.launch {
+            getTherapySchedulesUseCase.execute(therapyId).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            schedules = response.data,
+                            isScheduleLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        val message = response.message
+                        _state.value = _state.value.copy(
+                            error = message.takeIf { it != "Terapi tidak ditemukan." } ?: "",
+                            isScheduleLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isScheduleLoading = true
                         )
                     }
                 }

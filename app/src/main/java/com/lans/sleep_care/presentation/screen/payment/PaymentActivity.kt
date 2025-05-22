@@ -8,14 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import com.lans.sleep_care.common.Constant.MIDTRANS_CLIENT_KEY
 import com.lans.sleep_care.common.Constant.MIDTRANS_LANGUAGE
 import com.lans.sleep_care.common.Constant.MIDTRANS_MERCHANT_BASE_URL
-import com.lans.sleep_care.domain.model.Psychologist
-import com.lans.sleep_care.domain.model.User
-import com.lans.sleep_care.utils.splitName
 import com.midtrans.sdk.corekit.callback.TransactionFinishedCallback
 import com.midtrans.sdk.corekit.core.MidtransSDK
-import com.midtrans.sdk.corekit.core.TransactionRequest
-import com.midtrans.sdk.corekit.models.CustomerDetails
-import com.midtrans.sdk.corekit.models.ItemDetails
 import com.midtrans.sdk.corekit.models.snap.TransactionResult
 import com.midtrans.sdk.uikit.SdkUIFlowBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +20,6 @@ import kotlinx.coroutines.launch
 class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
     private val viewModel: PaymentViewModel by viewModels()
     private lateinit var orderId: String
-
     private var isTransactionStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +34,14 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
             .enableLog(true)
             .buildSDK()
 
-        val psychologistId = intent.getIntExtra("psychologistId", 1)
-        orderId = "ORDER-${System.currentTimeMillis()}"
+        val token = intent.getStringExtra("token")
+        val psychologistId = intent.getIntExtra("psychologistId", 0)
+        orderId = intent.getStringExtra("orderId")!!
 
-        viewModel.loadPsychologist(psychologistId)
-        viewModel.getUser()
+        if (!token.isNullOrEmpty() && !isTransactionStarted) {
+            isTransactionStarted = true
+            startTransaction(token)
+        }
 
         lifecycleScope.launch {
             viewModel.state.collectLatest { state ->
@@ -54,65 +50,64 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
                         .show()
                 }
 
-                val user = state.user
-                val psychologist = state.psychologist
-
-                if (user != null && psychologist != null && !isTransactionStarted) {
-                    isTransactionStarted = true
-                    startTransaction(user, psychologist)
+                if (state.paymentStatus == "pending" && !token.isNullOrEmpty()) {
+                    viewModel.savePaymentToken(token, orderId, psychologistId)
                 }
 
-                if (state.paymentStatus.isNotEmpty()) {
+                if (state.paymentStatus == "settlement") {
                     Toast.makeText(
                         this@PaymentActivity,
-                        "Status: ${state.paymentStatus}",
+                        "Pembayaran berhasil",
                         Toast.LENGTH_LONG
                     ).show()
+
+                    viewModel.removePaymentToken()
                     finish()
                 }
             }
         }
     }
 
-    private fun startTransaction(user: User, psychologist: Psychologist) {
-        val (firstName, lastName) = splitName(user.name)
-        val price = 350000.0
+    override fun onTransactionFinished(result: TransactionResult) {
+        if (result.isTransactionCanceled) {
+            Toast.makeText(this, "Pembayaran dibatalkan", Toast.LENGTH_LONG).show()
 
-        val transactionRequest = TransactionRequest(orderId, price).apply {
-            customerDetails = CustomerDetails().apply {
-                customerIdentifier = user.email
-                this.firstName = firstName
-                this.lastName = lastName
-                this.email = user.email
-            }
-
-            itemDetails = arrayListOf(
-                ItemDetails(
-                    "ITEM-${psychologist.id}",
-                    price,
-                    1,
-                    "THERAPY-${psychologist.id}-${psychologist.userId}"
-                )
-            )
+            finish()
+            return
         }
 
-        MidtransSDK.getInstance().transactionRequest = transactionRequest
-        MidtransSDK.getInstance().startPaymentUiFlow(this)
+        result.response?.let {
+            when (result.status) {
+                TransactionResult.STATUS_INVALID -> {
+                    Toast.makeText(this, "Pembayaran tidak valid", Toast.LENGTH_LONG).show()
+                }
+
+                TransactionResult.STATUS_PENDING -> {
+                    Toast.makeText(
+                        this,
+                        "Pembayaran belum selesai. Silakan lanjutkan pembayaran",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                TransactionResult.STATUS_SUCCESS -> {
+                    Toast.makeText(this, "Pembayaran berhasil", Toast.LENGTH_LONG).show()
+                }
+
+                TransactionResult.STATUS_FAILED -> {
+                    Toast.makeText(
+                        this,
+                        "Terjadi kesalahan saat memproses pembayaran",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+            finish()
+        }
     }
 
-    override fun onTransactionFinished(result: TransactionResult) {
-        if (result.response != null) {
-            viewModel.startPollingTransaction(orderId)
-        } else if (result.isTransactionCanceled) {
-            Toast.makeText(this, "Transaction Canceled", Toast.LENGTH_LONG).show()
-            finish()
-        } else {
-            if (result.status.equals(TransactionResult.STATUS_INVALID, true)) {
-                Toast.makeText(this, "Transaction Invalid", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "Transaction Finished with failure.", Toast.LENGTH_LONG).show()
-            }
-            finish()
-        }
+    private fun startTransaction(token: String) {
+        MidtransSDK.getInstance().startPaymentUiFlow(this, token)
+        viewModel.startPollingTransaction()
     }
 }

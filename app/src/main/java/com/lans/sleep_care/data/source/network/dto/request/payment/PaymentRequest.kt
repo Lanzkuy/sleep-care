@@ -8,7 +8,7 @@ data class PaymentRequest(
     @field:Json(name = "item_details")
     val itemDetails: List<ItemDetailRequest>,
     @field:Json(name = "customer_details")
-    val customerDetails: List<CustomerDetailRequest>
+    val customerDetails: CustomerDetailRequest
 )
 
 data class PaymentDetailRequest(
@@ -19,7 +19,6 @@ data class PaymentDetailRequest(
 )
 
 data class ItemDetailRequest(
-    val id: String,
     val price: Int,
     val quantity: Int,
     val name: String

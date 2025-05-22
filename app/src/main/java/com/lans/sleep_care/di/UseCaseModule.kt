@@ -12,12 +12,17 @@ import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotAnswerInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.SaveChatBotHistoryInteractor
+import com.lans.sleep_care.domain.interactor.payment.CreatePaymentChargeInteractor
+import com.lans.sleep_care.domain.interactor.payment.GetPaymentSessionInteractor
+import com.lans.sleep_care.domain.interactor.payment.RemovePaymentSessionInteractor
+import com.lans.sleep_care.domain.interactor.payment.SavePaymentSessionInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetAllPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetPsychologistInteractor
-import com.lans.sleep_care.domain.interactor.therapy.GetChatHistoryInteractor
+import com.lans.sleep_care.domain.interactor.therapy.CreateOrderTherapyInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetActiveActiveTherapyInteractor
+import com.lans.sleep_care.domain.interactor.therapy.GetChatHistoryInteractor
+import com.lans.sleep_care.domain.interactor.therapy.GetOrderTherapyStatusInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetTherapyScheduleInteractor
-import com.lans.sleep_care.domain.interactor.therapy.GetPaymentStatusInteractor
 import com.lans.sleep_care.domain.interactor.therapy.SendChatInteractor
 import com.lans.sleep_care.domain.interactor.user.ChangePasswordInteractor
 import com.lans.sleep_care.domain.interactor.user.GetUserProfileInteractor
@@ -32,6 +37,7 @@ import com.lans.sleep_care.domain.interactor.validator.ValidateVerificationCodeI
 import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.repository.IChatBotRepository
+import com.lans.sleep_care.domain.repository.IPaymentRepository
 import com.lans.sleep_care.domain.repository.IPsychologistRepository
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.repository.IUserRepository
@@ -47,12 +53,17 @@ import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
+import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
+import com.lans.sleep_care.domain.usecase.payment.GetPaymentSessionUseCase
+import com.lans.sleep_care.domain.usecase.payment.RemovePaymentSessionUseCase
+import com.lans.sleep_care.domain.usecase.payment.SavePaymentSessionUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
-import com.lans.sleep_care.domain.usecase.therapy.GetChatHistoryUseCase
-import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
+import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetActiveTherapyUseCase
-import com.lans.sleep_care.domain.usecase.therapy.GetPaymentStatusUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetChatHistoryUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
 import com.lans.sleep_care.domain.usecase.therapy.SendChatUseCase
 import com.lans.sleep_care.domain.usecase.user.ChangePasswordUseCase
 import com.lans.sleep_care.domain.usecase.user.GetUserProfileUseCase
@@ -232,6 +243,22 @@ object UseCaseModule {
 
     @Provides
     @Singleton
+    fun provideGetOrderTherapyStatusUseCase(
+        repository: ITherapyRepository
+    ): GetOrderTherapyStatusUseCase {
+        return GetOrderTherapyStatusInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateOrderTherapyUseCase(
+        repository: ITherapyRepository
+    ): CreateOrderTherapyUseCase {
+        return CreateOrderTherapyInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
     fun provideGetChatHistoryUseCase(
         repository: ITherapyRepository
     ): GetChatHistoryUseCase {
@@ -248,10 +275,34 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetTransactionStatusUseCase(
-        repository: ITherapyRepository
-    ): GetPaymentStatusUseCase {
-        return GetPaymentStatusInteractor(repository)
+    fun provideCreatePaymentChargeUseCase(
+        repository: IPaymentRepository
+    ): CreatePaymentChargeUseCase {
+        return CreatePaymentChargeInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPaymentSessionUseCase(
+        repository: IPaymentRepository
+    ): GetPaymentSessionUseCase {
+        return GetPaymentSessionInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSavePaymentSessionUseCase(
+        repository: IPaymentRepository
+    ): SavePaymentSessionUseCase {
+        return SavePaymentSessionInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemovePaymentSessionUseCase(
+        repository: IPaymentRepository
+    ): RemovePaymentSessionUseCase {
+        return RemovePaymentSessionInteractor(repository)
     }
 
     @Provides
