@@ -11,6 +11,5 @@ data class PsychologistDetailUIState(
     val psychologist: Psychologist = Psychologist(),
     val user: User = User(),
     val order: Order = Order(),
-    val paymentSession: Triple<String, String, Int> = Triple("", "", 0),
     val paymentToken: String = ""
 )

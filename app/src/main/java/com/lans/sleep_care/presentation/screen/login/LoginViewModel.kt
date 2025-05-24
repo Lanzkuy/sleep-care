@@ -84,7 +84,7 @@ class LoginViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         _state.value =_state.value.copy(
-                            isLoggedIn = response.data.user.isActive != null,
+                            isLoggedIn = response.data.user.isActive,
                             isLoading = false
                         )
                         saveSessionUseCase.invoke(

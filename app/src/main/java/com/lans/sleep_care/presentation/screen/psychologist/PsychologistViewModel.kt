@@ -63,9 +63,10 @@ class PsychologistViewModel @Inject constructor(
                             isLastPage = true
                         } else {
                             val updatedList = _state.value.psychologists + newData
+                            val keyword = _state.value.search.value
                             _state.value = _state.value.copy(
                                 psychologists = updatedList,
-                                filteredPsychologists = updatedList
+                                filteredPsychologists = filterPsychologists(updatedList, keyword)
                             )
                             currentPage++
                         }

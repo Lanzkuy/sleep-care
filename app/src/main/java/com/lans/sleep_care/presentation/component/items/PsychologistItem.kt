@@ -2,7 +2,6 @@ package com.lans.sleep_care.presentation.component.items
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +33,6 @@ import com.lans.sleep_care.presentation.theme.White
 fun PsychologistItem(
     image: String? = null,
     name: String,
-    experience: Int = 1,
     rating: Double = 0.0,
     totalReview: Int = 0,
     onClick: () -> Unit
@@ -66,61 +64,44 @@ fun PsychologistItem(
                 contentDescription = stringResource(R.string.image),
                 contentScale = ContentScale.Crop,
             )
-            Column(
+            Row(
                 modifier = Modifier
                     .height(Dimens.dp48)
                     .weight(1f),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
+                    modifier = Modifier
+                        .weight(1f),
                     text = name,
                     style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = Dimens.sp18,
                         fontWeight = FontWeight.Bold
                     )
                 )
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.dp4),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(Dimens.dp4),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(Dimens.dp20),
-                            painter = painterResource(R.drawable.ic_work),
-                            contentDescription = stringResource(R.string.icon)
+                    Icon(
+                        modifier = Modifier
+                            .size(Dimens.dp24),
+                        painter = painterResource(R.drawable.ic_star_filled),
+                        tint = Warning,
+                        contentDescription = stringResource(R.string.icon)
+                    )
+                    Text(
+                        text = rating.toString(),
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontSize = Dimens.sp18,
+                            fontWeight = FontWeight.SemiBold
                         )
-                        Text(
-                            text = stringResource(R.string.year, experience),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(Dimens.dp4),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(Dimens.dp20),
-                            painter = painterResource(R.drawable.ic_star_filled),
-                            tint = Warning,
-                            contentDescription = stringResource(R.string.icon)
-                        )
-                        Text(
-                            text = rating.toString(),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        )
-                        Text(
-                            text = "($totalReview)",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
+                    )
+//                    Text(
+//                        text = "($totalReview)",
+//                        style = MaterialTheme.typography.bodyMedium
+//                    )
                 }
             }
         }

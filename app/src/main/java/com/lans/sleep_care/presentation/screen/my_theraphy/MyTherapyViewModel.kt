@@ -26,17 +26,18 @@ class MyTherapyViewModel @Inject constructor(
             getActiveTherapyUseCase.execute().collect { response ->
                 when (response) {
                     is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            therapy = response.data
-                        )
-                        loadPsychologist(response.data.doctorId)
-                        loadTherapySchedules(response.data.id)
+                        if(response.data != null) {
+                            _state.value = _state.value.copy(
+                                therapy = response.data
+                            )
+                            loadPsychologist(response.data.doctorId)
+                            loadTherapySchedules(response.data.id)
+                        }
                     }
 
                     is Resource.Error -> {
-                        val message = response.message
                         _state.value = _state.value.copy(
-                            error = message.takeIf { it != "Terapi tidak ditemukan." } ?: "",
+                            error = response.message,
                             isTherapyLoading = false
                         )
                     }

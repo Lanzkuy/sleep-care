@@ -101,8 +101,8 @@ interface SleepCareApi {
         @Body requestBody: ChatRequest
     ): ApiResponse<ChatResponse>
 
-    @GET("therapy/orders")
-    suspend fun getOrderStatus(): ApiResponse<List<OrderTherapyResponse>>
+    @GET("therapy/orders?payment_status=pending")
+    suspend fun getOrderStatus(): ApiResponse<OrderTherapyResponse>
 
     @POST("therapy/orders")
     suspend fun createOrder(

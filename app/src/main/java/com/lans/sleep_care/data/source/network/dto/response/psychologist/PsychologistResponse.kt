@@ -14,8 +14,6 @@ data class PsychologistResponse(
     val graduate: String?,
     val about: String?,
     val phone: String,
-    @field:Json(name = "name_title")
-    val nameTitle: String?,
     @field:Json(name = "total_rating")
     val totalRating: Int,
     @field:Json(name = "avg_rating")
@@ -30,13 +28,13 @@ fun PsychologistResponse.toDomain() = Psychologist(
     graduate = graduate ?: "",
     about = about ?: "",
     phone = phone,
-    nameTitle = nameTitle ?: "",
     totalRating = totalRating,
     avgRating = avgRating,
     user = User(
         id = user.id,
         name = user.name,
         email = user.email,
+        avatar = user.avatar ?: "",
         age = user.age,
         gender = user.gender,
         problems = user.problems ?: emptyList(),

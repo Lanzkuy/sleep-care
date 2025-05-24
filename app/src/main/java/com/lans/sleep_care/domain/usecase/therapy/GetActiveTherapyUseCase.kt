@@ -5,5 +5,5 @@ import com.lans.sleep_care.domain.model.Therapy
 import kotlinx.coroutines.flow.Flow
 
 interface GetActiveTherapyUseCase {
-    suspend fun execute(): Flow<Resource<Therapy>>
+    suspend fun execute(): Flow<Resource<Therapy?>>
 }

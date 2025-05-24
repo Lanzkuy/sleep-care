@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
-import com.lans.sleep_care.domain.usecase.payment.GetPaymentSessionUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
@@ -20,7 +19,6 @@ class PsychologistDetailViewModel @Inject constructor(
     private val getPsychologistUseCase: GetPsychologistUseCase,
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase,
-    private val getPaymentSessionUseCase: GetPaymentSessionUseCase,
     private val createOrderTherapyUseCase: CreateOrderTherapyUseCase,
     private val createPaymentChargeUseCase: CreatePaymentChargeUseCase
 ) : ViewModel() {
@@ -29,7 +27,17 @@ class PsychologistDetailViewModel @Inject constructor(
 
     fun onEvent(event: PsychologistDetailUIEvent) {
         if (event is PsychologistDetailUIEvent.OrderButtonClicked) {
-            createOrderTherapy()
+            with(_state.value) {
+                if (order.paymentId.isEmpty() && order.paymentStatus == "pending") {
+                    createPaymentCharge()
+                } else if (order.paymentId.isNotEmpty() && order.paymentStatus == "pending") {
+                    _state.value = _state.value.copy(
+                        paymentToken = order.paymentId
+                    )
+                } else {
+                    createOrderTherapy()
+                }
+            }
         }
     }
 
@@ -102,7 +110,8 @@ class PsychologistDetailViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
-                            error = response.message,
+                            error = response.message.takeUnless { it == "Order tidak ditemukan" }
+                                ?: "",
                             isLoading = false
                         )
                     }
@@ -110,34 +119,6 @@ class PsychologistDetailViewModel @Inject constructor(
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
                             isLoading = true
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    fun getPaymentSession() {
-        viewModelScope.launch {
-            getPaymentSessionUseCase.execute().collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            paymentSession = response.data,
-                            isButtonLoading = false
-                        )
-                    }
-
-                    is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            error = response.message,
-                            isButtonLoading = false
-                        )
-                    }
-
-                    is Resource.Loading -> {
-                        _state.value = _state.value.copy(
-                            isButtonLoading = true
                         )
                     }
                 }
@@ -173,7 +154,7 @@ class PsychologistDetailViewModel @Inject constructor(
         }
     }
 
-    fun createPaymentCharge() {
+    private fun createPaymentCharge() {
         viewModelScope.launch {
             createPaymentChargeUseCase.execute(
                 orderId = _state.value.order.id,

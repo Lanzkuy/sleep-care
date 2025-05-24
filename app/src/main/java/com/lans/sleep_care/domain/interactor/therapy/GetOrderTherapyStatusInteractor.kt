@@ -20,7 +20,7 @@ class GetOrderTherapyStatusInteractor @Inject constructor(
             emit(Resource.Loading)
             emit(safeCall {
                 val response = repository.fetchOrderTherapyStatus().data
-                response?.get(0)?.toDomain() ?: throw Exception()
+                response?.toDomain() ?: throw Exception()
             })
         }.flowOn(Dispatchers.IO)
     }

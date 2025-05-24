@@ -8,6 +8,8 @@ data class OrderTherapyResponse(
     val status: String,
     @field:Json(name = "total_price")
     val totalPrice: Int,
+    @field:Json(name = "payment_id")
+    val paymentId: String?,
     @field:Json(name = "payment_status")
     val paymentStatus: String,
     @field:Json(name = "payment_type")
@@ -19,6 +21,7 @@ fun OrderTherapyResponse.toDomain() = Order(
     id = id,
     status = status,
     totalPrice = totalPrice,
+    paymentId = paymentId ?: "",
     paymentStatus = paymentStatus,
     paymentType = paymentType ?: "",
     therapy = therapy.toDomain()

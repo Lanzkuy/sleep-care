@@ -24,7 +24,7 @@ class TherapyRepository @Inject constructor(
         return api.getSchedules(therapyId)
     }
 
-    override suspend fun fetchOrderTherapyStatus(): ApiResponse<List<OrderTherapyResponse>> {
+    override suspend fun fetchOrderTherapyStatus(): ApiResponse<OrderTherapyResponse> {
        return api.getOrderStatus()
     }
 

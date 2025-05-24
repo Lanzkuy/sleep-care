@@ -12,16 +12,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class GetActiveActiveTherapyInteractor @Inject constructor(
+class GetActiveTherapyInteractor @Inject constructor(
     private val repository: ITherapyRepository
 ) : GetActiveTherapyUseCase, SafeApiCall {
-    override suspend fun execute(): Flow<Resource<Therapy>> {
+    override suspend fun execute(): Flow<Resource<Therapy?>> {
         return flow {
             emit(Resource.Loading)
             emit(
                 safeCall {
-                    val response = repository.fetchTherapy().data
-                    response?.toDomain() ?: throw Exception()
+                    repository.fetchTherapy().data?.toDomain()
                 }
             )
         }.flowOn(Dispatchers.IO)

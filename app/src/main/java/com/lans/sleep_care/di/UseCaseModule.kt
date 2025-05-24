@@ -19,7 +19,7 @@ import com.lans.sleep_care.domain.interactor.payment.SavePaymentSessionInteracto
 import com.lans.sleep_care.domain.interactor.psychologist.GetAllPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.therapy.CreateOrderTherapyInteractor
-import com.lans.sleep_care.domain.interactor.therapy.GetActiveActiveTherapyInteractor
+import com.lans.sleep_care.domain.interactor.therapy.GetActiveTherapyInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetChatHistoryInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetOrderTherapyStatusInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetTherapyScheduleInteractor
@@ -230,7 +230,7 @@ object UseCaseModule {
     fun provideGetTherapyUseCase(
         repository: ITherapyRepository
     ): GetActiveTherapyUseCase {
-        return GetActiveActiveTherapyInteractor(repository)
+        return GetActiveTherapyInteractor(repository)
     }
 
     @Provides

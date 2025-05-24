@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -73,45 +72,16 @@ fun PsychologistDetailScreen(
         viewModel.getOrderTherapyStatus()
     }
 
-    LaunchedEffect(key1 = state.order) {
-        val order = state.order
-
-        if (order.id.isNotEmpty() && order.paymentStatus == "pending") {
-            viewModel.getPaymentSession()
-        }
-    }
-
-    LaunchedEffect(key1 = state.paymentSession) {
-        val paymentSession = state.paymentSession
-
-        if (paymentSession.first.isNotEmpty() &&
-            paymentSession.second == state.order.id &&
-            paymentSession.third == state.psychologist.id
-        ) {
-            val intent = Intent(context, PaymentActivity::class.java).apply {
-                putExtra("token", paymentSession.first)
-                putExtra("orderId", paymentSession.second)
-                putExtra("psychologistId", paymentSession.third)
-            }
-            context.startActivity(intent)
-        }
-    }
-
-    LaunchedEffect(key1 = state.paymentToken) {
+    LaunchedEffect(key1 = state.paymentToken, key2 = state.error) {
         val paymentToken = state.paymentToken
+        val error = state.error
 
         if (paymentToken.isNotEmpty()) {
             val intent = Intent(context, PaymentActivity::class.java).apply {
                 putExtra("token", paymentToken)
-                putExtra("orderId", state.order.id)
-                putExtra("psychologistId", state.psychologist.id)
             }
             context.startActivity(intent)
         }
-    }
-
-    LaunchedEffect(key1 = state.error) {
-        val error = state.error
 
         if (error.isNotBlank()) {
             showAlert = Pair(true, error)
@@ -134,7 +104,6 @@ fun PsychologistDetailScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .imePadding()
             .padding(Dimens.dp24)
     ) {
         Row(

@@ -15,7 +15,7 @@ interface ITherapyRepository {
 
     suspend fun fetchTherapySchedules(therapyId: Int): ApiResponse<TherapyScheduleListResponse>
 
-    suspend fun fetchOrderTherapyStatus(): ApiResponse<List<OrderTherapyResponse>>
+    suspend fun fetchOrderTherapyStatus(): ApiResponse<OrderTherapyResponse>
 
     suspend fun createOrderTherapy(request: OrderTherapyRequest): ApiResponse<OrderTherapyResponse>
 

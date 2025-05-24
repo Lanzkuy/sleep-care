@@ -48,7 +48,6 @@ import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
-import java.util.Calendar
 
 @Composable
 fun PsychologistScreen(
@@ -99,7 +98,6 @@ fun PsychologistScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .imePadding()
             .padding(Dimens.dp24)
     ) {
         Row(
@@ -194,15 +192,16 @@ fun PsychologistScreen(
 
                 else -> {
                     LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth(),
                         state = listState,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
                     ) {
                         items(state.filteredPsychologists) { psychologist ->
-                            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
                             PsychologistItem(
                                 name = psychologist.user.name,
-                                experience = currentYear - psychologist.registeredYear,
+                                image = psychologist.user.avatar,
                                 rating = psychologist.avgRating.toDouble(),
                                 totalReview = psychologist.totalRating,
                                 onClick = {

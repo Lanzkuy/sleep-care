@@ -17,9 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase,
-    private val savePaymentSessionUseCase: SavePaymentSessionUseCase,
-    private val removePaymentSessionUseCase: RemovePaymentSessionUseCase
+    private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(PaymentUIState())
     val state: StateFlow<PaymentUIState> get() = _state
@@ -72,21 +70,5 @@ class PaymentViewModel @Inject constructor(
     fun stopPollingTransaction() {
         hasStartedPolling = false
         pollingJob?.cancel()
-    }
-
-    fun savePaymentToken(paymentToken: String, orderId: String, psychologistId: Int) {
-        viewModelScope.launch {
-            savePaymentSessionUseCase.invoke(
-                paymentToken = paymentToken,
-                orderId = orderId,
-                psychologistId = psychologistId
-            )
-        }
-    }
-
-    fun removePaymentToken() {
-        viewModelScope.launch {
-            removePaymentSessionUseCase.execute()
-        }
     }
 }

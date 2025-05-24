@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
     private val viewModel: PaymentViewModel by viewModels()
-    private lateinit var orderId: String
     private var isTransactionStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,8 +34,6 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
             .buildSDK()
 
         val token = intent.getStringExtra("token")
-        val psychologistId = intent.getIntExtra("psychologistId", 0)
-        orderId = intent.getStringExtra("orderId")!!
 
         if (!token.isNullOrEmpty() && !isTransactionStarted) {
             isTransactionStarted = true
@@ -50,10 +47,6 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
                         .show()
                 }
 
-                if (state.paymentStatus == "pending" && !token.isNullOrEmpty()) {
-                    viewModel.savePaymentToken(token, orderId, psychologistId)
-                }
-
                 if (state.paymentStatus == "settlement") {
                     Toast.makeText(
                         this@PaymentActivity,
@@ -61,7 +54,6 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
                         Toast.LENGTH_LONG
                     ).show()
 
-                    viewModel.removePaymentToken()
                     finish()
                 }
             }
