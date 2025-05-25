@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -24,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.ValueArea
+import com.lans.sleep_care.domain.model.logbook.ValueArea
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge

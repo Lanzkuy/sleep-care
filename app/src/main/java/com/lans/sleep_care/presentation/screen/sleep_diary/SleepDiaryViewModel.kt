@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.domain.model.DiaryAnswer
+import com.lans.sleep_care.domain.model.logbook.DiaryAnswer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

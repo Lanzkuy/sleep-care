@@ -1,4 +1,4 @@
-package com.lans.sleep_care.domain.model
+package com.lans.sleep_care.domain.model.auth
 
 data class Session(
     val accessToken: String,

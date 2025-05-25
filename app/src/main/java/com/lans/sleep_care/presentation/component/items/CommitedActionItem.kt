@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.CommittedAction
+import com.lans.sleep_care.domain.model.logbook.CommittedAction
 import com.lans.sleep_care.presentation.component.misc.StatusChip
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens

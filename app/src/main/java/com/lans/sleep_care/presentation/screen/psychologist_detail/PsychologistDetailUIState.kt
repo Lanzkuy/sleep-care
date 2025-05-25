@@ -1,8 +1,8 @@
 package com.lans.sleep_care.presentation.screen.psychologist_detail
 
-import com.lans.sleep_care.domain.model.Order
-import com.lans.sleep_care.domain.model.Psychologist
-import com.lans.sleep_care.domain.model.User
+import com.lans.sleep_care.domain.model.therapy.Order
+import com.lans.sleep_care.domain.model.therapy.Psychologist
+import com.lans.sleep_care.domain.model.auth.User
 
 data class PsychologistDetailUIState(
     val isLoading: Boolean = false,

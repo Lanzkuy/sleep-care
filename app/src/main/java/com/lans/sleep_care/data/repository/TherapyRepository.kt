@@ -4,12 +4,11 @@ import com.lans.sleep_care.data.source.network.api.SleepCareApi
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.chat.ChatListResponse
-import com.lans.sleep_care.data.source.network.dto.response.chat.ChatResponse
+import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatListResponse
+import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
-import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleResponse
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import javax.inject.Inject
 

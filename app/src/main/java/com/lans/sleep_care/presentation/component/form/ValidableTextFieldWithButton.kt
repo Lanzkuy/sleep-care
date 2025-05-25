@@ -5,21 +5,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import com.lans.instagram_clone.domain.model.InputWrapper
-import com.lans.sleep_care.R
+import com.lans.sleep_care.domain.model.validation.InputWrapper
 import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
-import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun ValidableTextFieldWithButton(

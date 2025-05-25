@@ -32,7 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.domain.model.ValueArea
+import com.lans.sleep_care.domain.model.logbook.ValueArea
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.items.ValueAreaItem
 import com.lans.sleep_care.presentation.theme.Black

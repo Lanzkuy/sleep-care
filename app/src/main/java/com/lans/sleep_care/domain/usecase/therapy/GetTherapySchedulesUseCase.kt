@@ -1,7 +1,7 @@
 package com.lans.sleep_care.domain.usecase.therapy
 
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.domain.model.TherapySchedule
+import com.lans.sleep_care.domain.model.therapy.TherapySchedule
 import kotlinx.coroutines.flow.Flow
 
 interface GetTherapySchedulesUseCase {

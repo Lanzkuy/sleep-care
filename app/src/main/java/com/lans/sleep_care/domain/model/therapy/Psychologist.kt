@@ -1,4 +1,6 @@
-package com.lans.sleep_care.domain.model
+package com.lans.sleep_care.domain.model.therapy
+
+import com.lans.sleep_care.domain.model.auth.User
 
 data class Psychologist(
     val id: Int = 0,

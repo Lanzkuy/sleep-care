@@ -1,7 +1,7 @@
 package com.lans.sleep_care.domain.interactor.validator
 
 import android.util.Patterns
-import com.lans.sleep_care.domain.model.ValidationResult
+import com.lans.sleep_care.domain.model.validation.ValidationResult
 import com.lans.sleep_care.domain.usecase.validator.ValidateEmailUseCase
 
 class ValidateEmailInteractor : ValidateEmailUseCase {

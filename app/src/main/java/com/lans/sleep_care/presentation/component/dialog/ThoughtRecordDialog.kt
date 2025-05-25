@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.ThoughtRecord
+import com.lans.sleep_care.domain.model.logbook.ThoughtRecord
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 

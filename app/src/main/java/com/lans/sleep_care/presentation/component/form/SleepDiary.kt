@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.DiaryAnswer
-import com.lans.sleep_care.domain.model.DiaryQuestion
+import com.lans.sleep_care.domain.model.logbook.DiaryAnswer
+import com.lans.sleep_care.domain.model.logbook.DiaryQuestion
 import com.lans.sleep_care.presentation.component.items.DiaryQuestionItem
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray

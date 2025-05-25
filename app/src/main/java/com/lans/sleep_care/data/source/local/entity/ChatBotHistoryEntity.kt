@@ -3,7 +3,7 @@ package com.lans.sleep_care.data.source.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lans.sleep_care.domain.model.ChatBot
+import com.lans.sleep_care.domain.model.chatbot.ChatBot
 
 @Entity(tableName = "chatbot_history")
 data class ChatBotHistoryEntity(

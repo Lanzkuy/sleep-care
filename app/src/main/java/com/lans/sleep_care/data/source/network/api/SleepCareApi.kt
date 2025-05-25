@@ -12,17 +12,18 @@ import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyR
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.chat.ChatListResponse
-import com.lans.sleep_care.data.source.network.dto.response.chat.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.auth.LoginResponse
+import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
+import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatListResponse
+import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
+import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryDetailResponse
+import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryListResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistListResponse
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistResponse
-import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
-import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
-import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
-import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.user.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -105,6 +106,17 @@ interface SleepCareApi {
     suspend fun updateChat(
         @Path("id") id: Int
     ): ApiResponse<Any>
+
+    @GET("therapy/records/sleep-diaries")
+    suspend fun getSleepDiaries(
+        @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
+    ): ApiResponse<SleepDiaryListResponse>
+
+    @GET("therapy/records/sleep-diaries/{id}")
+    suspend fun getSleepDiaryDetail(
+        @Path("id") id: Int,
+        @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
+    ): ApiResponse<SleepDiaryDetailResponse>
 
     @GET("therapy/orders?payment_status=pending")
     suspend fun getOrderStatus(): ApiResponse<OrderTherapyResponse>

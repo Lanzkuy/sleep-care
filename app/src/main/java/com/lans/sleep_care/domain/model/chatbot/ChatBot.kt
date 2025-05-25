@@ -1,4 +1,4 @@
-package com.lans.sleep_care.domain.model
+package com.lans.sleep_care.domain.model.chatbot
 
 import com.lans.sleep_care.data.source.local.entity.ChatBotHistoryEntity
 

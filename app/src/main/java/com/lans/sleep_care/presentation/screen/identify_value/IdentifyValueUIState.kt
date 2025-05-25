@@ -1,6 +1,6 @@
 package com.lans.sleep_care.presentation.screen.identify_value
 
-import com.lans.sleep_care.domain.model.ValueArea
+import com.lans.sleep_care.domain.model.logbook.ValueArea
 
 data class IdentifyValueUIState(
     val localSavedAreaValue: Map<String, ValueArea> = mutableMapOf(),

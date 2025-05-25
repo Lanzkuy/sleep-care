@@ -1,7 +1,7 @@
 package com.lans.sleep_care.presentation.screen.chatbot
 
-import com.lans.instagram_clone.domain.model.InputWrapper
-import com.lans.sleep_care.domain.model.ChatBot
+import com.lans.sleep_care.domain.model.validation.InputWrapper
+import com.lans.sleep_care.domain.model.chatbot.ChatBot
 
 data class ChatbotUIState(
     val message: InputWrapper = InputWrapper(),

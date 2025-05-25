@@ -4,7 +4,7 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyRequest
 import com.lans.sleep_care.data.source.network.dto.response.therapy.toDomain
-import com.lans.sleep_care.domain.model.Order
+import com.lans.sleep_care.domain.model.therapy.Order
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
 import kotlinx.coroutines.flow.Flow

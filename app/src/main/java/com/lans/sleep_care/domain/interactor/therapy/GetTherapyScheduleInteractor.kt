@@ -2,10 +2,8 @@ package com.lans.sleep_care.domain.interactor.therapy
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.response.auth.toDomain
-import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.toDomain
-import com.lans.sleep_care.domain.model.TherapySchedule
+import com.lans.sleep_care.domain.model.therapy.TherapySchedule
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
 import kotlinx.coroutines.Dispatchers

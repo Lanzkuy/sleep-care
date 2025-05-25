@@ -1,6 +1,6 @@
 package com.lans.sleep_care.domain.interactor.validator
 
-import com.lans.sleep_care.domain.model.ValidationResult
+import com.lans.sleep_care.domain.model.validation.ValidationResult
 import com.lans.sleep_care.domain.usecase.validator.ValidatePasswordConfirmationUseCase
 
 class ValidatePasswordConfirmationInteractor: ValidatePasswordConfirmationUseCase {

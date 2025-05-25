@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import com.lans.instagram_clone.domain.model.InputWrapper
+import com.lans.sleep_care.domain.model.validation.InputWrapper
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.RoundedSmall

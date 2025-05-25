@@ -1,10 +1,10 @@
 package com.lans.sleep_care.data
 
-import com.lans.sleep_care.domain.model.CommittedAction
-import com.lans.sleep_care.domain.model.DiaryAnswer
-import com.lans.sleep_care.domain.model.EmotionRecord
-import com.lans.sleep_care.domain.model.ThoughtRecord
-import com.lans.sleep_care.domain.model.ValueArea
+import com.lans.sleep_care.domain.model.logbook.CommittedAction
+import com.lans.sleep_care.domain.model.logbook.DiaryAnswer
+import com.lans.sleep_care.domain.model.logbook.EmotionRecord
+import com.lans.sleep_care.domain.model.logbook.ThoughtRecord
+import com.lans.sleep_care.domain.model.logbook.ValueArea
 
 object DATA {
     var savedAnswers: Map<Pair<String, Int>, DiaryAnswer> = mutableMapOf()

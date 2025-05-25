@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.chatbot
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.chat.ChatBotRequest
+import com.lans.sleep_care.data.source.network.dto.request.chatbot.ChatBotRequest
 import com.lans.sleep_care.domain.repository.IChatBotRepository
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import kotlinx.coroutines.Dispatchers

@@ -3,12 +3,11 @@ package com.lans.sleep_care.domain.repository
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.chat.ChatListResponse
-import com.lans.sleep_care.data.source.network.dto.response.chat.ChatResponse
+import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatListResponse
+import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
-import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleResponse
 
 interface ITherapyRepository {
     suspend fun fetchTherapy(): ApiResponse<TherapyResponse>

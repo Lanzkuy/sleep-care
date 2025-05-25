@@ -4,7 +4,7 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.psychologist.PsychologistListRequest
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.toDomain
-import com.lans.sleep_care.domain.model.Psychologist
+import com.lans.sleep_care.domain.model.therapy.Psychologist
 import com.lans.sleep_care.domain.repository.IPsychologistRepository
 import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import kotlinx.coroutines.Dispatchers

@@ -1,6 +1,6 @@
 package com.lans.sleep_care.presentation.screen.committed_action
 
-import com.lans.sleep_care.domain.model.CommittedAction
+import com.lans.sleep_care.domain.model.logbook.CommittedAction
 
 data class CommitedActionUIState(
     val localSavedCommitedAction: List<CommittedAction> = mutableListOf(),

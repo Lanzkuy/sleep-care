@@ -1,8 +1,8 @@
 package com.lans.sleep_care.presentation.screen.my_theraphy
 
-import com.lans.sleep_care.domain.model.Psychologist
-import com.lans.sleep_care.domain.model.Therapy
-import com.lans.sleep_care.domain.model.TherapySchedule
+import com.lans.sleep_care.domain.model.therapy.Psychologist
+import com.lans.sleep_care.domain.model.therapy.Therapy
+import com.lans.sleep_care.domain.model.therapy.TherapySchedule
 
 data class MyTherapyUIState(
     val isTherapyLoading: Boolean = false,

@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.EmotionRecord
+import com.lans.sleep_care.domain.model.logbook.EmotionRecord
 import com.lans.sleep_care.presentation.component.form.GenericDropDown
 import com.lans.sleep_care.presentation.theme.Dimens
 

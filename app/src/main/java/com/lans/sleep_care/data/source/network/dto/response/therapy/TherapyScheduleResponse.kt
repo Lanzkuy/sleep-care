@@ -1,6 +1,6 @@
 package com.lans.sleep_care.data.source.network.dto.response.therapy
 
-import com.lans.sleep_care.domain.model.TherapySchedule
+import com.lans.sleep_care.domain.model.therapy.TherapySchedule
 import com.lans.sleep_care.utils.parseToDate
 import com.squareup.moshi.Json
 

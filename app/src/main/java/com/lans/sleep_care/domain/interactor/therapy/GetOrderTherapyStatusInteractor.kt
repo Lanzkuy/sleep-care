@@ -3,7 +3,7 @@ package com.lans.sleep_care.domain.interactor.therapy
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.response.therapy.toDomain
-import com.lans.sleep_care.domain.model.Order
+import com.lans.sleep_care.domain.model.therapy.Order
 import com.lans.sleep_care.domain.repository.ITherapyRepository
 import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
 import kotlinx.coroutines.Dispatchers

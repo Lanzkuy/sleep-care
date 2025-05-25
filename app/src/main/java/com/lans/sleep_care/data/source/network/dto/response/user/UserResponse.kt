@@ -1,6 +1,6 @@
 package com.lans.sleep_care.data.source.network.dto.response.user
 
-import com.lans.sleep_care.domain.model.User
+import com.lans.sleep_care.domain.model.auth.User
 import com.squareup.moshi.Json
 
 data class UserResponse(

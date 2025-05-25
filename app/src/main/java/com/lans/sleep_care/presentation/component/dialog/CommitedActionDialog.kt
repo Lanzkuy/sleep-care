@@ -18,7 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.CommittedAction
+import com.lans.sleep_care.domain.model.logbook.CommittedAction
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 

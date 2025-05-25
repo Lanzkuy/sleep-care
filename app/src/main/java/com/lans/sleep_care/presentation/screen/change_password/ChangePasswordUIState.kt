@@ -1,6 +1,6 @@
 package com.lans.sleep_care.presentation.screen.change_password
 
-import com.lans.instagram_clone.domain.model.InputWrapper
+import com.lans.sleep_care.domain.model.validation.InputWrapper
 
 data class ChangePasswordUIState(
     val currentPassword: InputWrapper = InputWrapper(),

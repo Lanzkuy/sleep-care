@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.chatbot
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.local.entity.toDomain
-import com.lans.sleep_care.domain.model.ChatBot
+import com.lans.sleep_care.domain.model.chatbot.ChatBot
 import com.lans.sleep_care.domain.repository.IChatBotRepository
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import kotlinx.coroutines.Dispatchers

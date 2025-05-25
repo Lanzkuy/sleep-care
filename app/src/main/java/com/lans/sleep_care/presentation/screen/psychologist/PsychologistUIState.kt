@@ -1,7 +1,7 @@
 package com.lans.sleep_care.presentation.screen.psychologist
 
-import com.lans.instagram_clone.domain.model.InputWrapper
-import com.lans.sleep_care.domain.model.Psychologist
+import com.lans.sleep_care.domain.model.validation.InputWrapper
+import com.lans.sleep_care.domain.model.therapy.Psychologist
 
 data class PsychologistUIState(
     var search: InputWrapper = InputWrapper(),

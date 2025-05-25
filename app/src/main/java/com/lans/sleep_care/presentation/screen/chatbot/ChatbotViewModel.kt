@@ -4,9 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lans.instagram_clone.domain.model.InputWrapper
+import com.lans.sleep_care.domain.model.validation.InputWrapper
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.domain.model.ChatBot
+import com.lans.sleep_care.domain.model.chatbot.ChatBot
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase

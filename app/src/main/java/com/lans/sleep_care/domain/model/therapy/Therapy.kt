@@ -1,4 +1,4 @@
-package com.lans.sleep_care.domain.model
+package com.lans.sleep_care.domain.model.therapy
 
 data class Therapy(
     val id: Int = 0,

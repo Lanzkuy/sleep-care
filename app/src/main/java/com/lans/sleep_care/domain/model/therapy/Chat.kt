@@ -1,4 +1,4 @@
-package com.lans.sleep_care.domain.model
+package com.lans.sleep_care.domain.model.therapy
 
 data class Chat(
     val id: Int = 0,

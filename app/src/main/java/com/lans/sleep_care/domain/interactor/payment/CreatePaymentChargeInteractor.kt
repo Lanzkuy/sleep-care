@@ -6,7 +6,7 @@ import com.lans.sleep_care.data.source.network.dto.request.payment.CustomerDetai
 import com.lans.sleep_care.data.source.network.dto.request.payment.ItemDetailRequest
 import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentDetailRequest
 import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentRequest
-import com.lans.sleep_care.domain.model.User
+import com.lans.sleep_care.domain.model.auth.User
 import com.lans.sleep_care.domain.repository.IPaymentRepository
 import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
 import com.lans.sleep_care.utils.splitName

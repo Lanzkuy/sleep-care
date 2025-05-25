@@ -34,8 +34,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.domain.model.DiaryAnswer
-import com.lans.sleep_care.domain.model.DiaryQuestion
+import com.lans.sleep_care.domain.model.logbook.DiaryAnswer
+import com.lans.sleep_care.domain.model.logbook.DiaryQuestion
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.form.NumberDropDown
 import com.lans.sleep_care.presentation.component.form.SleepDiary

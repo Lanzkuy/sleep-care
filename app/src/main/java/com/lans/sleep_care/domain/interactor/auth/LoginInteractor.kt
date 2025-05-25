@@ -4,7 +4,7 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.auth.LoginRequest
 import com.lans.sleep_care.data.source.network.dto.response.auth.toDomain
-import com.lans.sleep_care.domain.model.Session
+import com.lans.sleep_care.domain.model.auth.Session
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.usecase.auth.LoginUseCase
 import kotlinx.coroutines.Dispatchers

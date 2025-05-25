@@ -1,6 +1,6 @@
 package com.lans.sleep_care.data.source.network.dto.response.therapy
 
-import com.lans.sleep_care.domain.model.Order
+import com.lans.sleep_care.domain.model.therapy.Order
 import com.squareup.moshi.Json
 
 data class OrderTherapyResponse(

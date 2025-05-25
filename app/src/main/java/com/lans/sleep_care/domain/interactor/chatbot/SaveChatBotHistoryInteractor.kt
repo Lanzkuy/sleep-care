@@ -1,6 +1,6 @@
 package com.lans.sleep_care.domain.interactor.chatbot
 
-import com.lans.sleep_care.domain.model.ChatBot
+import com.lans.sleep_care.domain.model.chatbot.ChatBot
 import com.lans.sleep_care.domain.repository.IChatBotRepository
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
 import javax.inject.Inject
