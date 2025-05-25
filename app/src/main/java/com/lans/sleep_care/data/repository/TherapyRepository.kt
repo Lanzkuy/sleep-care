@@ -39,4 +39,8 @@ class TherapyRepository @Inject constructor(
     override suspend fun sendChat(request: ChatRequest): ApiResponse<ChatResponse> {
         return api.sendChat(request)
     }
+
+    override suspend fun updateChat(chatId: Int): ApiResponse<Any> {
+        return api.updateChat(chatId)
+    }
 }

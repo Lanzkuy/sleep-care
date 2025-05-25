@@ -8,6 +8,7 @@ import com.lans.instagram_clone.domain.model.InputWrapper
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.usecase.therapy.GetChatHistoryUseCase
 import com.lans.sleep_care.domain.usecase.therapy.SendChatUseCase
+import com.lans.sleep_care.domain.usecase.therapy.UpdateChatReadStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatRoomViewModel @Inject constructor(
     private val getChatHistoryUseCase: GetChatHistoryUseCase,
-    private val sendChatUseCase: SendChatUseCase
+    private val sendChatUseCase: SendChatUseCase,
+    private val updateChatReadStatusUseCase: UpdateChatReadStatusUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(ChatRoomUIState())
     val state: State<ChatRoomUIState> get() = _state
@@ -70,9 +72,22 @@ class ChatRoomViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
-                            chatHistories = response.data.toMutableList(),
-                            isHistoryLoading = false
+                            chatHistories = response.data.toMutableList()
                         )
+
+                        _state.value.chatHistories
+                            .filter { it.readAt == "" }
+                            .also { unreadMessages ->
+                                if (unreadMessages.isEmpty()) {
+                                    _state.value = _state.value.copy(
+                                        isHistoryLoading = false
+                                    )
+                                } else {
+                                    unreadMessages.forEach { message ->
+                                        updateChatReadStatus(message.id)
+                                    }
+                                }
+                            }
                     }
 
                     is Resource.Error -> {
@@ -100,8 +115,9 @@ class ChatRoomViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         val newMessage = response.data
+                        val newHistories = (_state.value.chatHistories + newMessage).toMutableList()
                         _state.value = _state.value.copy(
-                            chatHistories = (_state.value.chatHistories + newMessage).toMutableList(),
+                            chatHistories = newHistories,
                             isChatSent = true,
                             isSendChatLoading = false
                         )
@@ -117,6 +133,33 @@ class ChatRoomViewModel @Inject constructor(
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
                             isSendChatLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateChatReadStatus(chatId: Int) {
+        viewModelScope.launch {
+            updateChatReadStatusUseCase.execute(chatId).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            isHistoryLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isHistoryLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isHistoryLoading = true
                         )
                     }
                 }

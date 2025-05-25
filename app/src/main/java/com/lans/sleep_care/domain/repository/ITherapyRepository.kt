@@ -22,4 +22,6 @@ interface ITherapyRepository {
     suspend fun fetchChatHistory(): ApiResponse<ChatListResponse>
 
     suspend fun sendChat(request: ChatRequest): ApiResponse<ChatResponse>
+
+    suspend fun updateChat(chatId: Int): ApiResponse<Any>
 }

@@ -101,6 +101,11 @@ interface SleepCareApi {
         @Body requestBody: ChatRequest
     ): ApiResponse<ChatResponse>
 
+    @PUT("therapy/chats/{id}")
+    suspend fun updateChat(
+        @Path("id") id: Int
+    ): ApiResponse<Any>
+
     @GET("therapy/orders?payment_status=pending")
     suspend fun getOrderStatus(): ApiResponse<OrderTherapyResponse>
 
