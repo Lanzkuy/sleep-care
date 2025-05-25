@@ -9,6 +9,7 @@ data class MyTherapyUIState(
     val isScheduleLoading: Boolean = false,
     var error: String = "",
     val therapy: Therapy = Therapy(),
-    val schedules: List<TherapySchedule> = emptyList(),
-    val psychologist: Psychologist = Psychologist()
+    val psychologist: Psychologist = Psychologist(),
+    val unreadMessage: Int = 0,
+    val schedules: List<TherapySchedule> = emptyList()
 )

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetActiveTherapyUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetChatHistoryUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,8 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MyTherapyViewModel @Inject constructor(
     private val getActiveTherapyUseCase: GetActiveTherapyUseCase,
-    private val getTherapySchedulesUseCase: GetTherapySchedulesUseCase,
-    private val getPsychologistUseCase: GetPsychologistUseCase
+    private val getPsychologistUseCase: GetPsychologistUseCase,
+    private val getChatHistoryUseCase: GetChatHistoryUseCase,
+    private val getTherapySchedulesUseCase: GetTherapySchedulesUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(MyTherapyUIState())
     val state: State<MyTherapyUIState> get() = _state
@@ -31,6 +33,7 @@ class MyTherapyViewModel @Inject constructor(
                                 therapy = response.data
                             )
                             loadPsychologist(response.data.doctorId)
+                            loadChatHistory()
                             loadTherapySchedules(response.data.id)
                         }
                     }
@@ -59,6 +62,34 @@ class MyTherapyViewModel @Inject constructor(
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
                             psychologist = response.data,
+                            isTherapyLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isTherapyLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isTherapyLoading = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun loadChatHistory() {
+        viewModelScope.launch {
+            getChatHistoryUseCase.execute().collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            unreadMessage = response.data.count { it.readAt.isEmpty() },
                             isTherapyLoading = false
                         )
                     }

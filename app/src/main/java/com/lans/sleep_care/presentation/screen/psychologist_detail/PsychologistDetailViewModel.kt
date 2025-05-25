@@ -28,13 +28,18 @@ class PsychologistDetailViewModel @Inject constructor(
     fun onEvent(event: PsychologistDetailUIEvent) {
         if (event is PsychologistDetailUIEvent.OrderButtonClicked) {
             with(_state.value) {
-                if (order.paymentId.isEmpty() && order.paymentStatus == "pending") {
-                    createPaymentCharge()
-                } else if (order.paymentId.isNotEmpty() && order.paymentStatus == "pending") {
-                    _state.value = _state.value.copy(
-                        paymentToken = order.paymentId
-                    )
+                if (order.paymentStatus == "pending" && order.therapy.doctorId == psychologist.id) {
+                    if (order.paymentId.isEmpty()) {
+                        createPaymentCharge()
+                    } else {
+                        _state.value = _state.value.copy(
+                            paymentToken = order.paymentId
+                        )
+                    }
                 } else {
+                    if (order.therapy.doctorId != psychologist.id) {
+                        // Cancel last order
+                    }
                     createOrderTherapy()
                 }
             }

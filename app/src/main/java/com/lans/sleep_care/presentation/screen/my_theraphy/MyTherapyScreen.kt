@@ -2,15 +2,18 @@ package com.lans.sleep_care.presentation.screen.my_theraphy
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -48,6 +51,7 @@ import com.lans.sleep_care.presentation.component.dialog.NoteDialog
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.items.ScheduleItem
 import com.lans.sleep_care.presentation.theme.Black
+import com.lans.sleep_care.presentation.theme.Danger
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
@@ -164,12 +168,35 @@ fun MyTherapyScreen(
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
             ) {
                 items(buttonItems) { (icon, name, action) ->
-                    OutlinedIconButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        icon = painterResource(icon),
-                        name = stringResource(name),
-                        onClick = { action.invoke() }
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        OutlinedIconButton(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            icon = painterResource(icon),
+                            name = stringResource(name),
+                            onClick = { action.invoke() }
+                        )
+
+                        if (name == R.string.chat_psychologist && state.unreadMessage > 0) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = Dimens.dp12)
+                                    .background(Danger, shape = Rounded)
+                                    .size(Dimens.dp24)
+                                    .align(Alignment.CenterEnd),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = state.unreadMessage.toString(),
+                                    color = White,
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        }
+                    }
                 }
             }
             Spacer(
