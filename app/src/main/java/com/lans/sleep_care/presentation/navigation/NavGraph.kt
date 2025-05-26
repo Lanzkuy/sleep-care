@@ -226,8 +226,8 @@ fun NavGraph(
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 },
-                navigateToLogbook = {
-                    navController.navigate(route = Route.LogbookScreen.route) {
+                navigateToLogbook = { therapyId ->
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId") {
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 }
@@ -246,13 +246,15 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.LogbookScreen.route) {
+        composable(route = Route.LogbookScreen.route + "/{therapyId}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
             LogbookScreen(
+                therapyId = therapyId,
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 },
                 navigateToSleepDiary = {
-                    navController.navigate(route = Route.SleepDiaryScreen.route) {
+                    navController.navigate(route = Route.SleepDiaryScreen.route + "/$therapyId") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
@@ -278,8 +280,10 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.SleepDiaryScreen.route) {
+        composable(route = Route.SleepDiaryScreen.route + "/{therapyId}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
             SleepDiaryScreen(
+                therapyId = therapyId,
                 navigateToLogbook = {
                     navController.navigateUp()
                 }

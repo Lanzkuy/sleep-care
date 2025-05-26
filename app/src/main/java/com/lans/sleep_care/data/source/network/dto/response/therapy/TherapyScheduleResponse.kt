@@ -11,8 +11,8 @@ data class TherapyScheduleResponse(
     val title: String,
     val note: String?,
     val link: String?,
-    val date: String,
-    val time: String,
+    val date: String?,
+    val time: String?,
 )
 
 fun TherapyScheduleResponse.toDomain() = TherapySchedule(
@@ -21,6 +21,6 @@ fun TherapyScheduleResponse.toDomain() = TherapySchedule(
     title = title,
     note = note?.substring(0, 10) ?: "",
     link = link ?: "",
-    date = parseToDate(date),
-    time = time
+    date = date?.let { parseToDate(it) } ?: "",
+    time = time ?: ""
 )

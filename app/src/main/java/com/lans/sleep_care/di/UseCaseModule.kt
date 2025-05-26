@@ -12,6 +12,11 @@ import com.lans.sleep_care.domain.interactor.auth.VerifyOtpInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotAnswerInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.SaveChatBotHistoryInteractor
+import com.lans.sleep_care.domain.interactor.logbook.CreateLogbookAnswerInteractor
+import com.lans.sleep_care.domain.interactor.logbook.GetLogbookQuestionsInteractor
+import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiariesInteractor
+import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiaryDetailInteractor
+import com.lans.sleep_care.domain.interactor.logbook.UpdateLogbookAnswerInteractor
 import com.lans.sleep_care.domain.interactor.payment.CreatePaymentChargeInteractor
 import com.lans.sleep_care.domain.interactor.payment.GetPaymentSessionInteractor
 import com.lans.sleep_care.domain.interactor.payment.RemovePaymentSessionInteractor
@@ -38,6 +43,7 @@ import com.lans.sleep_care.domain.interactor.validator.ValidateVerificationCodeI
 import com.lans.sleep_care.domain.interactor.validator.ValidatorInteractor
 import com.lans.sleep_care.domain.repository.IAuthRepository
 import com.lans.sleep_care.domain.repository.IChatBotRepository
+import com.lans.sleep_care.domain.repository.ILogbookRepository
 import com.lans.sleep_care.domain.repository.IPaymentRepository
 import com.lans.sleep_care.domain.repository.IPsychologistRepository
 import com.lans.sleep_care.domain.repository.ITherapyRepository
@@ -54,6 +60,11 @@ import com.lans.sleep_care.domain.usecase.auth.VerifyOtpUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
+import com.lans.sleep_care.domain.usecase.logbook.CreateLogbookAnswerUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetLogbookQuestionsUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiariesUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiaryDetailUseCase
+import com.lans.sleep_care.domain.usecase.logbook.UpdateLogbookAnswerUseCase
 import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
 import com.lans.sleep_care.domain.usecase.payment.GetPaymentSessionUseCase
 import com.lans.sleep_care.domain.usecase.payment.RemovePaymentSessionUseCase
@@ -281,6 +292,46 @@ object UseCaseModule {
         repository: ITherapyRepository
     ): UpdateChatReadStatusUseCase {
         return UpdateChatReadStatusInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSleepDiariesUseCase(
+        repository: ILogbookRepository
+    ): GetSleepDiariesUseCase {
+        return GetSleepDiariesInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSleepDiaryDetailUseCase(
+        repository: ILogbookRepository
+    ): GetSleepDiaryDetailUseCase {
+        return GetSleepDiaryDetailInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetLogbookQuestionsUseCase(
+        repository: ILogbookRepository
+    ): GetLogbookQuestionsUseCase {
+        return GetLogbookQuestionsInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateLogbookAnswerUseCase(
+        repository: ILogbookRepository
+    ): CreateLogbookAnswerUseCase {
+        return CreateLogbookAnswerInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateLogbookAnswerUseCase(
+        repository: ILogbookRepository
+    ): UpdateLogbookAnswerUseCase {
+        return UpdateLogbookAnswerInteractor(repository)
     }
 
     @Provides

@@ -22,34 +22,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.logbook.DiaryAnswer
-import com.lans.sleep_care.domain.model.logbook.DiaryQuestion
+import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 
 @Composable
 fun DiaryQuestionItem(
-    question: DiaryQuestion,
-    answer: DiaryAnswer,
-    onAnswerChanged: (questionId: Int, newAnswer: String) -> Unit
+    question: LogbookQuestion,
+    answer: LogbookAnswer,
+    subQuestions: List<LogbookQuestion>,
+    subAnswers: List<LogbookAnswer>,
+    onAnswerChanged: (questionAnswer: LogbookQuestionAnswer) -> Unit
 ) {
-    var text by rememberSaveable(answer.questionId to answer.value) {
-        mutableStateOf(answer.value)
+    var text by rememberSaveable(answer.id to answer.answer) {
+        mutableStateOf(answer.answer)
     }
 
-    Column(
-        modifier = Modifier
-            .padding(vertical = Dimens.dp4)
-    ) {
+    Column(modifier = Modifier.padding(vertical = Dimens.dp4)) {
         Text(
-            text = question.text,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.SemiBold
-            )
+            text = question.question,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
         )
-        if (question.isYesNo) {
-            val currentAnswer = answer.value
+
+        if (question.type == "binary") {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -59,23 +57,23 @@ fun DiaryQuestionItem(
                         .weight(1f)
                         .padding(end = Dimens.dp4)
                         .clip(Rounded)
-                        .background(
-                            if (currentAnswer == "Ya") {
-                                Primary.copy(alpha = 0.2f)
-                            } else Color.Transparent
-                        )
+                        .background(if (text == "1") Primary.copy(alpha = 0.2f) else Color.Transparent)
                 ) {
                     TextButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             text = "Ya"
-                            onAnswerChanged(question.id, text)
+                            onAnswerChanged(
+                                LogbookQuestionAnswer(
+                                    questionId = question.id,
+                                    answer = answer.copy(
+                                        answer = "1"
+                                    )
+                                )
+                            )
                         }
                     ) {
-                        Text(
-                            text = stringResource(R.string.yes),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Text(text = stringResource(R.string.yes))
                     }
                 }
                 Box(
@@ -83,47 +81,53 @@ fun DiaryQuestionItem(
                         .weight(1f)
                         .padding(start = Dimens.dp4)
                         .clip(Rounded)
-                        .background(
-                            if (currentAnswer == stringResource(R.string.no)) {
-                                Primary.copy(alpha = 0.2f)
-                            } else Color.Transparent
-                        )
+                        .background(if (text == "0") Primary.copy(alpha = 0.2f) else Color.Transparent)
                 ) {
                     TextButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
                             text = "Tidak"
-                            onAnswerChanged(question.id, text)
+                            onAnswerChanged(
+                                LogbookQuestionAnswer(
+                                    questionId = question.id,
+                                    answer = answer.copy(
+                                        answer = "0"
+                                    )
+                                )
+                            )
                         }
                     ) {
-                        Text(
-                            text = stringResource(R.string.no),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Text(text = stringResource(R.string.no))
                     }
                 }
             }
         } else {
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 value = text,
-                textStyle = MaterialTheme.typography.bodyMedium,
                 onValueChange = {
                     text = it
-                    onAnswerChanged(question.id, it)
-                }
+                    onAnswerChanged(
+                        LogbookQuestionAnswer(
+                            questionId = question.id,
+                            answer = answer.copy(
+                                answer = it
+                            )
+                        )
+                    )
+                },
+                textStyle = MaterialTheme.typography.bodyMedium
             )
         }
-        if (question.subQuestions.isNotEmpty()) {
-            Column(
-                modifier = Modifier
-                    .padding(start = Dimens.dp16)
-            ) {
-                question.subQuestions.zip(answer.subAnswers).forEach { (subQuestion, subAnswer) ->
+
+        if (subQuestions.isNotEmpty()) {
+            Column(modifier = Modifier.padding(start = Dimens.dp16)) {
+                subQuestions.zip(subAnswers).forEach { (subQuestion, subAnswer) ->
                     DiaryQuestionItem(
                         question = subQuestion,
                         answer = subAnswer,
+                        subQuestions = emptyList(),
+                        subAnswers = emptyList(),
                         onAnswerChanged = onAnswerChanged
                     )
                 }

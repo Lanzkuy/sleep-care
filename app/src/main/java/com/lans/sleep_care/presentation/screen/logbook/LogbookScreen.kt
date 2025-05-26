@@ -35,15 +35,18 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun LogbookScreen(
     viewModel: LogbookViewModel = hiltViewModel(),
+    therapyId: String,
     navigateToMyTherapy: () -> Unit,
-    navigateToSleepDiary: () -> Unit,
+    navigateToSleepDiary: (therapyId: String) -> Unit,
     navigateToIdentifyValue: () -> Unit,
     navigateToThoughtRecord: () -> Unit,
     navigateToEmotionRecord: () -> Unit,
     navigateToCommitedAction: () -> Unit,
 ) {
     val buttonItems = listOf(
-        Triple(R.drawable.ic_sleep, R.string.sleep_diary, navigateToSleepDiary),
+        Triple(R.drawable.ic_sleep, R.string.sleep_diary) {
+            navigateToSleepDiary.invoke(therapyId)
+        },
         Triple(R.drawable.ic_star, R.string.identify_value, navigateToIdentifyValue),
         Triple(R.drawable.ic_mind, R.string.thought_record, navigateToThoughtRecord),
         Triple(R.drawable.ic_smile, R.string.emotion_record, navigateToEmotionRecord),

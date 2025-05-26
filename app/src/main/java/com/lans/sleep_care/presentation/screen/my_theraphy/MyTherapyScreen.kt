@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -66,17 +64,20 @@ fun MyTherapyScreen(
     navigateToHome: () -> Unit,
     navigateToPsychologist: () -> Unit,
     navigateToChat: (therapyId: String, psychologistName: String) -> Unit,
-    navigateToLogbook: () -> Unit
+    navigateToLogbook: (therapyId: String) -> Unit
 ) {
     val state by viewModel.state
     val buttonItems = listOf(
         Triple(R.drawable.ic_message, R.string.chat_psychologist) {
             navigateToChat.invoke(
-                state.schedules[0].therapyId.toString(),
+                state.therapy.id.toString(),
                 state.psychologist.user.name
             )
         },
-        Triple(R.drawable.ic_book, R.string.therapy_note, navigateToLogbook)
+        Triple(R.drawable.ic_book, R.string.therapy_note) {
+            navigateToLogbook.invoke(state.therapy.id.toString())
+
+        }
     )
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
     var showNoteDialog by remember { mutableStateOf(false) }
@@ -250,9 +251,9 @@ fun MyTherapyScreen(
                     ) {
                         items(state.schedules) { schedule ->
                             ScheduleItem(
-                                date = schedule.date,
-                                topic = schedule.title,
-                                link = schedule.link.ifEmpty { "-" },
+                                date = schedule.date.ifEmpty { "Belum ditentukan" },
+                                topic = schedule.title.ifEmpty { "Belum ditentukan" },
+                                link = schedule.link.ifEmpty { "Belum ditentukan" },
                                 note = schedule.note,
                                 onNoteClick = {
                                     showNoteDialog = true

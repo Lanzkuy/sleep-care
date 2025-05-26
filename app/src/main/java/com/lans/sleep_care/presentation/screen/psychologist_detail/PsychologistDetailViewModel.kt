@@ -137,9 +137,9 @@ class PsychologistDetailViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
-                            order = response.data,
-                            isButtonLoading = false
+                            order = response.data
                         )
+                        createPaymentCharge()
                     }
 
                     is Resource.Error -> {

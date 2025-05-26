@@ -63,9 +63,7 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
     override fun onTransactionFinished(result: TransactionResult) {
         if (result.isTransactionCanceled) {
             Toast.makeText(this, "Pembayaran dibatalkan", Toast.LENGTH_LONG).show()
-
-            finish()
-            return
+            return finish()
         }
 
         result.response?.let {

@@ -6,6 +6,7 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookRequest
 import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyRequest
@@ -16,6 +17,7 @@ import com.lans.sleep_care.data.source.network.dto.response.auth.LoginResponse
 import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
 import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatListResponse
 import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
+import com.lans.sleep_care.data.source.network.dto.response.logbook.LogbookQuestionListResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryDetailResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryListResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentResponse
@@ -117,6 +119,21 @@ interface SleepCareApi {
         @Path("id") id: Int,
         @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
     ): ApiResponse<SleepDiaryDetailResponse>
+
+    @GET("therapy/records/questions")
+    suspend fun getQuestions(
+        @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
+    ): ApiResponse<LogbookQuestionListResponse>
+
+    @POST("therapy/records/answers")
+    suspend fun createAnswer(
+        @Body requestBody: LogbookRequest
+    ): ApiResponse<Any>
+
+    @PUT("therapy/records/answers")
+    suspend fun updateAnswer(
+        @Body requestBody: LogbookRequest
+    ): ApiResponse<Any>
 
     @GET("therapy/orders?payment_status=pending")
     suspend fun getOrderStatus(): ApiResponse<OrderTherapyResponse>

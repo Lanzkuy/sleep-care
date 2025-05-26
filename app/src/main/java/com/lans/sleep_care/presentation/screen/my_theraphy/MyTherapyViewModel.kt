@@ -47,7 +47,8 @@ class MyTherapyViewModel @Inject constructor(
 
                     is Resource.Loading -> {
                         _state.value = _state.value.copy(
-                            isTherapyLoading = true
+                            isTherapyLoading = true,
+                            isScheduleLoading = true
                         )
                     }
                 }

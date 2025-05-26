@@ -1,25 +1,37 @@
 package com.lans.sleep_care.presentation.component.form
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.logbook.DiaryAnswer
-import com.lans.sleep_care.domain.model.logbook.DiaryQuestion
+import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.items.DiaryQuestionItem
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
@@ -30,130 +42,120 @@ import com.lans.sleep_care.utils.parseToDayName
 @Composable
 fun SleepDiary(
     dates: List<String>,
-    questions: Pair<List<DiaryQuestion>, List<DiaryQuestion>>,
-    answers: List<DiaryAnswer>,
-    onAnswerChanged: (date: String, questionId: Int, newAnswer: String) -> Unit
+    questions: List<LogbookQuestion>,
+    answers: List<List<LogbookQuestionAnswer>>,
+    expandedStates: MutableMap<String, Boolean>,
+    onAnswerChanged: (answer: LogbookQuestionAnswer) -> Unit
 ) {
+    if (questions.isEmpty()) return
+
+
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         items(dates) { date ->
+            val dateIndex = dates.indexOf(date)
+            val dayAnswers = answers.getOrNull(dateIndex).orEmpty()
+            val isExpanded = expandedStates[date] ?: false
+
             OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = Dimens.dp8),
-                border = BorderStroke(
-                    width = Dimens.dp1,
-                    color = Gray
-                ),
+                border = BorderStroke(width = Dimens.dp1, color = Gray),
                 shape = RoundedLarge
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(Dimens.dp16)
-                ) {
-                    Text(
-                        modifier = Modifier.padding(bottom = Dimens.dp8),
-                        text = parseToDayName(date),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = Dimens.sp20
-                        )
-                    )
-                    Text(
-                        text = stringResource(R.string.day),
-                        color = Primary,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    )
-                    questions.first.forEach { question ->
-                        val answer =
-                            answers.find { it.questionId == question.id && it.date == date }
-                                ?.copy(
-                                    subAnswers = question.subQuestions.map { subQuestion ->
-                                        answers.find { it.questionId == subQuestion.id && it.date == date }
-                                            ?: DiaryAnswer(
-                                                date = date,
-                                                questionId = subQuestion.id,
-                                                value = "",
-                                                subAnswers = emptyList()
-                                            )
-                                    }
-                                ) ?: DiaryAnswer(
-                                date = date,
-                                questionId = question.id,
-                                value = "",
-                                subAnswers = question.subQuestions.map {
-                                    answers.find { answer -> answer.questionId == it.id && answer.date == date }
-                                        ?: DiaryAnswer(
-                                            date = date,
-                                            questionId = it.id,
-                                            value = "",
-                                            subAnswers = emptyList()
-                                        )
-                                }
-                            )
-
-                        DiaryQuestionItem(
-                            question = question,
-                            answer = answer,
-                            onAnswerChanged = { questionId, newAnswer ->
-                                onAnswerChanged(date, questionId, newAnswer)
-                            }
-                        )
-                        HorizontalDivider(color = Color.LightGray, thickness = Dimens.dp1)
-                    }
-                    Spacer(
+                Column(modifier = Modifier.padding(Dimens.dp16)) {
+                    Row(
                         modifier = Modifier
-                            .height(Dimens.dp12)
-                    )
-                    Text(
-                        text = stringResource(R.string.night),
-                        color = Primary,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.SemiBold
+                            .fillMaxWidth()
+                            .clickable {
+                                expandedStates[date] = !isExpanded
+                            },
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = parseToDayName(date),
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontSize = Dimens.sp18,
+                                fontWeight = FontWeight.SemiBold
+                            )
                         )
-                    )
-                    questions.second.forEach { question ->
-                        val answer =
-                            answers.find { it.questionId == question.id && it.date == date }
-                                ?.copy(
-                                    subAnswers = question.subQuestions.map { subQuestion ->
-                                        answers.find { it.questionId == subQuestion.id && it.date == date }
-                                            ?: DiaryAnswer(
-                                                date = date,
-                                                questionId = subQuestion.id,
-                                                value = "",
-                                                subAnswers = emptyList()
-                                            )
-                                    }
-                                ) ?: DiaryAnswer(
-                                date = date,
-                                questionId = question.id,
-                                value = "",
-                                subAnswers = question.subQuestions.map {
-                                    answers.find { answer -> answer.questionId == it.id && answer.date == date }
-                                        ?: DiaryAnswer(
-                                            date = date,
-                                            questionId = it.id,
-                                            value = "",
-                                            subAnswers = emptyList()
-                                        )
-                                }
+                        Icon(
+                            imageVector = if (isExpanded) {
+                                Icons.Default.ExpandLess
+                            } else Icons.Default.ExpandMore,
+                            contentDescription = stringResource(R.string.icon)
+                        )
+                    }
+
+                    AnimatedVisibility(visible = isExpanded) {
+                        Column(
+                            modifier = Modifier
+                                .padding(top = Dimens.dp8)
+                        ) {
+                            DiaryGroup(
+                                title = stringResource(R.string.day),
+                                questions = questions,
+                                noteType = "Siang",
+                                answers = dayAnswers,
+                                onAnswerChanged = onAnswerChanged
                             )
 
-                        DiaryQuestionItem(
-                            question = question,
-                            answer = answer,
-                            onAnswerChanged = { questionId, newAnswer ->
-                                onAnswerChanged(date, questionId, newAnswer)
-                            }
-                        )
-                        HorizontalDivider(color = Color.LightGray, thickness = Dimens.dp1)
+                            Spacer(modifier = Modifier.height(Dimens.dp12))
+
+                            DiaryGroup(
+                                title = stringResource(R.string.night),
+                                questions = questions,
+                                noteType = "Malam",
+                                answers = dayAnswers,
+                                onAnswerChanged = onAnswerChanged
+                            )
+                        }
                     }
                 }
             }
         }
     }
+}
+
+@Composable
+private fun DiaryGroup(
+    title: String,
+    questions: List<LogbookQuestion>,
+    noteType: String,
+    answers: List<LogbookQuestionAnswer>,
+    onAnswerChanged: (LogbookQuestionAnswer) -> Unit
+) {
+    Text(
+        text = title,
+        color = Primary,
+        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
+    )
+
+    questions.filter { it.note == noteType && it.parentId == -1 }
+        .forEach { question ->
+            val subQuestions = questions
+                .filter { it.parentId == question.id }
+                .sortedBy { it.id }
+
+            val answer = answers.find { it.questionId == question.id }?.answer
+                ?: LogbookAnswer(id = 0, type = "", answer = "", note = "")
+
+            val subAnswers = subQuestions.map { subQuestion ->
+                answers.find { it.questionId == subQuestion.id }?.answer
+                    ?: LogbookAnswer(id = 0, type = "", answer = "", note = "")
+            }
+
+            DiaryQuestionItem(
+                question = question,
+                answer = answer,
+                subQuestions = subQuestions,
+                subAnswers = subAnswers,
+                onAnswerChanged = onAnswerChanged
+            )
+
+            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dp1)
+        }
 }
