@@ -3,7 +3,7 @@ package com.lans.sleep_care.domain.model.logbook
 data class LogbookQuestion(
     val id: Int = 0,
     val question: String = "",
-    val isParent: Int = 0,
+    val isParent: Boolean = false,
     val parentId: Int = -1,
     val type: String = "",
     val recordType: String = "",

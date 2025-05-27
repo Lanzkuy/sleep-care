@@ -63,7 +63,7 @@ fun DiaryQuestionItem(
                     TextButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            text = "Ya"
+                            text = "1"
                             onAnswerChanged(
                                 recordId,
                                 LogbookQuestionAnswer(
@@ -88,7 +88,7 @@ fun DiaryQuestionItem(
                     TextButton(
                         modifier = Modifier.fillMaxWidth(),
                         onClick = {
-                            text = "Tidak"
+                            text = "0"
                             onAnswerChanged(
                                 recordId,
                                 LogbookQuestionAnswer(

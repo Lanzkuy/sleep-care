@@ -225,11 +225,19 @@ fun SleepDiaryScreen(
                             .flatten()
                             .firstOrNull { it.answer.id == questionAnswer.answer.id }
 
-                        if (originalAnswer != null) {
-                            val currentTemp = tempAnswers.firstOrNull {
-                                it.second.answer.id == questionAnswer.answer.id
-                            }
+                        val currentTemp = tempAnswers.firstOrNull {
+                            it.second.questionId == questionAnswer.questionId &&
+                                    it.first == recordId
+                        }
 
+                        if (questionAnswer.answer.id == 0) {
+                            if (currentTemp == null) {
+                                tempAnswers.add(Pair(recordId, questionAnswer))
+                            } else {
+                                val index = tempAnswers.indexOf(currentTemp)
+                                tempAnswers[index] = Pair(recordId, questionAnswer)
+                            }
+                        } else if (originalAnswer != null) {
                             if (questionAnswer.answer != originalAnswer.answer) {
                                 if (currentTemp != null) {
                                     val index = tempAnswers.indexOf(currentTemp)
@@ -274,4 +282,3 @@ fun SleepDiaryScreen(
         }
     }
 }
-

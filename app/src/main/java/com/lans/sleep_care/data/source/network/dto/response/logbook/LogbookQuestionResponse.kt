@@ -7,7 +7,7 @@ data class LogbookQuestionResponse(
     val id: Int,
     val question: String,
     @field:Json(name = "is_parent")
-    val isParent: Int,
+    val isParent: Boolean,
     @field:Json(name = "parent_id")
     val parentId: Int?,
     val type: String,
