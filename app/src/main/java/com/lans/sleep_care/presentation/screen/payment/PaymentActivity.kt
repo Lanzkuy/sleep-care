@@ -38,7 +38,7 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
 
         if (!token.isNullOrEmpty() && !orderId.isNullOrEmpty() && !isTransactionStarted) {
             isTransactionStarted = true
-            startTransaction(token, orderId)
+            startTransaction(orderId, token)
         }
 
         lifecycleScope.launch {
@@ -55,6 +55,7 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
                         Toast.LENGTH_LONG
                     ).show()
 
+                    setResult(RESULT_OK)
                     finish()
                 }
             }
@@ -66,7 +67,7 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
             Toast.makeText(this, "Pembayaran dibatalkan", Toast.LENGTH_LONG).show()
 
             viewModel.stopPollingTransaction()
-            return finish()
+            finish()
         }
 
         result.response?.let {
@@ -76,15 +77,18 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
                 }
 
                 TransactionResult.STATUS_PENDING -> {
-                    Toast.makeText(
-                        this,
-                        "Pembayaran belum selesai. Silakan lanjutkan pembayaran",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    if (viewModel.state.value.paymentStatus != "settlement") {
+                        Toast.makeText(
+                            this,
+                            "Pembayaran belum selesai. Silakan lanjutkan pembayaran",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
 
                 TransactionResult.STATUS_SUCCESS -> {
-                    Toast.makeText(this, "Pembayaran berhasil", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Pembayaran berhasil2", Toast.LENGTH_LONG).show()
+                    setResult(RESULT_OK)
                 }
 
                 TransactionResult.STATUS_FAILED -> {

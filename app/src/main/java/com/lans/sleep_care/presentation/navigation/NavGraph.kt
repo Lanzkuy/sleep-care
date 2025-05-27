@@ -204,6 +204,13 @@ fun NavGraph(
                 id = id.toInt(),
                 navigateToPsychologist = {
                     navController.navigateUp()
+                },
+                navigateToHome = {
+                    navController.navigate(route = Route.HomeScreen.route) {
+                        popUpTo(route = Route.PsychologistDetailScreen.route + "/{id}") {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

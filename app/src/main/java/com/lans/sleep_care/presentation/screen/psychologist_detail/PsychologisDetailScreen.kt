@@ -1,6 +1,9 @@
 package com.lans.sleep_care.presentation.screen.psychologist_detail
 
+import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -59,12 +62,21 @@ import java.util.Calendar
 fun PsychologistDetailScreen(
     viewModel: PsychologistDetailViewModel = hiltViewModel(),
     id: Int,
-    navigateToPsychologist: () -> Unit
+    navigateToPsychologist: () -> Unit,
+    navigateToHome: () -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+    val paymentLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            navigateToHome.invoke()
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.loadPsychologist(id)
@@ -81,7 +93,7 @@ fun PsychologistDetailScreen(
                 putExtra("orderId", state.order.id)
                 putExtra("token", paymentToken)
             }
-            context.startActivity(intent)
+            paymentLauncher.launch(intent)
         }
 
         if (error.isNotBlank()) {

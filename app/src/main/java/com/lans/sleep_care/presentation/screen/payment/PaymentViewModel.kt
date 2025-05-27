@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.usecase.payment.CheckPaymentUseCase
 import com.lans.sleep_care.domain.usecase.payment.UpdatePaymentUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
+    private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase,
     private val getCheckPaymentUseCase: CheckPaymentUseCase,
     private val updatePaymentUseCase: UpdatePaymentUseCase
 ) : ViewModel() {
@@ -32,12 +34,49 @@ class PaymentViewModel @Inject constructor(
         pollingJob?.cancel()
         pollingJob = viewModelScope.launch {
             var isCompleted = false
+            var paymentId: String? = null
 
-            while (!isCompleted) {
-                getCheckPaymentUseCase.execute(orderId).collect { response ->
+            while (paymentId.isNullOrEmpty() && !isCompleted) {
+                getOrderTherapyStatusUseCase.execute().collect { response ->
+                    when (response) {
+                        is Resource.Success -> {
+                            val order = response.data
+                            paymentId = order.paymentId
+
+                            _state.update {
+                                it.copy(paymentStatus = order.paymentStatus, isLoading = false)
+                            }
+
+                            if (order.paymentStatus == "settlement" || order.paymentStatus == "cancel") {
+                                updatePayment(orderId)
+                                isCompleted = true
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            _state.update {
+                                it.copy(error = response.message, isLoading = false)
+                            }
+                            isCompleted = !response.message.contains("404")
+                        }
+
+                        is Resource.Loading -> {
+                            _state.update {
+                                it.copy(isLoading = true)
+                            }
+                        }
+                    }
+                }
+
+                delay(5000)
+            }
+
+            while (!paymentId.isNullOrEmpty() && !isCompleted) {
+                getCheckPaymentUseCase.execute(paymentId!!).collect { response ->
                     when (response) {
                         is Resource.Success -> {
                             val status = response.data
+
                             _state.update {
                                 it.copy(paymentStatus = status, isLoading = false)
                             }
@@ -63,7 +102,7 @@ class PaymentViewModel @Inject constructor(
                     }
                 }
 
-                delay(3000)
+                delay(5000)
             }
         }
     }

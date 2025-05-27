@@ -22,7 +22,6 @@ import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.LogbookAnswerListResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.LogbookQuestionListResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryListResponse
-import com.lans.sleep_care.data.source.network.dto.response.payment.CancelPaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.CheckPaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.CreatePaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.UpdatePaymentResponse
@@ -180,5 +179,5 @@ interface SleepCareApi {
     @POST("midtrans/cancel")
     suspend fun cancelMidtransPayment(
         @Body requestBody: CancelPaymentRequest
-    ): ApiResponse<CancelPaymentResponse>
+    ): ApiResponse<String>
 }

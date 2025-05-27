@@ -5,7 +5,6 @@ import com.lans.sleep_care.data.source.network.dto.request.payment.CancelPayment
 import com.lans.sleep_care.data.source.network.dto.request.payment.CreatePaymentRequest
 import com.lans.sleep_care.data.source.network.dto.request.payment.UpdatePaymentRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
-import com.lans.sleep_care.data.source.network.dto.response.payment.CancelPaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.CheckPaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.CreatePaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.UpdatePaymentResponse
@@ -27,7 +26,7 @@ class PaymentRepository @Inject constructor(
         return api.updateMidtransPayment(request)
     }
 
-    override suspend fun cancelMidtransPayment(request: CancelPaymentRequest): ApiResponse<CancelPaymentResponse> {
+    override suspend fun cancelMidtransPayment(request: CancelPaymentRequest): ApiResponse<String> {
         return api.cancelMidtransPayment(request)
     }
 }

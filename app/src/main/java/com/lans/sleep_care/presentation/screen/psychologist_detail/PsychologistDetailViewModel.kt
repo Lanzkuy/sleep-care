@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
+import com.lans.sleep_care.domain.usecase.payment.CancelPaymentUseCase
 import com.lans.sleep_care.domain.usecase.payment.CreatePaymentUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
@@ -20,7 +21,8 @@ class PsychologistDetailViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase,
     private val createOrderTherapyUseCase: CreateOrderTherapyUseCase,
-    private val createPaymentUseCase: CreatePaymentUseCase
+    private val createPaymentUseCase: CreatePaymentUseCase,
+    private val cancelPaymentUseCase: CancelPaymentUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(PsychologistDetailUIState())
     val state: State<PsychologistDetailUIState> get() = _state
@@ -37,8 +39,8 @@ class PsychologistDetailViewModel @Inject constructor(
                         )
                     }
                 } else {
-                    if (order.therapy.doctorId != psychologist.id) {
-                        // Cancel last order
+                    if (order.therapy.doctorId != 0 && order.therapy.doctorId != psychologist.id) {
+                        cancelPayment()
                     }
                     createOrderTherapy()
                 }
@@ -185,6 +187,31 @@ class PsychologistDetailViewModel @Inject constructor(
                             isButtonLoading = true
                         )
                     }
+                }
+            }
+        }
+    }
+
+    private fun cancelPayment() {
+        viewModelScope.launch {
+            cancelPaymentUseCase.execute(
+                orderId = _state.value.order.id
+            ).collect { response ->
+                when (response) {
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isButtonLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isButtonLoading = true
+                        )
+                    }
+
+                    else -> Unit
                 }
             }
         }
