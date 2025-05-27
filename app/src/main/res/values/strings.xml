@@ -49,6 +49,7 @@
     <string name="message">Pesan</string>
     <string name="problem">Permasalahan</string>
     <string name="no_therapy_session">Belum ada sesi terapi yang dijadwalkan.</string>
+    <string name="no_psychologist_about">Belum ada informasi tambahan tentang psikolog ini.</string>
 
     <string name="logbook">Catatan Terapi</string>
     <string name="sleep_diary">Catatan Tidur</string>

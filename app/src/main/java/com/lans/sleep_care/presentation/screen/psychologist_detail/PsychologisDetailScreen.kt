@@ -5,13 +5,11 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,8 +21,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -51,12 +52,17 @@ import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.screen.payment.PaymentActivity
 import com.lans.sleep_care.presentation.theme.Black
+import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
+import com.lans.sleep_care.presentation.theme.Info
 import com.lans.sleep_care.presentation.theme.Primary
+import com.lans.sleep_care.presentation.theme.PrimaryVariant
 import com.lans.sleep_care.presentation.theme.Rounded
+import com.lans.sleep_care.presentation.theme.RoundedLarge
+import com.lans.sleep_care.presentation.theme.Secondary
+import com.lans.sleep_care.presentation.theme.Warning
 import com.lans.sleep_care.presentation.theme.White
-import java.util.Calendar
 
 @Composable
 fun PsychologistDetailScreen(
@@ -68,7 +74,6 @@ fun PsychologistDetailScreen(
     val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
-    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
     val paymentLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -168,204 +173,155 @@ fun PsychologistDetailScreen(
                 )
             }
         } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                AsyncImage(
-                    modifier = Modifier
-                        .size(Dimens.dp150)
-                        .align(Alignment.Center)
-                        .padding()
-                        .clip(CircleShape),
-                    model = state.psychologist.user.avatar,
-                    placeholder = painterResource(R.drawable.img_user_placeholder),
-                    error = painterResource(R.drawable.img_user_placeholder),
-                    contentDescription = stringResource(R.string.image),
-                    contentScale = ContentScale.Crop,
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.dp16)
-            )
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = state.psychologist.user.name,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = state.psychologist.user.email,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.dp16)
-            )
-            OutlinedCard(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                border = BorderStroke(Dimens.dp1, Gray),
-                colors = CardDefaults.outlinedCardColors(
-                    containerColor = White
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(Dimens.dp80)
-                        .padding(vertical = Dimens.dp8),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = Dimens.dp4),
-                            text = stringResource(R.string.age),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = Dimens.dp4),
-                            text = state.psychologist.user.age.toString(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .background(Gray)
-                            .width(Dimens.dp1)
-                            .fillMaxHeight()
-                    )
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = Dimens.dp4),
-                            text = stringResource(R.string.experience),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = Dimens.dp4),
-                            text = (currentYear - state.psychologist.registeredYear).toString(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .background(Gray)
-                            .width(Dimens.dp1)
-                            .fillMaxHeight()
-                    )
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = Dimens.dp4),
-                            text = stringResource(R.string.rating),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = Dimens.dp4),
-                            text = "${state.psychologist.avgRating}(${state.psychologist.totalRating})",
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        )
-                    }
-                }
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.dp16)
-            )
             OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                border = BorderStroke(Dimens.dp1, Gray),
-                colors = CardDefaults.outlinedCardColors(
-                    containerColor = White
-                )
+                border = BorderStroke(width = Dimens.dp1, color = Gray),
+                colors = CardDefaults.outlinedCardColors(containerColor = White),
+                shape = RoundedLarge
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = Dimens.dp16,
-                            top = Dimens.dp16,
-                            end = Dimens.dp16,
-                            bottom = Dimens.dp4
-                        ),
-                    text = stringResource(R.string.about_psychologist),
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.SemiBold
+                        .padding(Dimens.dp24),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(Dimens.dp150)
+                            .padding()
+                            .clip(CircleShape),
+                        model = state.psychologist.user.avatar,
+                        placeholder = painterResource(R.drawable.img_user_placeholder),
+                        error = painterResource(R.drawable.img_user_placeholder),
+                        contentDescription = stringResource(R.string.image),
+                        contentScale = ContentScale.Crop,
                     )
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = Dimens.dp16,
-                            end = Dimens.dp16,
-                            bottom = Dimens.dp16
-                        ),
-                    text = state.psychologist.about.ifBlank { "-" },
-                    textAlign = TextAlign.Justify,
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp16)
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = state.psychologist.user.name,
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp8)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(Dimens.dp24),
+                            imageVector = Icons.Default.Star,
+                            tint = Warning,
+                            contentDescription = stringResource(R.string.icon),
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(start = Dimens.dp4),
+                            text = state.psychologist.avgRating.toString(),
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = " • ${state.psychologist.totalRating} reviews",
+                            color = DarkGray,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp8)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(Dimens.dp24),
+                            imageVector = Icons.Default.Email,
+                            tint = PrimaryVariant,
+                            contentDescription = stringResource(R.string.icon),
+                        )
+                        Spacer(modifier = Modifier.width(Dimens.dp4))
+                        Text(
+                            text = state.psychologist.user.email,
+                            color = DarkGray,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp20)
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = stringResource(R.string.about_psychologist),
+                        textAlign = TextAlign.Start,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(Dimens.dp6))
+                    OutlinedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        border = BorderStroke(Dimens.dp1, Gray),
+                        colors = CardDefaults.outlinedCardColors(
+                            containerColor = White
+                        )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(
+                                    start = Dimens.dp8,
+                                    top = Dimens.dp8,
+                                    end = Dimens.dp8
+                                ),
+                            text = state.psychologist.about.ifEmpty {
+                                stringResource(R.string.no_psychologist_about)
+                            },
+                            textAlign = TextAlign.Justify,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp20)
+                    )
+                    LoadingButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp48),
+                        text = stringResource(R.string.message),
+                        shape = Rounded,
+                        isLoading = state.isButtonLoading,
+                        onClick = {
+                            viewModel.onEvent(PsychologistDetailUIEvent.OrderButtonClicked)
+                        }
+                    )
+                }
             }
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(Dimens.dp16)
-            )
-            LoadingButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.dp48),
-                text = stringResource(R.string.message),
-                shape = Rounded,
-                isLoading = state.isButtonLoading,
-                onClick = {
-                    viewModel.onEvent(PsychologistDetailUIEvent.OrderButtonClicked)
-                }
+                    .height(Dimens.dp12)
             )
         }
     }
