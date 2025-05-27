@@ -83,9 +83,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providePaymentRepository(
-        api: SleepCareApi,
-        dataStoreManager: DataStoreManager
+        api: SleepCareApi
     ): IPaymentRepository {
-        return PaymentRepository(api, dataStoreManager)
+        return PaymentRepository(api)
     }
 }

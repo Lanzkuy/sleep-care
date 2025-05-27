@@ -33,11 +33,12 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
             .enableLog(true)
             .buildSDK()
 
+        val orderId = intent.getStringExtra("orderId")
         val token = intent.getStringExtra("token")
 
-        if (!token.isNullOrEmpty() && !isTransactionStarted) {
+        if (!token.isNullOrEmpty() && !orderId.isNullOrEmpty() && !isTransactionStarted) {
             isTransactionStarted = true
-            startTransaction(token)
+            startTransaction(token, orderId)
         }
 
         lifecycleScope.launch {
@@ -63,6 +64,8 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
     override fun onTransactionFinished(result: TransactionResult) {
         if (result.isTransactionCanceled) {
             Toast.makeText(this, "Pembayaran dibatalkan", Toast.LENGTH_LONG).show()
+
+            viewModel.stopPollingTransaction()
             return finish()
         }
 
@@ -92,12 +95,14 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
                     ).show()
                 }
             }
+
+            viewModel.stopPollingTransaction()
             finish()
         }
     }
 
-    private fun startTransaction(token: String) {
+    private fun startTransaction(orderId: String, token: String) {
         MidtransSDK.getInstance().startPaymentUiFlow(this, token)
-        viewModel.startPollingTransaction()
+        viewModel.startPollingTransaction(orderId)
     }
 }

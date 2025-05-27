@@ -2,7 +2,7 @@ package com.lans.sleep_care.data.source.network.dto.request.payment
 
 import com.squareup.moshi.Json
 
-data class PaymentRequest(
+data class CreatePaymentRequest(
     @field:Json(name = "transaction_details")
     val transactionDetails: PaymentDetailRequest,
     @field:Json(name = "item_details")

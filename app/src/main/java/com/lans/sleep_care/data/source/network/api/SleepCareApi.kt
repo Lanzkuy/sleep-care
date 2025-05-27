@@ -7,7 +7,9 @@ import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRe
 import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
 import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
 import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookRequest
-import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentRequest
+import com.lans.sleep_care.data.source.network.dto.request.payment.CancelPaymentRequest
+import com.lans.sleep_care.data.source.network.dto.request.payment.CreatePaymentRequest
+import com.lans.sleep_care.data.source.network.dto.request.payment.UpdatePaymentRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
@@ -20,7 +22,10 @@ import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.LogbookAnswerListResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.LogbookQuestionListResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryListResponse
-import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.CancelPaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.CheckPaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.CreatePaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.UpdatePaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistListResponse
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
@@ -157,8 +162,23 @@ interface SleepCareApi {
         @Body requestBody: OrderTherapyRequest
     ): ApiResponse<OrderTherapyResponse>
 
+    @GET("midtrans/check/{id}")
+    suspend fun checkMidtransPayment(
+        @Path("id") id: String,
+    ): CheckPaymentResponse
+
     @POST("midtrans/charge")
-    suspend fun sendMidtransCharge(
-        @Body requestBody: PaymentRequest
-    ): PaymentResponse
+    suspend fun createMidtransPayment(
+        @Body requestBody: CreatePaymentRequest
+    ): CreatePaymentResponse
+
+    @PUT("midtrans/update")
+    suspend fun updateMidtransPayment(
+        @Body requestBody: UpdatePaymentRequest
+    ): ApiResponse<UpdatePaymentResponse>
+
+    @POST("midtrans/cancel")
+    suspend fun cancelMidtransPayment(
+        @Body requestBody: CancelPaymentRequest
+    ): ApiResponse<CancelPaymentResponse>
 }

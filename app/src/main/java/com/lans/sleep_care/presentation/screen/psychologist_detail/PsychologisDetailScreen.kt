@@ -78,6 +78,7 @@ fun PsychologistDetailScreen(
 
         if (paymentToken.isNotEmpty()) {
             val intent = Intent(context, PaymentActivity::class.java).apply {
+                putExtra("orderId", state.order.id)
                 putExtra("token", paymentToken)
             }
             context.startActivity(intent)

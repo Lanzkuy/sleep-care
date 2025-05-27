@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
+import com.lans.sleep_care.domain.usecase.payment.CreatePaymentUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
@@ -20,7 +20,7 @@ class PsychologistDetailViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase,
     private val createOrderTherapyUseCase: CreateOrderTherapyUseCase,
-    private val createPaymentChargeUseCase: CreatePaymentChargeUseCase
+    private val createPaymentUseCase: CreatePaymentUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(PsychologistDetailUIState())
     val state: State<PsychologistDetailUIState> get() = _state
@@ -30,7 +30,7 @@ class PsychologistDetailViewModel @Inject constructor(
             with(_state.value) {
                 if (order.paymentStatus == "pending" && order.therapy.doctorId == psychologist.id) {
                     if (order.paymentId.isEmpty()) {
-                        createPaymentCharge()
+                        createPayment()
                     } else {
                         _state.value = _state.value.copy(
                             paymentToken = order.paymentId
@@ -139,7 +139,7 @@ class PsychologistDetailViewModel @Inject constructor(
                         _state.value = _state.value.copy(
                             order = response.data
                         )
-                        createPaymentCharge()
+                        createPayment()
                     }
 
                     is Resource.Error -> {
@@ -159,9 +159,9 @@ class PsychologistDetailViewModel @Inject constructor(
         }
     }
 
-    private fun createPaymentCharge() {
+    private fun createPayment() {
         viewModelScope.launch {
-            createPaymentChargeUseCase.execute(
+            createPaymentUseCase.execute(
                 orderId = _state.value.order.id,
                 user = _state.value.user
             ).collect { response ->

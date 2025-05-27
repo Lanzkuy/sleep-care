@@ -5,10 +5,10 @@ import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.request.payment.CustomerDetailRequest
 import com.lans.sleep_care.data.source.network.dto.request.payment.ItemDetailRequest
 import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentDetailRequest
-import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentRequest
+import com.lans.sleep_care.data.source.network.dto.request.payment.CreatePaymentRequest
 import com.lans.sleep_care.domain.model.auth.User
 import com.lans.sleep_care.domain.repository.IPaymentRepository
-import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
+import com.lans.sleep_care.domain.usecase.payment.CreatePaymentUseCase
 import com.lans.sleep_care.utils.splitName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class CreatePaymentChargeInteractor @Inject constructor(
+class CreatePaymentInteractor @Inject constructor(
     private val repository: IPaymentRepository
-) : CreatePaymentChargeUseCase, SafeApiCall {
+) : CreatePaymentUseCase, SafeApiCall {
     override suspend fun execute(
         orderId: String,
         user: User
@@ -31,8 +31,8 @@ class CreatePaymentChargeInteractor @Inject constructor(
                     val psychologistFee = 350000
                     val applicationFee = 20000
 
-                    val response = repository.createPaymentCharge(
-                        PaymentRequest(
+                    val response = repository.createMidtransPayment(
+                        CreatePaymentRequest(
                             transactionDetails = PaymentDetailRequest(
                                 orderId = orderId,
                                 grossAmount = (psychologistFee + applicationFee)

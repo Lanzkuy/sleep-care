@@ -19,10 +19,10 @@ import com.lans.sleep_care.domain.interactor.logbook.GetLogbookQuestionsInteract
 import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiariesInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiaryDetailInteractor
 import com.lans.sleep_care.domain.interactor.logbook.UpdateLogbookAnswerInteractor
-import com.lans.sleep_care.domain.interactor.payment.CreatePaymentChargeInteractor
-import com.lans.sleep_care.domain.interactor.payment.GetPaymentSessionInteractor
-import com.lans.sleep_care.domain.interactor.payment.RemovePaymentSessionInteractor
-import com.lans.sleep_care.domain.interactor.payment.SavePaymentSessionInteractor
+import com.lans.sleep_care.domain.interactor.payment.CancelPaymentInteractor
+import com.lans.sleep_care.domain.interactor.payment.CheckPaymentInteractor
+import com.lans.sleep_care.domain.interactor.payment.CreatePaymentInteractor
+import com.lans.sleep_care.domain.interactor.payment.UpdatePaymentInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetAllPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.therapy.CreateOrderTherapyInteractor
@@ -69,10 +69,10 @@ import com.lans.sleep_care.domain.usecase.logbook.GetLogbookQuestionsUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiariesUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiaryDetailUseCase
 import com.lans.sleep_care.domain.usecase.logbook.UpdateLogbookAnswerUseCase
-import com.lans.sleep_care.domain.usecase.payment.CreatePaymentChargeUseCase
-import com.lans.sleep_care.domain.usecase.payment.GetPaymentSessionUseCase
-import com.lans.sleep_care.domain.usecase.payment.RemovePaymentSessionUseCase
-import com.lans.sleep_care.domain.usecase.payment.SavePaymentSessionUseCase
+import com.lans.sleep_care.domain.usecase.payment.CancelPaymentUseCase
+import com.lans.sleep_care.domain.usecase.payment.CheckPaymentUseCase
+import com.lans.sleep_care.domain.usecase.payment.CreatePaymentUseCase
+import com.lans.sleep_care.domain.usecase.payment.UpdatePaymentUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
@@ -356,34 +356,34 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideCreatePaymentChargeUseCase(
+    fun provideCheckPaymentUseCase(
         repository: IPaymentRepository
-    ): CreatePaymentChargeUseCase {
-        return CreatePaymentChargeInteractor(repository)
+    ): CheckPaymentUseCase {
+        return CheckPaymentInteractor(repository)
     }
 
     @Provides
     @Singleton
-    fun provideGetPaymentSessionUseCase(
+    fun provideCreatePaymentUseCase(
         repository: IPaymentRepository
-    ): GetPaymentSessionUseCase {
-        return GetPaymentSessionInteractor(repository)
+    ): CreatePaymentUseCase {
+        return CreatePaymentInteractor(repository)
     }
 
     @Provides
     @Singleton
-    fun provideSavePaymentSessionUseCase(
+    fun provideUpdatePaymentChargeUseCase(
         repository: IPaymentRepository
-    ): SavePaymentSessionUseCase {
-        return SavePaymentSessionInteractor(repository)
+    ): UpdatePaymentUseCase {
+        return UpdatePaymentInteractor(repository)
     }
 
     @Provides
     @Singleton
-    fun provideRemovePaymentSessionUseCase(
+    fun provideCancelPaymentChargeUseCase(
         repository: IPaymentRepository
-    ): RemovePaymentSessionUseCase {
-        return RemovePaymentSessionInteractor(repository)
+    ): CancelPaymentUseCase {
+        return CancelPaymentInteractor(repository)
     }
 
     @Provides

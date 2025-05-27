@@ -4,9 +4,6 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.auth.User
 import kotlinx.coroutines.flow.Flow
 
-interface CreatePaymentChargeUseCase {
-    suspend fun execute(
-        orderId: String,
-        user: User
-    ): Flow<Resource<Pair<String, String>>>
+interface CreatePaymentUseCase {
+    suspend fun execute(orderId: String, user: User): Flow<Resource<Pair<String, String>>>
 }

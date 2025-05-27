@@ -1,15 +1,20 @@
 package com.lans.sleep_care.domain.repository
 
-import com.lans.sleep_care.data.source.network.dto.request.payment.PaymentRequest
-import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentResponse
-import kotlinx.coroutines.flow.Flow
+import com.lans.sleep_care.data.source.network.dto.request.payment.CancelPaymentRequest
+import com.lans.sleep_care.data.source.network.dto.request.payment.CreatePaymentRequest
+import com.lans.sleep_care.data.source.network.dto.request.payment.UpdatePaymentRequest
+import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.CancelPaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.CheckPaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.CreatePaymentResponse
+import com.lans.sleep_care.data.source.network.dto.response.payment.UpdatePaymentResponse
 
 interface IPaymentRepository {
-    suspend fun createPaymentCharge(request: PaymentRequest): PaymentResponse
+    suspend fun checkMidtransPayment(orderId: String): CheckPaymentResponse
 
-    suspend fun getPaymentSession(): Flow<Triple<String, String, Int>>
+    suspend fun createMidtransPayment(request: CreatePaymentRequest): CreatePaymentResponse
 
-    suspend fun savePaymentSession(token: String, orderId: String, psychologistId: Int)
+    suspend fun updateMidtransPayment(request: UpdatePaymentRequest): ApiResponse<UpdatePaymentResponse>
 
-    suspend fun deletePaymentSession()
+    suspend fun cancelMidtransPayment(request: CancelPaymentRequest): ApiResponse<CancelPaymentResponse>
 }

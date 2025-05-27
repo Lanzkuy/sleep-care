@@ -3,9 +3,8 @@ package com.lans.sleep_care.presentation.screen.payment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
-import com.lans.sleep_care.domain.usecase.payment.RemovePaymentSessionUseCase
-import com.lans.sleep_care.domain.usecase.payment.SavePaymentSessionUseCase
-import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
+import com.lans.sleep_care.domain.usecase.payment.CheckPaymentUseCase
+import com.lans.sleep_care.domain.usecase.payment.UpdatePaymentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PaymentViewModel @Inject constructor(
-    private val getOrderTherapyStatusUseCase: GetOrderTherapyStatusUseCase
+    private val getCheckPaymentUseCase: CheckPaymentUseCase,
+    private val updatePaymentUseCase: UpdatePaymentUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(PaymentUIState())
     val state: StateFlow<PaymentUIState> get() = _state
@@ -25,7 +25,7 @@ class PaymentViewModel @Inject constructor(
     private var hasStartedPolling = false
     private var pollingJob: Job? = null
 
-    fun startPollingTransaction() {
+    fun startPollingTransaction(orderId: String) {
         if (hasStartedPolling) return
         hasStartedPolling = true
 
@@ -34,15 +34,16 @@ class PaymentViewModel @Inject constructor(
             var isCompleted = false
 
             while (!isCompleted) {
-                getOrderTherapyStatusUseCase.execute().collect { response ->
+                getCheckPaymentUseCase.execute(orderId).collect { response ->
                     when (response) {
                         is Resource.Success -> {
-                            val status = response.data.paymentStatus
+                            val status = response.data
                             _state.update {
                                 it.copy(paymentStatus = status, isLoading = false)
                             }
 
-                            if (status == "settlement") {
+                            if (status == "settlement" || status == "cancel") {
+                                updatePayment(orderId)
                                 isCompleted = true
                             }
                         }
@@ -70,5 +71,35 @@ class PaymentViewModel @Inject constructor(
     fun stopPollingTransaction() {
         hasStartedPolling = false
         pollingJob?.cancel()
+    }
+
+    private fun updatePayment(orderId: String) {
+        viewModelScope.launch {
+            updatePaymentUseCase.execute(
+                orderId = orderId
+            ).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            isUpdated = response.data,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+            }
+        }
     }
 }
