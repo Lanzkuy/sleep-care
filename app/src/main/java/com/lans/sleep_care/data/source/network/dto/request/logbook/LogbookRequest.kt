@@ -9,5 +9,5 @@ data class LogbookRequest(
     val recordType: String,
     @field:Json(name = "record_id")
     val recordId: Int,
-    val answers: List<LogbookAnswerRequest>
+    val answers: List<LogbookAnswerUpsertRequest>
 )

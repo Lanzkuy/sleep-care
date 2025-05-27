@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.logbook
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookAnswerRequest
+import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookAnswerUpsertRequest
 import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookRequest
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.domain.repository.ILogbookRepository
@@ -32,7 +32,7 @@ class UpdateLogbookAnswerInteractor @Inject constructor(
                             recordId = recordId,
                             recordType = recordType,
                             answers = questionAnswers.map {
-                                LogbookAnswerRequest(
+                                LogbookAnswerUpsertRequest(
                                     questionId = it.questionId,
                                     id = it.answer.id,
                                     type = it.answer.type,

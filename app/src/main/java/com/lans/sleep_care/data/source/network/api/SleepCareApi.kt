@@ -17,8 +17,8 @@ import com.lans.sleep_care.data.source.network.dto.response.auth.LoginResponse
 import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
 import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatListResponse
 import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
+import com.lans.sleep_care.data.source.network.dto.response.logbook.LogbookAnswerListResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.LogbookQuestionListResponse
-import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryDetailResponse
 import com.lans.sleep_care.data.source.network.dto.response.logbook.SleepDiaryListResponse
 import com.lans.sleep_care.data.source.network.dto.response.payment.PaymentResponse
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistListResponse
@@ -118,12 +118,26 @@ interface SleepCareApi {
     suspend fun getSleepDiaryDetail(
         @Path("id") id: Int,
         @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
-    ): ApiResponse<SleepDiaryDetailResponse>
+    ): ApiResponse<LogbookAnswerListResponse>
 
     @GET("therapy/records/questions")
     suspend fun getQuestions(
         @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
     ): ApiResponse<LogbookQuestionListResponse>
+
+    @GET("therapy/records/answers")
+    suspend fun getAnswers(
+        @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
+    ): ApiResponse<LogbookAnswerListResponse>
+
+    @GET("areas")
+    suspend fun getAreas(): ApiResponse<List<String>>
+
+    @GET("emotions")
+    suspend fun getEmotions(): ApiResponse<List<String>>
+
+    @GET("problems")
+    suspend fun getProblems(): ApiResponse<List<String>>
 
     @POST("therapy/records/answers")
     suspend fun createAnswer(

@@ -7,5 +7,5 @@ data class SleepDiary(
     val week: Int = 0,
     val day: Int = 0,
     val date: String = "",
-    var sleepDiaryDetail: SleepDiaryDetail? = null
+    var logbookAnswerList: LogbookAnswerList? = null
 )

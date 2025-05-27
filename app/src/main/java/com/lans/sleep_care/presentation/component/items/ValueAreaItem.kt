@@ -2,9 +2,7 @@ package com.lans.sleep_care.presentation.component.items
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -13,17 +11,16 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.logbook.ValueArea
+import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
@@ -32,87 +29,98 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun ValueAreaItem(
     areaName: String,
-    valueArea: ValueArea,
-    onDataChange: (valueArea: ValueArea) -> Unit
+    questions: List<LogbookQuestion>,
+    answers: List<LogbookQuestionAnswer>,
+    onDataChange: (questionAnswer: LogbookQuestionAnswer) -> Unit
 ) {
-    var priority by remember { mutableFloatStateOf(valueArea.priority) }
-    var match by remember { mutableFloatStateOf(valueArea.match) }
-    var desire by remember { mutableStateOf(valueArea.desire) }
-
-    LaunchedEffect(priority, match, desire) {
-        onDataChange(ValueArea(priority, match, desire))
-    }
+    if (questions.isEmpty()) return
 
     OutlinedCard(
-        modifier = Modifier
-            .fillMaxWidth(),
-        border = BorderStroke(
-            width = Dimens.dp1,
-            color = Gray
-        ),
+        modifier = Modifier.fillMaxWidth(),
+        border = BorderStroke(width = Dimens.dp1, color = Gray),
         colors = CardDefaults.outlinedCardColors(containerColor = White),
         shape = RoundedLarge
     ) {
-        Column(
-            modifier = Modifier
-                .padding(Dimens.dp16)
-        ) {
+        Column(modifier = Modifier.padding(Dimens.dp16)) {
             Text(
                 text = areaName,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 )
             )
-            Spacer(
-                modifier = Modifier
-                    .height(Dimens.dp12)
-            )
-            Text(
-                text = "${stringResource(R.string.priority_scale)}: $priority",
-                style = MaterialTheme.typography.bodyLarge,
-            )
-            Slider(
-                value = priority,
-                valueRange = 1f..10f,
-                steps = 8,
-                onValueChange = {
-                    priority = it
+
+            questions.forEach { question ->
+                val questionAnswer = answers.find { it.questionId == question.id }
+                val answer = questionAnswer?.answer?.answer
+
+                var scale by remember(question.id to answer) {
+                    mutableFloatStateOf(answer?.toFloatOrNull() ?: 0f)
                 }
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(Dimens.dp8)
-            )
-            Text(
-                text = "${stringResource(R.string.match_scale)}: $match",
-                style = MaterialTheme.typography.bodyLarge,
-            )
-            Slider(
-                value = match,
-                valueRange = 1f..10f,
-                steps = 8,
-                onValueChange = {
-                    match = it
+                var text by remember(question.id to answer) {
+                    mutableStateOf(answer ?: "")
                 }
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(Dimens.dp8)
-            )
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                label = {
-                    Text(
-                        text = stringResource(R.string.area_desire),
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                },
-                value = desire,
-                onValueChange = {
-                    desire = it
+
+                Column(modifier = Modifier.padding(top = Dimens.dp8)) {
+                    when (question.type) {
+                        "number" -> {
+                            Text(
+                                text = "${question.question}: ${scale.toInt()}",
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                            Slider(
+                                value = scale,
+                                valueRange = 1f..10f,
+                                steps = 8,
+                                onValueChange = {
+                                    scale = it
+                                    onDataChange(
+                                        questionAnswer?.copy(
+                                            answer = questionAnswer.answer.copy(
+                                                answer = it.toString()
+                                            )
+                                        ) ?: LogbookQuestionAnswer(
+                                            questionId = question.id,
+                                            answer = LogbookAnswer(
+                                                type = question.type,
+                                                answer = it.toString()
+                                            )
+                                        )
+                                    )
+                                }
+                            )
+                        }
+
+                        "text" -> {
+                            OutlinedTextField(
+                                modifier = Modifier.fillMaxWidth(),
+                                label = {
+                                    Text(
+                                        text = question.question,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                    )
+                                },
+                                value = text,
+                                onValueChange = {
+                                    text = it
+                                    onDataChange(
+                                        questionAnswer?.copy(
+                                            answer = questionAnswer.answer.copy(
+                                                answer = it
+                                            )
+                                        ) ?: LogbookQuestionAnswer(
+                                            questionId = question.id,
+                                            answer = LogbookAnswer(
+                                                type = question.type,
+                                                answer = it
+                                            )
+                                        )
+                                    )
+                                }
+                            )
+                        }
+                    }
                 }
-            )
+            }
         }
     }
 }

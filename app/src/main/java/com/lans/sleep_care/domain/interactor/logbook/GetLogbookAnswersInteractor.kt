@@ -2,31 +2,31 @@ package com.lans.sleep_care.domain.interactor.logbook
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.logbook.SleepDiaryRequest
+import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookAnswerRequest
 import com.lans.sleep_care.data.source.network.dto.response.logbook.toDomain
 import com.lans.sleep_care.domain.model.logbook.LogbookAnswerList
 import com.lans.sleep_care.domain.repository.ILogbookRepository
-import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiaryDetailUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetLogbookAnswersUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class GetSleepDiaryDetailInteractor @Inject constructor(
+class GetLogbookAnswersInteractor @Inject constructor(
     private val repository: ILogbookRepository
-) : GetSleepDiaryDetailUseCase, SafeApiCall {
+) : GetLogbookAnswersUseCase, SafeApiCall {
     override suspend fun execute(
-        sleepDiaryId: Int,
+        recordType: String,
         therapyId: Int
     ): Flow<Resource<LogbookAnswerList>> {
         return flow {
             emit(Resource.Loading)
             emit(
                 safeCall {
-                    val response = repository.fetchSleepDiaryDetail(
-                        sleepDiaryId = sleepDiaryId,
-                        request = SleepDiaryRequest(
+                    val response = repository.fetchAnswers(
+                        LogbookAnswerRequest(
+                            recordType = recordType,
                             therapyId = therapyId
                         )
                     )

@@ -259,7 +259,7 @@ fun NavGraph(
                     }
                 },
                 navigateToIdentifyValue = {
-                    navController.navigate(route = Route.IdentifyValueScreen.route) {
+                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
@@ -289,8 +289,10 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.IdentifyValueScreen.route) {
+        composable(route = Route.IdentifyValueScreen.route + "/{therapyId}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
             IdentifyValueScreen(
+                therapyId = therapyId,
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }

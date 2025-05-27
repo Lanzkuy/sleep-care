@@ -9,6 +9,6 @@ interface CreateLogbookAnswerUseCase {
         therapyId: Int,
         recordId: Int,
         recordType: String,
-        questionAnswer: List<LogbookQuestionAnswer>
+        questionAnswers: List<LogbookQuestionAnswer>
     ): Flow<Resource<Boolean>>
 }

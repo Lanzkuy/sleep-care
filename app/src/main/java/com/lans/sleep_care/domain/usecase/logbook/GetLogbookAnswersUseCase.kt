@@ -4,6 +4,9 @@ import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.logbook.LogbookAnswerList
 import kotlinx.coroutines.flow.Flow
 
-interface GetSleepDiaryDetailUseCase {
-    suspend fun execute(sleepDiaryId: Int, therapyId: Int): Flow<Resource<LogbookAnswerList>>
+interface GetLogbookAnswersUseCase {
+    suspend fun execute(
+        recordType: String,
+        therapyId: Int
+    ): Flow<Resource<LogbookAnswerList>>
 }

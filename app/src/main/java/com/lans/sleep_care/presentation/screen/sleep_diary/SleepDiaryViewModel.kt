@@ -12,8 +12,12 @@ import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiariesUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiaryDetailUseCase
 import com.lans.sleep_care.domain.usecase.logbook.UpdateLogbookAnswerUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,10 +34,29 @@ class SleepDiaryViewModel @Inject constructor(
 
     fun onEvent(event: SleepDiaryUIEvent) {
         if (event is SleepDiaryUIEvent.SaveButtonClicked) {
-            updateLogbookAnswer(
-                therapyId = event.therapyId,
-                questionAnswers = event.questionAnswers
-            )
+            val createAnswers = event.recordAnswers.mapNotNull { entry ->
+                val filtered = entry.value.filter { it.answer.id == 0 }
+                if (filtered.isNotEmpty()) entry.key to filtered else null
+            }.toMap()
+
+            val updateAnswers = event.recordAnswers.mapNotNull { entry ->
+                val filtered = entry.value.filter { it.answer.id != 0 }
+                if (filtered.isNotEmpty()) entry.key to filtered else null
+            }.toMap()
+
+            if (createAnswers.isNotEmpty()) {
+                createLogbookAnswer(
+                    therapyId = event.therapyId,
+                    recordAnswers = createAnswers
+                )
+            }
+
+            if (updateAnswers.isNotEmpty()) {
+                updateLogbookAnswer(
+                    therapyId = event.therapyId,
+                    recordAnswers = updateAnswers
+                )
+            }
         }
     }
 
@@ -117,7 +140,7 @@ class SleepDiaryViewModel @Inject constructor(
                 is Resource.Success -> {
                     val updatedDiaries = _state.value.sleepDiaries.map { diary ->
                         if (diary.id == sleepDiaryId) {
-                            diary.copy(sleepDiaryDetail = response.data)
+                            diary.copy(logbookAnswerList = response.data)
                         } else diary
                     }
                     _state.value = _state.value.copy(
@@ -136,85 +159,116 @@ class SleepDiaryViewModel @Inject constructor(
         }
     }
 
-    private fun createLogbookAnswer(therapyId: Int) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun createLogbookAnswer(
+        therapyId: Int,
+        recordAnswers: Map<Int, List<LogbookQuestionAnswer>>
+    ) {
         viewModelScope.launch {
-//            createLogbookAnswerUseCase.execute(
-//                therapyId = ,
-//                recordId = 1,
-//                recordType = "sleep_diary",
-//                questionAnswer =
-//            ).collect { response ->
-//                when (response) {
-//                    is Resource.Success -> {
-//                        val diaries = response.data
-//                        _state.value = _state.value.copy(
-//                            sleepDiaries = diaries
-//                        )
-//                        val jobs = diaries.filter { it.week == week }.map { diary ->
-//                            async {
-//                                loadSleepDiaryDetail(diary.id, diary.therapyId)
-//                            }
-//                        }
-//                        jobs.awaitAll()
-//
-//                        _state.value = _state.value.copy(isLoading = false)
-//                    }
-//
-//                    is Resource.Error -> {
-//                        _state.value = _state.value.copy(
-//                            error = response.message,
-//                            isLoading = false
-//                        )
-//                    }
-//
-//                    is Resource.Loading -> {
-//                        _state.value = _state.value.copy(isLoading = true)
-//                    }
-//                }
-//            }
+            _state.value = _state.value.copy(isLoading = true)
+
+            val successfulRecords = mutableListOf<Int>()
+            var hasError = false
+            var errorMessage: String? = null
+
+            recordAnswers.entries.asFlow()
+                .flatMapMerge { (recordId, newAnswers) ->
+                    createLogbookAnswerUseCase.execute(
+                        therapyId = therapyId,
+                        recordId = recordId,
+                        recordType = "sleep_diary",
+                        questionAnswers = newAnswers
+                    ).map { response -> recordId to response }
+                }
+                .collect { (recordId, response) ->
+                    when (response) {
+                        is Resource.Success -> {
+                            successfulRecords.add(recordId)
+                        }
+
+                        is Resource.Error -> {
+                            hasError = true
+                            errorMessage = response.message
+                        }
+
+                        else -> {}
+                    }
+                }
+
+            successfulRecords.forEach { recordId ->
+                loadSleepDiaryDetail(recordId, therapyId)
+            }
+
+            _state.value = _state.value.copy(
+                isCreated = successfulRecords.isNotEmpty(),
+                error = if (hasError) errorMessage.orEmpty() else "",
+                isLoading = false
+            )
         }
     }
 
-    private fun updateLogbookAnswer(therapyId: Int, questionAnswers: List<LogbookQuestionAnswer>) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun updateLogbookAnswer(
+        therapyId: Int,
+        recordAnswers: Map<Int, List<LogbookQuestionAnswer>>
+    ) {
         viewModelScope.launch {
-            updateLogbookAnswerUseCase.execute(
-                therapyId = therapyId,
-                recordId = 1,
-                recordType = "sleep_diary",
-                questionAnswers = questionAnswers
-            ).collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        val updatedSleepDiaries = _state.value.sleepDiaries.map { diary ->
-                            val updatedDetail = diary.sleepDiaryDetail?.let { detail ->
-                                val updatedAnswers = detail.answers.map { answer ->
-                                    questionAnswers.firstOrNull { it.answer.id == answer.answer.id }
-                                        ?: answer
-                                }
-                                detail.copy(answers = updatedAnswers)
-                            }
-                            diary.copy(sleepDiaryDetail = updatedDetail)
+            _state.value = _state.value.copy(isLoading = true)
+
+            val updatedAnswerMap = mutableMapOf<Int, List<LogbookQuestionAnswer>>()
+            var hasSuccess = false
+            var hasError = false
+            var errorMessage: String? = null
+
+            recordAnswers.entries.asFlow()
+                .flatMapMerge { (recordId, newAnswers) ->
+                    updateLogbookAnswerUseCase.execute(
+                        therapyId = therapyId,
+                        recordId = recordId,
+                        recordType = "sleep_diary",
+                        questionAnswers = newAnswers
+                    ).map { response -> Triple(recordId, newAnswers, response) }
+                }
+                .collect { (recordId, newAnswers, response) ->
+                    when (response) {
+                        is Resource.Success -> {
+                            hasSuccess = true
+                            updatedAnswerMap[recordId] = newAnswers
                         }
 
-                        _state.value = _state.value.copy(
-                            sleepDiaries = updatedSleepDiaries,
-                            isUpdated = true,
-                            isLoading = false
-                        )
-                    }
+                        is Resource.Error -> {
+                            hasError = true
+                            errorMessage = response.message
+                        }
 
-                    is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            error = response.message,
-                            isLoading = false
-                        )
-                    }
-
-                    is Resource.Loading -> {
-                        _state.value = _state.value.copy(isLoading = true)
+                        else -> Unit
                     }
                 }
+
+            val updatedDiaries = _state.value.sleepDiaries.map { diary ->
+                val newAnswers = updatedAnswerMap[diary.id]
+                val existingLogbook = diary.logbookAnswerList
+                if (newAnswers != null && existingLogbook != null) {
+                    val refreshedAnswers = existingLogbook.answers.map { currentAnswer ->
+                        newAnswers.firstOrNull { it.answer.id == currentAnswer.answer.id }
+                            ?: currentAnswer
+                    }
+                    diary.copy(
+                        logbookAnswerList = existingLogbook.copy(
+                            answers = refreshedAnswers
+                        )
+                    )
+                } else {
+                    diary
+                }
             }
+
+            _state.value = _state.value.copy(
+                sleepDiaries = updatedDiaries,
+                isUpdated = hasSuccess,
+                error = if (hasError) errorMessage.orEmpty() else "",
+                isLoading = false
+            )
         }
     }
 }

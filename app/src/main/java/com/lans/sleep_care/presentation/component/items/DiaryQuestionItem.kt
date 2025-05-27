@@ -31,11 +31,12 @@ import com.lans.sleep_care.presentation.theme.Rounded
 
 @Composable
 fun DiaryQuestionItem(
+    recordId: Int,
     question: LogbookQuestion,
     answer: LogbookAnswer,
     subQuestions: List<LogbookQuestion>,
     subAnswers: List<LogbookAnswer>,
-    onAnswerChanged: (questionAnswer: LogbookQuestionAnswer) -> Unit
+    onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
     var text by rememberSaveable(answer.id to answer.answer) {
         mutableStateOf(answer.answer)
@@ -64,6 +65,7 @@ fun DiaryQuestionItem(
                         onClick = {
                             text = "Ya"
                             onAnswerChanged(
+                                recordId,
                                 LogbookQuestionAnswer(
                                     questionId = question.id,
                                     answer = answer.copy(
@@ -88,6 +90,7 @@ fun DiaryQuestionItem(
                         onClick = {
                             text = "Tidak"
                             onAnswerChanged(
+                                recordId,
                                 LogbookQuestionAnswer(
                                     questionId = question.id,
                                     answer = answer.copy(
@@ -108,6 +111,7 @@ fun DiaryQuestionItem(
                 onValueChange = {
                     text = it
                     onAnswerChanged(
+                        recordId,
                         LogbookQuestionAnswer(
                             questionId = question.id,
                             answer = answer.copy(
@@ -124,6 +128,7 @@ fun DiaryQuestionItem(
             Column(modifier = Modifier.padding(start = Dimens.dp16)) {
                 subQuestions.zip(subAnswers).forEach { (subQuestion, subAnswer) ->
                     DiaryQuestionItem(
+                        recordId = recordId,
                         question = subQuestion,
                         answer = subAnswer,
                         subQuestions = emptyList(),

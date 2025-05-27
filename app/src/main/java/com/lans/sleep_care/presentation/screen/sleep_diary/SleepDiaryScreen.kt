@@ -63,17 +63,18 @@ fun SleepDiaryScreen(
 
     val selectedDates = state.sleepDiaries
         .filter { it.week == selectedWeek + 1 }
-        .map { it.date }
+        .map { Pair(it.id, it.date) }
 
     val allAnswers = state.sleepDiaries
         .filter { it.week == selectedWeek + 1 }
-        .mapNotNull { it.sleepDiaryDetail?.answers }
+        .mapNotNull { it.logbookAnswerList?.answers }
 
-    val tempAnswers = remember { mutableStateListOf<LogbookQuestionAnswer>() }
+    val tempAnswers = remember { mutableStateListOf<Pair<Int, LogbookQuestionAnswer>>() }
 
     val mergedAnswers = allAnswers.map { answers ->
         answers.map { original ->
-            tempAnswers.firstOrNull { it.answer.id == original.answer.id } ?: original
+            tempAnswers.firstOrNull { it.second.answer.id == original.answer.id }?.second
+                ?: original
         }
     }
 
@@ -85,12 +86,20 @@ fun SleepDiaryScreen(
         viewModel.loadSleepDiaries(therapyId = therapyId.toInt(), week = selectedWeek + 1)
     }
 
-    LaunchedEffect(key1 = state.isUpdated, key2 = state.error) {
+    LaunchedEffect(key1 = state.isCreated, key2 = state.isUpdated, key3 = state.error) {
+        val isCreated = state.isCreated
         val isUpdated = state.isUpdated
         val error = state.error
 
-        if (isUpdated) {
+        if (isCreated) {
             Toast.makeText(context, "Catatan tidur berhasil disimpan", Toast.LENGTH_SHORT).show()
+            state.isCreated = false
+            tempAnswers.clear()
+        }
+
+        if (isUpdated) {
+            Toast.makeText(context, "Catatan tidur berhasil diperbaharui", Toast.LENGTH_SHORT)
+                .show()
             state.isUpdated = false
             tempAnswers.clear()
         }
@@ -207,26 +216,26 @@ fun SleepDiaryScreen(
                 }
             } else {
                 SleepDiary(
-                    dates = selectedDates,
+                    dateWithIds = selectedDates,
                     questions = state.questions,
                     answers = mergedAnswers,
                     expandedStates = diaryExpandedStates,
-                    onAnswerChanged = { questionAnswer ->
+                    onAnswerChanged = { recordId, questionAnswer ->
                         val originalAnswer = allAnswers
                             .flatten()
                             .firstOrNull { it.answer.id == questionAnswer.answer.id }
 
                         if (originalAnswer != null) {
                             val currentTemp = tempAnswers.firstOrNull {
-                                it.answer.id == questionAnswer.answer.id
+                                it.second.answer.id == questionAnswer.answer.id
                             }
 
                             if (questionAnswer.answer != originalAnswer.answer) {
                                 if (currentTemp != null) {
                                     val index = tempAnswers.indexOf(currentTemp)
-                                    tempAnswers[index] = questionAnswer
+                                    tempAnswers[index] = Pair(recordId, questionAnswer)
                                 } else {
-                                    tempAnswers.add(questionAnswer)
+                                    tempAnswers.add(Pair(recordId, questionAnswer))
                                 }
                             } else {
                                 if (currentTemp != null) {
@@ -249,7 +258,10 @@ fun SleepDiaryScreen(
                     viewModel.onEvent(
                         SleepDiaryUIEvent.SaveButtonClicked(
                             therapyId = therapyId.toInt(),
-                            questionAnswers = tempAnswers
+                            recordAnswers = tempAnswers.groupBy(
+                                keySelector = { it.first },
+                                valueTransform = { it.second }
+                            )
                         )
                     )
                 }

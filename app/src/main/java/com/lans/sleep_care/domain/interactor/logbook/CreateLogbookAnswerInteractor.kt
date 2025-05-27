@@ -2,7 +2,7 @@ package com.lans.sleep_care.domain.interactor.logbook
 
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.data.source.network.SafeApiCall
-import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookAnswerRequest
+import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookAnswerUpsertRequest
 import com.lans.sleep_care.data.source.network.dto.request.logbook.LogbookRequest
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.domain.repository.ILogbookRepository
@@ -20,7 +20,7 @@ class CreateLogbookAnswerInteractor @Inject constructor(
         therapyId: Int,
         recordId: Int,
         recordType: String,
-        questionAnswer: List<LogbookQuestionAnswer>
+        questionAnswers: List<LogbookQuestionAnswer>
     ): Flow<Resource<Boolean>> {
         return flow {
             emit(Resource.Loading)
@@ -31,8 +31,8 @@ class CreateLogbookAnswerInteractor @Inject constructor(
                             therapyId = therapyId,
                             recordId = recordId,
                             recordType = recordType,
-                            answers = questionAnswer.map {
-                                LogbookAnswerRequest(
+                            answers = questionAnswers.map {
+                                LogbookAnswerUpsertRequest(
                                     questionId = it.questionId,
                                     type = it.answer.type,
                                     answer = it.answer.answer,

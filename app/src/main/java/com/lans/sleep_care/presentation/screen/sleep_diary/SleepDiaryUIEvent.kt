@@ -5,6 +5,6 @@ import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 sealed class SleepDiaryUIEvent {
     data class SaveButtonClicked(
         val therapyId: Int,
-        val questionAnswers: List<LogbookQuestionAnswer>
+        val recordAnswers: Map<Int, List<LogbookQuestionAnswer>>
     ) : SleepDiaryUIEvent()
 }

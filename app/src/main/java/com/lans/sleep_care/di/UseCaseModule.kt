@@ -13,6 +13,8 @@ import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotAnswerInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.SaveChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.logbook.CreateLogbookAnswerInteractor
+import com.lans.sleep_care.domain.interactor.logbook.GetAreasInteractor
+import com.lans.sleep_care.domain.interactor.logbook.GetLogbookAnswersInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetLogbookQuestionsInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiariesInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiaryDetailInteractor
@@ -61,6 +63,8 @@ import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotAnswerUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.logbook.CreateLogbookAnswerUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetAreasUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetLogbookAnswersUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetLogbookQuestionsUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiariesUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiaryDetailUseCase
@@ -316,6 +320,22 @@ object UseCaseModule {
         repository: ILogbookRepository
     ): GetLogbookQuestionsUseCase {
         return GetLogbookQuestionsInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetLogbookAnswersUseCase(
+        repository: ILogbookRepository
+    ): GetLogbookAnswersUseCase {
+        return GetLogbookAnswersInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAreasUseCase(
+        repository: ILogbookRepository
+    ): GetAreasUseCase {
+        return GetAreasInteractor(repository)
     }
 
     @Provides

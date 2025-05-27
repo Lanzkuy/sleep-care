@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class LogbookQuestionResponse(
     val id: Int,
-    val question : String,
+    val question: String,
     @field:Json(name = "is_parent")
     val isParent: Int,
     @field:Json(name = "parent_id")
@@ -13,7 +13,7 @@ data class LogbookQuestionResponse(
     val type: String,
     @field:Json(name = "record_type")
     val recordType: String,
-    val note: String,
+    val note: String?,
     @field:Json(name = "deleted_at")
     val deletedAt: String?
 )
@@ -24,7 +24,7 @@ fun LogbookQuestionResponse.toDomain() = LogbookQuestion(
     isParent = isParent,
     parentId = parentId ?: -1,
     type = type,
-    recordType =recordType,
-    note = note,
+    recordType = recordType,
+    note = note ?: "",
     isDeleted = deletedAt?.isNotEmpty() ?: false
 )

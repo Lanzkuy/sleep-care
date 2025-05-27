@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.screen.identify_value
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,23 +18,28 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
-import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.domain.model.logbook.ValueArea
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.items.ValueAreaItem
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -44,18 +50,34 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun IdentifyValueScreen(
     viewModel: IdentifyValueViewModel = hiltViewModel(),
+    therapyId: String,
     navigateToMyTherapy: () -> Unit
 ) {
-    val areas = listOf(
-        "Keluarga", "Pernikahan/Relasi Romantis", "Pertemanan", "Pekerjaan",
-        "Pendidikan & Pengembangan Diri", "Rekreasi", "Spiritualitas",
-        "Komunitas", "Lingkungan", "Kesehatan Tubuh"
-    )
-    val localSavedValueArea = DATA.savedValueArea
-    val tempValueArea = remember { mutableStateMapOf<String, ValueArea>() }
+    val context = LocalContext.current
+    val state by viewModel.state
+    var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
-        tempValueArea.putAll(localSavedValueArea)
+        viewModel.loadQuestions(therapyId.toInt())
+    }
+
+    LaunchedEffect(key1 = state.error) {
+        val error = state.error
+
+        if (error.isNotBlank()) {
+            showAlert = Pair(true, error)
+            state.error = ""
+        }
+    }
+
+    if (showAlert.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_error_title),
+            message = showAlert.second,
+            onDismiss = {
+                showAlert = showAlert.copy(first = false)
+            }
+        )
     }
 
     Box(
@@ -105,26 +127,42 @@ fun IdentifyValueScreen(
                     .fillMaxWidth()
                     .height(Dimens.dp16)
             )
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
-            ) {
-                items(areas) { area ->
-                    val currentData = DATA.savedValueArea[area] ?: ValueArea()
-                    ValueAreaItem(
-                        areaName = area,
-                        valueArea = currentData,
-                        onDataChange = { valueArea ->
-                            tempValueArea[area] = valueArea
-                        }
+            if (state.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(Dimens.dp32)
+                            .align(Alignment.Center),
+                        color = Primary
                     )
                 }
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .height(Dimens.dp16)
-                    )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
+                ) {
+                    items(state.areas) { area ->
+                        val answers = state.answers.answers.filter { it.answer.note == area }
+                        ValueAreaItem(
+                            areaName = area,
+                            questions = state.questions.sortedBy { it.type },
+                            answers = answers,
+                            onDataChange = { questionAnswer ->
+
+                            }
+                        )
+                    }
+                    item {
+                        Spacer(
+                            modifier = Modifier
+                                .height(Dimens.dp16)
+                        )
+                    }
                 }
             }
         }
@@ -135,8 +173,7 @@ fun IdentifyValueScreen(
             contentColor = White,
             shape = Rounded,
             onClick = {
-                viewModel.saveValueArea(tempValueArea)
-                tempValueArea.clear()
+
             }
         ) {
             Icon(

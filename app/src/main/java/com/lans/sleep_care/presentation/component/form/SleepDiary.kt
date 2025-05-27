@@ -21,8 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,20 +39,19 @@ import com.lans.sleep_care.utils.parseToDayName
 
 @Composable
 fun SleepDiary(
-    dates: List<String>,
+    dateWithIds: List<Pair<Int, String>>,
     questions: List<LogbookQuestion>,
     answers: List<List<LogbookQuestionAnswer>>,
     expandedStates: MutableMap<String, Boolean>,
-    onAnswerChanged: (answer: LogbookQuestionAnswer) -> Unit
+    onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
     if (questions.isEmpty()) return
-
 
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(dates) { date ->
-            val dateIndex = dates.indexOf(date)
+        items(dateWithIds) { (recordId, date) ->
+            val dateIndex = dateWithIds.indexOf(Pair(recordId, date))
             val dayAnswers = answers.getOrNull(dateIndex).orEmpty()
             val isExpanded = expandedStates[date] ?: false
 
@@ -97,6 +94,7 @@ fun SleepDiary(
                         ) {
                             DiaryGroup(
                                 title = stringResource(R.string.day),
+                                recordId = recordId,
                                 questions = questions,
                                 noteType = "Siang",
                                 answers = dayAnswers,
@@ -107,6 +105,7 @@ fun SleepDiary(
 
                             DiaryGroup(
                                 title = stringResource(R.string.night),
+                                recordId = recordId,
                                 questions = questions,
                                 noteType = "Malam",
                                 answers = dayAnswers,
@@ -123,10 +122,11 @@ fun SleepDiary(
 @Composable
 private fun DiaryGroup(
     title: String,
+    recordId: Int,
     questions: List<LogbookQuestion>,
     noteType: String,
     answers: List<LogbookQuestionAnswer>,
-    onAnswerChanged: (LogbookQuestionAnswer) -> Unit
+    onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
     Text(
         text = title,
@@ -141,14 +141,15 @@ private fun DiaryGroup(
                 .sortedBy { it.id }
 
             val answer = answers.find { it.questionId == question.id }?.answer
-                ?: LogbookAnswer(id = 0, type = "", answer = "", note = "")
+                ?: LogbookAnswer(id = 0, type = question.type, answer = "", note = noteType)
 
             val subAnswers = subQuestions.map { subQuestion ->
                 answers.find { it.questionId == subQuestion.id }?.answer
-                    ?: LogbookAnswer(id = 0, type = "", answer = "", note = "")
+                    ?: LogbookAnswer(id = 0, type = subQuestion.type, answer = "", note = noteType)
             }
 
             DiaryQuestionItem(
+                recordId = recordId,
                 question = question,
                 answer = answer,
                 subQuestions = subQuestions,
