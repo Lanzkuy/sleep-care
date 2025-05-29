@@ -48,15 +48,15 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun startPollingChatHistory(intervalMillis: Long = 5000L) {
+    fun startPollingChatHistory(intervalMillis: Long = 5000L, userId: Int) {
         if (pollingJob?.isActive == true) return
 
         pollingJob = viewModelScope.launch {
-            getChatHistory(isInitial = true)
+            getChatHistory(isInitial = true, userId = userId)
             delay(intervalMillis)
 
             while (isActive) {
-                getChatHistory()
+                getChatHistory(userId =  userId)
                 delay(intervalMillis)
             }
         }
@@ -66,7 +66,7 @@ class ChatRoomViewModel @Inject constructor(
         pollingJob?.cancel()
     }
 
-    private suspend fun getChatHistory(isInitial: Boolean = false) {
+    private suspend fun getChatHistory(isInitial: Boolean = false, userId: Int) {
         viewModelScope.launch {
             getChatHistoryUseCase.execute().collect { response ->
                 when (response) {
@@ -76,7 +76,7 @@ class ChatRoomViewModel @Inject constructor(
                         )
 
                         _state.value.chatHistories
-                            .filter { it.readAt == "" }
+                            .filter { it.senderId != userId && it.readAt == "" }
                             .also { unreadMessages ->
                                 if (unreadMessages.isEmpty()) {
                                     _state.value = _state.value.copy(

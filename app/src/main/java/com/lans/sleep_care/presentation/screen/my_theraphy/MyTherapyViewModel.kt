@@ -28,12 +28,12 @@ class MyTherapyViewModel @Inject constructor(
             getActiveTherapyUseCase.execute().collect { response ->
                 when (response) {
                     is Resource.Success -> {
-                        if(response.data != null) {
+                        if (response.data != null) {
                             _state.value = _state.value.copy(
                                 therapy = response.data
                             )
                             loadPsychologist(response.data.doctorId)
-                            loadChatHistory()
+                            loadChatHistory(response.data.patientId)
                             loadTherapySchedules(response.data.id)
                         }
                     }
@@ -84,13 +84,14 @@ class MyTherapyViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadChatHistory() {
+    private suspend fun loadChatHistory(userId: Int) {
         viewModelScope.launch {
             getChatHistoryUseCase.execute().collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
-                            unreadMessage = response.data.count { it.readAt.isEmpty() },
+                            unreadMessage = response.data.filter { it.senderId != userId }
+                                .count { it.readAt.isEmpty() },
                             isTherapyLoading = false
                         )
                     }

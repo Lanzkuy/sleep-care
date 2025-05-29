@@ -245,23 +245,6 @@ fun PsychologistDetailScreen(
                             .fillMaxWidth()
                             .height(Dimens.dp8)
                     )
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(Dimens.dp24),
-                            imageVector = Icons.Default.Email,
-                            tint = PrimaryVariant,
-                            contentDescription = stringResource(R.string.icon),
-                        )
-                        Spacer(modifier = Modifier.width(Dimens.dp4))
-                        Text(
-                            text = state.psychologist.user.email,
-                            color = DarkGray,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()

@@ -57,7 +57,7 @@ fun ChatRoomScreen(
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
-        viewModel.startPollingChatHistory()
+        viewModel.startPollingChatHistory(userId = id.toInt())
     }
 
     DisposableEffect(Unit) {

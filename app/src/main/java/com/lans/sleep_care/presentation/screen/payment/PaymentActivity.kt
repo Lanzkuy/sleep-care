@@ -87,7 +87,7 @@ class PaymentActivity : ComponentActivity(), TransactionFinishedCallback {
                 }
 
                 TransactionResult.STATUS_SUCCESS -> {
-                    Toast.makeText(this, "Pembayaran berhasil2", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Pembayaran berhasil", Toast.LENGTH_LONG).show()
                     setResult(RESULT_OK)
                 }
 
