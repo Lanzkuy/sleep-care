@@ -11,7 +11,6 @@ import com.lans.sleep_care.domain.usecase.logbook.GetAreasUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetLogbookAnswersUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetLogbookQuestionsUseCase
 import com.lans.sleep_care.domain.usecase.logbook.UpdateLogbookAnswerUseCase
-import com.lans.sleep_care.presentation.screen.sleep_diary.SleepDiaryUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,9 +26,26 @@ class IdentifyValueViewModel @Inject constructor(
     private val _state = mutableStateOf(IdentifyValueUIState())
     val state: State<IdentifyValueUIState> get() = _state
 
-    fun onEvent(event: SleepDiaryUIEvent) {
-        if (event is SleepDiaryUIEvent.SaveButtonClicked) {
+    fun onEvent(event: IdentifyValueUIEvent) {
+        if (event is IdentifyValueUIEvent.SaveButtonClicked) {
+            val createdAnswers = event.recordAnswers.filter { it.answer.id == 0 }
 
+            val updatedAnswers = event.recordAnswers.filter { it.answer.id != 0 }
+
+
+            if (createdAnswers.isNotEmpty()) {
+                createLogbookAnswer(
+                    therapyId = event.therapyId,
+                    recordAnswers = createdAnswers
+                )
+            }
+
+            if (updatedAnswers.isNotEmpty()) {
+                updateLogbookAnswer(
+                    therapyId = event.therapyId,
+                    recordAnswers = updatedAnswers
+                )
+            }
         }
     }
 
@@ -94,7 +110,88 @@ class IdentifyValueViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
-                            answers = response.data,
+                            recordId = response.data.id,
+                            answers = response.data.answers,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createLogbookAnswer(
+        therapyId: Int,
+        recordAnswers: List<LogbookQuestionAnswer>
+    ) {
+        viewModelScope.launch {
+            createLogbookAnswerUseCase.execute(
+                therapyId = therapyId,
+                recordId = _state.value.recordId,
+                recordType = "identify_value",
+                questionAnswers = recordAnswers
+            ).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            isCreated = response.data,
+                            isLoading = false
+                        )
+                        loadAnswers(therapyId)
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateLogbookAnswer(
+        therapyId: Int,
+        recordAnswers: List<LogbookQuestionAnswer>
+    ) {
+        viewModelScope.launch {
+            updateLogbookAnswerUseCase.execute(
+                therapyId = therapyId,
+                recordId = _state.value.recordId,
+                recordType = "identify_value",
+                questionAnswers = recordAnswers
+            ).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        val updatedAnswers = _state.value.answers.map { oldAnswer ->
+                            val newAnswer =
+                                recordAnswers.find { it.answer.id == oldAnswer.answer.id }
+                            if (newAnswer != null) {
+                                oldAnswer.copy(answer = newAnswer.answer)
+                            } else {
+                                oldAnswer
+                            }
+                        }
+
+                        _state.value = _state.value.copy(
+                            answers = updatedAnswers,
+                            isUpdated = response.data,
                             isLoading = false
                         )
                     }

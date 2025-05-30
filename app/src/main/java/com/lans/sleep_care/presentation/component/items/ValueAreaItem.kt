@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -25,13 +25,14 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
+import kotlin.math.roundToInt
 
 @Composable
 fun ValueAreaItem(
     areaName: String,
     questions: List<LogbookQuestion>,
     answers: List<LogbookQuestionAnswer>,
-    onDataChange: (questionAnswer: LogbookQuestionAnswer) -> Unit
+    onDataChange: (LogbookQuestionAnswer) -> Unit
 ) {
     if (questions.isEmpty()) return
 
@@ -53,10 +54,10 @@ fun ValueAreaItem(
                 val questionAnswer = answers.find { it.questionId == question.id }
                 val answer = questionAnswer?.answer?.answer
 
-                var scale by remember(question.id to answer) {
-                    mutableFloatStateOf(answer?.toFloatOrNull() ?: 0f)
+                var scale by rememberSaveable(question.id to answer) {
+                    mutableFloatStateOf(answer?.toFloatOrNull() ?: 1f)
                 }
-                var text by remember(question.id to answer) {
+                var text by rememberSaveable(question.id to answer) {
                     mutableStateOf(answer ?: "")
                 }
 
@@ -64,7 +65,7 @@ fun ValueAreaItem(
                     when (question.type) {
                         "number" -> {
                             Text(
-                                text = "${question.question}: ${scale.toInt()}",
+                                text = "${question.question}: ${scale.roundToInt()}",
                                 style = MaterialTheme.typography.bodyLarge,
                             )
                             Slider(
@@ -75,14 +76,17 @@ fun ValueAreaItem(
                                     scale = it
                                     onDataChange(
                                         questionAnswer?.copy(
+                                            questionId = question.id,
                                             answer = questionAnswer.answer.copy(
-                                                answer = it.toString()
+                                                answer = it.roundToInt().toString(),
+                                                note = areaName
                                             )
                                         ) ?: LogbookQuestionAnswer(
                                             questionId = question.id,
                                             answer = LogbookAnswer(
                                                 type = question.type,
-                                                answer = it.toString()
+                                                answer = it.roundToInt().toString(),
+                                                note = areaName
                                             )
                                         )
                                     )
@@ -104,14 +108,17 @@ fun ValueAreaItem(
                                     text = it
                                     onDataChange(
                                         questionAnswer?.copy(
+                                            questionId = question.id,
                                             answer = questionAnswer.answer.copy(
-                                                answer = it
+                                                answer = it,
+                                                note = areaName
                                             )
                                         ) ?: LogbookQuestionAnswer(
                                             questionId = question.id,
                                             answer = LogbookAnswer(
                                                 type = question.type,
-                                                answer = it
+                                                answer = it,
+                                                note = areaName
                                             )
                                         )
                                     )

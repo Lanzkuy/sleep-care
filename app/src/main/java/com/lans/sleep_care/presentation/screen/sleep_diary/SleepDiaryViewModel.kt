@@ -34,27 +34,27 @@ class SleepDiaryViewModel @Inject constructor(
 
     fun onEvent(event: SleepDiaryUIEvent) {
         if (event is SleepDiaryUIEvent.SaveButtonClicked) {
-            val createAnswers = event.recordAnswers.mapNotNull { entry ->
+            val createdAnswers = event.recordAnswers.mapNotNull { entry ->
                 val filtered = entry.value.filter { it.answer.id == 0 }
                 if (filtered.isNotEmpty()) entry.key to filtered else null
             }.toMap()
 
-            val updateAnswers = event.recordAnswers.mapNotNull { entry ->
+            val updatedAnswers = event.recordAnswers.mapNotNull { entry ->
                 val filtered = entry.value.filter { it.answer.id != 0 }
                 if (filtered.isNotEmpty()) entry.key to filtered else null
             }.toMap()
 
-            if (createAnswers.isNotEmpty()) {
+            if (createdAnswers.isNotEmpty()) {
                 createLogbookAnswer(
                     therapyId = event.therapyId,
-                    recordAnswers = createAnswers
+                    recordAnswers = createdAnswers
                 )
             }
 
-            if (updateAnswers.isNotEmpty()) {
+            if (updatedAnswers.isNotEmpty()) {
                 updateLogbookAnswer(
                     therapyId = event.therapyId,
-                    recordAnswers = updateAnswers
+                    recordAnswers = updatedAnswers
                 )
             }
         }
@@ -191,7 +191,7 @@ class SleepDiaryViewModel @Inject constructor(
                             errorMessage = response.message
                         }
 
-                        else -> {}
+                        else -> Unit
                     }
                 }
 

@@ -57,12 +57,44 @@ fun IdentifyValueScreen(
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
+    val tempAnswers = remember { mutableStateListOf<LogbookQuestionAnswer>() }
+
+    val mergedAnswers = state.answers.map { original ->
+        tempAnswers.firstOrNull {
+            it.questionId == original.questionId &&
+                    it.answer.note == original.answer.note
+        } ?: original
+    }
+
     LaunchedEffect(Unit) {
         viewModel.loadQuestions(therapyId.toInt())
     }
 
-    LaunchedEffect(key1 = state.error) {
+    LaunchedEffect(key1 = state.isCreated, key2 = state.isUpdated, key3 = state.error) {
+        val isCreated = state.isCreated
+        val isUpdated = state.isUpdated
         val error = state.error
+
+        if (isCreated) {
+            Toast.makeText(
+                context,
+                "Identifikasi nilai pribadi berhasil disimpan",
+                Toast.LENGTH_SHORT
+            ).show()
+            state.isCreated = false
+            tempAnswers.clear()
+        }
+
+        if (isUpdated) {
+            Toast.makeText(
+                context,
+                "Identifikasi nilai pribadi berhasil diperbaharui",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+            state.isUpdated = false
+            tempAnswers.clear()
+        }
 
         if (error.isNotBlank()) {
             showAlert = Pair(true, error)
@@ -147,13 +179,43 @@ fun IdentifyValueScreen(
                     verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
                 ) {
                     items(state.areas) { area ->
-                        val answers = state.answers.answers.filter { it.answer.note == area }
+                        val answers = mergedAnswers.filter { it.answer.note == area }
                         ValueAreaItem(
                             areaName = area,
                             questions = state.questions.sortedBy { it.type },
                             answers = answers,
                             onDataChange = { questionAnswer ->
+                                val originalAnswer = state.answers.firstOrNull {
+                                    it.questionId == questionAnswer.questionId &&
+                                            it.answer.note == questionAnswer.answer.note
+                                }
 
+                                val currentTemp = tempAnswers.firstOrNull {
+                                    it.questionId == questionAnswer.questionId &&
+                                            it.answer.note == questionAnswer.answer.note
+                                }
+
+                                if (questionAnswer.answer.id == 0) {
+                                    if (currentTemp == null) {
+                                        tempAnswers.add(questionAnswer)
+                                    } else {
+                                        val index = tempAnswers.indexOf(currentTemp)
+                                        tempAnswers[index] = questionAnswer
+                                    }
+                                } else if (originalAnswer != null) {
+                                    if (questionAnswer.answer != originalAnswer.answer) {
+                                        if (currentTemp != null) {
+                                            val index = tempAnswers.indexOf(currentTemp)
+                                            tempAnswers[index] = questionAnswer
+                                        } else {
+                                            tempAnswers.add(questionAnswer)
+                                        }
+                                    } else {
+                                        if (currentTemp != null) {
+                                            tempAnswers.remove(currentTemp)
+                                        }
+                                    }
+                                }
                             }
                         )
                     }
@@ -166,20 +228,28 @@ fun IdentifyValueScreen(
                 }
             }
         }
-        FloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd),
-            containerColor = Primary,
-            contentColor = White,
-            shape = Rounded,
-            onClick = {
 
+        if (tempAnswers.isNotEmpty()) {
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd),
+                containerColor = Primary,
+                contentColor = White,
+                shape = Rounded,
+                onClick = {
+                    viewModel.onEvent(
+                        IdentifyValueUIEvent.SaveButtonClicked(
+                            therapyId = therapyId.toInt(),
+                            recordAnswers = tempAnswers
+                        )
+                    )
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Save,
+                    contentDescription = stringResource(R.string.icon)
+                )
             }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Save,
-                contentDescription = stringResource(R.string.icon)
-            )
         }
     }
 }
