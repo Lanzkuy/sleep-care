@@ -1,6 +1,7 @@
 package com.lans.sleep_care.presentation.component.items
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +12,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -25,9 +29,14 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
+import com.lans.sleep_care.presentation.component.dialog.TimePickerDialog
+import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
+import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
+import com.lans.sleep_care.presentation.theme.White
+import java.util.Locale
 
 @Composable
 fun DiaryQuestionItem(
@@ -103,6 +112,64 @@ fun DiaryQuestionItem(
                         Text(text = stringResource(R.string.no))
                     }
                 }
+            }
+        } else if (question.type == "time") {
+            var showPicker by remember { mutableStateOf(false) }
+
+            val (initialHour, initialMinute) = remember(answer.answer) {
+                val parts = answer.answer.split(":")
+                val hour = parts.getOrNull(0)?.toIntOrNull() ?: 0
+                val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
+                hour to minute
+            }
+
+            var selectedHour by remember { mutableIntStateOf(initialHour) }
+            var selectedMinute by remember { mutableIntStateOf(initialMinute) }
+
+            if (showPicker) {
+                TimePickerDialog(
+                    onDismiss = { showPicker = false },
+                    onConfirm = { hour, minute ->
+                        selectedHour = hour
+                        selectedMinute = minute
+                        showPicker = false
+
+                        val newAnswer = String.format(Locale.US, "%02d:%02d", hour, minute)
+                        text = newAnswer
+
+                        onAnswerChanged(
+                            recordId,
+                            LogbookQuestionAnswer(
+                                questionId = question.id,
+                                answer = answer.copy(answer = newAnswer)
+                            )
+                        )
+                    },
+                    initialHour = selectedHour,
+                    initialMinute = selectedMinute
+                )
+            }
+
+            val displayText = String.format(Locale.US, "%02d:%02d", selectedHour, selectedMinute)
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { showPicker = true }
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = displayText,
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    enabled = false,
+                    readOnly = true,
+                    colors = TextFieldDefaults.colors(
+                        disabledIndicatorColor = Gray,
+                        disabledContainerColor = White,
+                        disabledTextColor = Black
+                    ),
+                    onValueChange = { }
+                )
             }
         } else {
             OutlinedTextField(

@@ -157,6 +157,9 @@ private fun DiaryGroup(
                 onAnswerChanged = onAnswerChanged
             )
 
-            HorizontalDivider(color = Color.LightGray, thickness = Dimens.dp1)
+            val isLastItem = questions.indexOf(question) == questions.lastIndex
+            if ((noteType == "Siang" && question.type == "binary") || isLastItem) {
+                HorizontalDivider(color = Color.LightGray, thickness = Dimens.dp1)
+            }
         }
 }
