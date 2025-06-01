@@ -1,6 +1,7 @@
 package com.lans.sleep_care.presentation.component.items
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.logbook.EmotionRecord
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -23,20 +24,25 @@ import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
-fun EmotionRecordItem(record: EmotionRecord) {
-    val emotionColor = when (record.emotion) {
-        "Senang" -> Color(0xFF81C784)
-        "Sedih" -> Color(0xFF64B5F6)
-        "Marah" -> Color(0xFFE57373)
-        "Takut" -> Color(0xFFBA68C8)
-        "Cemas" -> Color(0xFFFFB74D)
-        "Netral" -> Color(0xFFBDBDBD)
-        else -> Color.Gray
-    }
+fun EmotionRecordItem(
+    answers: List<LogbookQuestionAnswer>,
+    onClick: () -> Unit
+) {
+    val date = answers[0].answer.answer
+    val time = answers[1].answer.answer
+    val situation = answers[2].answer.answer
+    val thought = answers[3].answer.answer
+    val emotion = answers[4].answer.answer
+    val intensityBefore = answers[5].answer.answer
+    val manage = answers[6].answer.answer
+    val intensityAfter = answers[7].answer.answer
 
     OutlinedCard(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onClick.invoke()
+            },
         border = BorderStroke(
             width = Dimens.dp1,
             color = Gray
@@ -49,7 +55,7 @@ fun EmotionRecordItem(record: EmotionRecord) {
                 .padding(Dimens.dp16)
         ) {
             Text(
-                text = record.date,
+                text = "$date $time",
                 color = Color.Gray,
                 style = MaterialTheme.typography.labelLarge,
             )
@@ -58,34 +64,26 @@ fun EmotionRecordItem(record: EmotionRecord) {
                     top = Dimens.dp4,
                     bottom = Dimens.dp8
                 ),
-                text = "${record.emotion} (${record.intensity}/10)",
-                color = emotionColor,
+                text = "$emotion (${intensityBefore}/10)",
+                color = DarkGray,
                 style = MaterialTheme.typography.titleMedium,
             )
-            record.situation?.let {
-                EmotionRecordRow(
-                    label = stringResource(R.string.situation),
-                    value = it
-                )
-            }
-            record.thoughts?.let {
-                EmotionRecordRow(
-                    label = stringResource(R.string.thought),
-                    value = it
-                )
-            }
-            record.copingStrategy?.let {
-                EmotionRecordRow(
-                    label = stringResource(R.string.how_to_manage),
-                    value = it
-                )
-            }
-            record.emotionAfter?.let {
-                EmotionRecordRow(
-                    label = stringResource(R.string.afterwards),
-                    value = "$it (${record.intensityAfter ?: "-"}/10)"
-                )
-            }
+            EmotionRecordRow(
+                label = stringResource(R.string.situation),
+                value = situation
+            )
+            EmotionRecordRow(
+                label = stringResource(R.string.thought),
+                value = thought
+            )
+            EmotionRecordRow(
+                label = stringResource(R.string.how_to_manage),
+                value = manage
+            )
+            EmotionRecordRow(
+                label = stringResource(R.string.afterwards),
+                value = "$emotion (${intensityAfter}/10)"
+            )
         }
     }
 }

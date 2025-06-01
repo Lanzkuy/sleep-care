@@ -14,8 +14,10 @@ import com.lans.sleep_care.domain.interactor.chatbot.GetChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.chatbot.SaveChatBotHistoryInteractor
 import com.lans.sleep_care.domain.interactor.logbook.CreateLogbookAnswerInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetAreasInteractor
+import com.lans.sleep_care.domain.interactor.logbook.GetEmotionsInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetLogbookAnswersInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetLogbookQuestionsInteractor
+import com.lans.sleep_care.domain.interactor.logbook.GetProblemsInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiariesInteractor
 import com.lans.sleep_care.domain.interactor.logbook.GetSleepDiaryDetailInteractor
 import com.lans.sleep_care.domain.interactor.logbook.UpdateLogbookAnswerInteractor
@@ -64,8 +66,10 @@ import com.lans.sleep_care.domain.usecase.chatbot.GetChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.chatbot.SaveChatBotHistoryUseCase
 import com.lans.sleep_care.domain.usecase.logbook.CreateLogbookAnswerUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetAreasUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetEmotionsUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetLogbookAnswersUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetLogbookQuestionsUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetProblemsUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiariesUseCase
 import com.lans.sleep_care.domain.usecase.logbook.GetSleepDiaryDetailUseCase
 import com.lans.sleep_care.domain.usecase.logbook.UpdateLogbookAnswerUseCase
@@ -332,14 +336,6 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetAreasUseCase(
-        repository: ILogbookRepository
-    ): GetAreasUseCase {
-        return GetAreasInteractor(repository)
-    }
-
-    @Provides
-    @Singleton
     fun provideCreateLogbookAnswerUseCase(
         repository: ILogbookRepository
     ): CreateLogbookAnswerUseCase {
@@ -352,6 +348,30 @@ object UseCaseModule {
         repository: ILogbookRepository
     ): UpdateLogbookAnswerUseCase {
         return UpdateLogbookAnswerInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAreasUseCase(
+        repository: ILogbookRepository
+    ): GetAreasUseCase {
+        return GetAreasInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetEmotionsUseCase(
+        repository: ILogbookRepository
+    ): GetEmotionsUseCase {
+        return GetEmotionsInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetProblemsUseCase(
+        repository: ILogbookRepository
+    ): GetProblemsUseCase {
+        return GetProblemsInteractor(repository)
     }
 
     @Provides

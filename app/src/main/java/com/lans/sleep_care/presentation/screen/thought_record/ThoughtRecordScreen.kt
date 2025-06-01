@@ -24,7 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -65,9 +64,7 @@ fun ThoughtRecordScreen(
         )
     }
 
-    val tempAnswers = remember { mutableStateListOf<List<LogbookQuestionAnswer>>() }
-
-    val mergedAnswers: List<List<LogbookQuestionAnswer>> = run {
+    val groupedAnswers: List<List<LogbookQuestionAnswer>> = run {
         if (state.answers.isEmpty()) emptyList()
         else {
             val firstQuestionId = state.answers.first().questionId
@@ -103,7 +100,6 @@ fun ThoughtRecordScreen(
                 Toast.LENGTH_SHORT
             ).show()
             state.isCreated = false
-            tempAnswers.clear()
         }
 
         if (isUpdated) {
@@ -114,7 +110,6 @@ fun ThoughtRecordScreen(
             )
                 .show()
             state.isUpdated = false
-            tempAnswers.clear()
         }
 
         if (error.isNotBlank()) {
@@ -203,13 +198,13 @@ fun ThoughtRecordScreen(
                         .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
                 ) {
-                    items(mergedAnswers.size) { index ->
+                    items(groupedAnswers.size) { index ->
                         ThoughtRecordItem(
-                            answers = mergedAnswers[index],
+                            answers = groupedAnswers[index],
                             onClick = {
                                 showDialog = showDialog.copy(
                                     first = true,
-                                    second = mergedAnswers[index]
+                                    second = groupedAnswers[index]
                                 )
                             }
                         )

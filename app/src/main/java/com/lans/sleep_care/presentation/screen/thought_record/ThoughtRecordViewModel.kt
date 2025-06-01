@@ -26,7 +26,6 @@ class ThoughtRecordViewModel @Inject constructor(
 
     fun onEvent(event: ThoughtRecordUIEvent) {
         if (event is ThoughtRecordUIEvent.SaveButtonClicked) {
-
             if (event.isUpdate) {
                 updateLogbookAnswer(
                     therapyId = event.therapyId,

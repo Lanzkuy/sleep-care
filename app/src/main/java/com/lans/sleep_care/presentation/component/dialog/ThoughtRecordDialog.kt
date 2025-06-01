@@ -137,7 +137,6 @@ fun ThoughtRecordDialog(
                         onValueChange = { date = it }
                     )
                 }
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()

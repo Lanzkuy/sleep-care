@@ -59,7 +59,9 @@
     <string name="edit_thought_record">Ubah Catatan Pikiran</string>
     <string name="emotion_record">Catatan Emosi</string>
     <string name="add_emotion_record">Tambah Catatan Emosi</string>
+    <string name="edit_emotion_record">Ubah Catatan Emosi</string>
     <string name="commited_action">Tindakan Berkomitmen</string>
+    <string name="edit_commited_action">Ubah Tindakan Berkomitmen</string>
     <string name="add_commited_action">Tambah Tindakan Berkomitmen</string>
 
     <string name="thought">Pemikiran</string>

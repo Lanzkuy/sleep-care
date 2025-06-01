@@ -276,12 +276,12 @@ fun NavGraph(
                     }
                 },
                 navigateToEmotionRecord = {
-                    navController.navigate(route = Route.EmotionRecordScreen.route) {
+                    navController.navigate(route = Route.EmotionRecordScreen.route + "/$therapyId") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
                 navigateToCommitedAction = {
-                    navController.navigate(route = Route.CommittedActionScreen.route) {
+                    navController.navigate(route = Route.CommittedActionScreen.route + "/$therapyId") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 }
@@ -314,14 +314,17 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.EmotionRecordScreen.route) {
+        composable(route = Route.EmotionRecordScreen.route + "/{therapyId}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
             EmotionRecordScreen(
+                therapyId = therapyId,
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }
             )
         }
-        composable(route = Route.CommittedActionScreen.route) {
+        composable(route = Route.CommittedActionScreen.route + "/{therapyId}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
             CommitedActionScreen(
                 navigateToMyTherapy = {
                     navController.navigateUp()

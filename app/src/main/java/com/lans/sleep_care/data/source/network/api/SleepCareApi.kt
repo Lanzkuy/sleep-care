@@ -134,15 +134,6 @@ interface SleepCareApi {
         @QueryMap requestParams: Map<String, @JvmSuppressWildcards Any>
     ): ApiResponse<LogbookAnswerListResponse>
 
-    @GET("areas")
-    suspend fun getAreas(): ApiResponse<List<String>>
-
-    @GET("emotions")
-    suspend fun getEmotions(): ApiResponse<List<String>>
-
-    @GET("problems")
-    suspend fun getProblems(): ApiResponse<List<String>>
-
     @POST("therapy/records/answers")
     suspend fun createAnswer(
         @Body requestBody: LogbookRequest
@@ -152,6 +143,15 @@ interface SleepCareApi {
     suspend fun updateAnswer(
         @Body requestBody: LogbookRequest
     ): ApiResponse<Any>
+
+    @GET("areas")
+    suspend fun getAreas(): ApiResponse<List<String>>
+
+    @GET("emotions")
+    suspend fun getEmotions(): ApiResponse<List<String>>
+
+    @GET("problems")
+    suspend fun getProblems(): ApiResponse<List<String>>
 
     @GET("therapy/orders?payment_status=pending")
     suspend fun getOrderStatus(): ApiResponse<OrderTherapyResponse>

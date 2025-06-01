@@ -3,22 +3,205 @@ package com.lans.sleep_care.presentation.screen.emotion_record
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.lans.sleep_care.data.DATA
-import com.lans.sleep_care.domain.model.logbook.EmotionRecord
+import androidx.lifecycle.viewModelScope
+import com.lans.sleep_care.data.Resource
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
+import com.lans.sleep_care.domain.usecase.logbook.CreateLogbookAnswerUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetEmotionsUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetLogbookAnswersUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetLogbookQuestionsUseCase
+import com.lans.sleep_care.domain.usecase.logbook.UpdateLogbookAnswerUseCase
+import com.lans.sleep_care.presentation.screen.thought_record.ThoughtRecordUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EmotionRecordViewModel @Inject constructor(
+    private val getEmotionsUseCase: GetEmotionsUseCase,
+    private val getLogbookQuestionsUseCase: GetLogbookQuestionsUseCase,
+    private val getLogbookAnswersUseCase: GetLogbookAnswersUseCase,
+    private val createLogbookAnswerUseCase: CreateLogbookAnswerUseCase,
+    private val updateLogbookAnswerUseCase: UpdateLogbookAnswerUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(EmotionRecordUIState())
     val state: State<EmotionRecordUIState> get() = _state
 
-    fun saveEmotionRecord(record: EmotionRecord) {
-        val newRecord = _state.value.localSavedEmotionRecord.toMutableList()
-        newRecord.add(record)
+    fun onEvent(event: ThoughtRecordUIEvent) {
+        if (event is ThoughtRecordUIEvent.SaveButtonClicked) {
+            if (event.isUpdate) {
+                updateLogbookAnswer(
+                    therapyId = event.therapyId,
+                    recordAnswers = event.recordAnswers
+                )
+            } else {
+                createLogbookAnswer(
+                    therapyId = event.therapyId,
+                    recordAnswers = event.recordAnswers
+                )
+            }
+        }
+    }
 
-        _state.value = _state.value.copy(localSavedEmotionRecord = newRecord)
-        DATA.savedEmotionRecord = _state.value.localSavedEmotionRecord
+    fun loadQuestions(therapyId: Int) {
+        viewModelScope.launch {
+            getLogbookQuestionsUseCase.execute("emotion_record").collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            questions = response.data
+                        )
+                        loadEmotions()
+                        loadAnswers(therapyId)
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadEmotions() {
+        viewModelScope.launch {
+            getEmotionsUseCase.execute().collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            emotions = response.data
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadAnswers(therapyId: Int) {
+        viewModelScope.launch {
+            getLogbookAnswersUseCase.execute(
+                recordType = "emotion_record",
+                therapyId = therapyId
+            ).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            recordId = response.data.id,
+                            answers = response.data.answers,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createLogbookAnswer(
+        therapyId: Int,
+        recordAnswers: List<LogbookQuestionAnswer>
+    ) {
+        viewModelScope.launch {
+            createLogbookAnswerUseCase.execute(
+                therapyId = therapyId,
+                recordId = _state.value.recordId,
+                recordType = "emotion_record",
+                questionAnswers = recordAnswers
+            ).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            isCreated = response.data,
+                            isLoading = false
+                        )
+                        loadAnswers(therapyId)
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateLogbookAnswer(
+        therapyId: Int,
+        recordAnswers: List<LogbookQuestionAnswer>
+    ) {
+        viewModelScope.launch {
+            updateLogbookAnswerUseCase.execute(
+                therapyId = therapyId,
+                recordId = _state.value.recordId,
+                recordType = "emotion_record",
+                questionAnswers = recordAnswers
+            ).collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        val updatedAnswers = _state.value.answers.map { oldAnswer ->
+                            val newAnswer =
+                                recordAnswers.find { it.answer.id == oldAnswer.answer.id }
+                            if (newAnswer != null) {
+                                oldAnswer.copy(answer = newAnswer.answer)
+                            } else {
+                                oldAnswer
+                            }
+                        }
+
+                        _state.value = _state.value.copy(
+                            answers = updatedAnswers,
+                            isUpdated = response.data,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
     }
 }

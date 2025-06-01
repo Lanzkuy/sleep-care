@@ -21,9 +21,13 @@ interface ILogbookRepository {
 
     suspend fun fetchAnswers(request: LogbookAnswerRequest): ApiResponse<LogbookAnswerListResponse>
 
-    suspend fun fetchAreas(): ApiResponse<List<String>>
-
     suspend fun createAnswer(request: LogbookRequest): ApiResponse<Any>
 
     suspend fun updateAnswer(request: LogbookRequest): ApiResponse<Any>
+
+    suspend fun fetchAreas(): ApiResponse<List<String>>
+
+    suspend fun fetchEmotions(): ApiResponse<List<String>>
+
+    suspend fun fetchProblems(): ApiResponse<List<String>>
 }

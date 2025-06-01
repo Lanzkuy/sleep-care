@@ -35,15 +35,23 @@ class LogbookRepository @Inject constructor(
         return api.getAnswers(request.toQueryMap())
     }
 
-    override suspend fun fetchAreas(): ApiResponse<List<String>> {
-        return api.getAreas()
-    }
-
     override suspend fun createAnswer(request: LogbookRequest): ApiResponse<Any> {
         return api.createAnswer(request)
     }
 
     override suspend fun updateAnswer(request: LogbookRequest): ApiResponse<Any> {
         return api.updateAnswer(request)
+    }
+
+    override suspend fun fetchAreas(): ApiResponse<List<String>> {
+        return api.getAreas()
+    }
+
+    override suspend fun fetchEmotions(): ApiResponse<List<String>> {
+        return api.getEmotions()
+    }
+
+    override suspend fun fetchProblems(): ApiResponse<List<String>> {
+        return api.getProblems()
     }
 }
