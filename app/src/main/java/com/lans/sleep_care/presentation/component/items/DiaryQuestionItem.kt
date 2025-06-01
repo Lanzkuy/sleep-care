@@ -15,7 +15,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,8 +34,6 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
-import com.lans.sleep_care.presentation.theme.White
-import java.util.Locale
 
 @Composable
 fun DiaryQuestionItem(
@@ -47,7 +44,7 @@ fun DiaryQuestionItem(
     subAnswers: List<LogbookAnswer>,
     onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
-    var text by rememberSaveable(answer.id to answer.answer) {
+    var text by remember(answer.id to answer.answer) {
         mutableStateOf(answer.answer)
     }
 
@@ -57,138 +54,127 @@ fun DiaryQuestionItem(
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
         )
 
-        if (question.type == "binary") {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = Dimens.dp4)
-                        .clip(Rounded)
-                        .background(if (text == "1") Primary.copy(alpha = 0.2f) else Color.Transparent)
+        when (question.type) {
+            "binary" -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TextButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            text = "1"
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = Dimens.dp4)
+                            .clip(Rounded)
+                            .background(if (text == "1") Primary.copy(alpha = 0.2f) else Color.Transparent)
+                    ) {
+                        TextButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                text = "1"
+                                onAnswerChanged(
+                                    recordId,
+                                    LogbookQuestionAnswer(
+                                        questionId = question.id,
+                                        answer = answer.copy(
+                                            answer = "1"
+                                        )
+                                    )
+                                )
+                            }
+                        ) {
+                            Text(text = stringResource(R.string.yes))
+                        }
+                    }
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = Dimens.dp4)
+                            .clip(Rounded)
+                            .background(if (text == "0") Primary.copy(alpha = 0.2f) else Color.Transparent)
+                    ) {
+                        TextButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                text = "0"
+                                onAnswerChanged(
+                                    recordId,
+                                    LogbookQuestionAnswer(
+                                        questionId = question.id,
+                                        answer = answer.copy(
+                                            answer = "0"
+                                        )
+                                    )
+                                )
+                            }
+                        ) {
+                            Text(text = stringResource(R.string.no))
+                        }
+                    }
+                }
+            }
+
+            "time" -> {
+                var showPicker by remember { mutableStateOf(false) }
+
+                if (showPicker) {
+                    TimePickerDialog(
+                        onDismiss = { showPicker = false },
+                        onConfirm = { selectedTime ->
+                            showPicker = false
+                            text = selectedTime
+
                             onAnswerChanged(
                                 recordId,
                                 LogbookQuestionAnswer(
                                     questionId = question.id,
-                                    answer = answer.copy(
-                                        answer = "1"
-                                    )
+                                    answer = answer.copy(answer = selectedTime)
                                 )
                             )
                         }
-                    ) {
-                        Text(text = stringResource(R.string.yes))
-                    }
+                    )
                 }
+
                 Box(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(start = Dimens.dp4)
-                        .clip(Rounded)
-                        .background(if (text == "0") Primary.copy(alpha = 0.2f) else Color.Transparent)
+                        .fillMaxWidth()
+                        .clickable { showPicker = true }
                 ) {
-                    TextButton(
+                    OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = {
-                            text = "0"
-                            onAnswerChanged(
-                                recordId,
-                                LogbookQuestionAnswer(
-                                    questionId = question.id,
-                                    answer = answer.copy(
-                                        answer = "0"
-                                    )
-                                )
-                            )
-                        }
-                    ) {
-                        Text(text = stringResource(R.string.no))
-                    }
+                        value = text,
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        enabled = false,
+                        readOnly = true,
+                        colors = TextFieldDefaults.colors(
+                            disabledIndicatorColor = Gray,
+                            disabledContainerColor = Color.Transparent,
+                            disabledLabelColor = TextFieldDefaults.colors().unfocusedLabelColor,
+                            disabledTextColor = Black
+                        ),
+                        onValueChange = { }
+                    )
                 }
             }
-        } else if (question.type == "time") {
-            var showPicker by remember { mutableStateOf(false) }
 
-            val (initialHour, initialMinute) = remember(answer.answer) {
-                val parts = answer.answer.split(":")
-                val hour = parts.getOrNull(0)?.toIntOrNull() ?: 0
-                val minute = parts.getOrNull(1)?.toIntOrNull() ?: 0
-                hour to minute
-            }
-
-            var selectedHour by remember { mutableIntStateOf(initialHour) }
-            var selectedMinute by remember { mutableIntStateOf(initialMinute) }
-
-            if (showPicker) {
-                TimePickerDialog(
-                    onDismiss = { showPicker = false },
-                    onConfirm = { hour, minute ->
-                        selectedHour = hour
-                        selectedMinute = minute
-                        showPicker = false
-
-                        val newAnswer = String.format(Locale.US, "%02d:%02d", hour, minute)
-                        text = newAnswer
-
+            else -> {
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = text,
+                    onValueChange = {
+                        text = it
                         onAnswerChanged(
                             recordId,
                             LogbookQuestionAnswer(
                                 questionId = question.id,
-                                answer = answer.copy(answer = newAnswer)
+                                answer = answer.copy(
+                                    answer = it
+                                )
                             )
                         )
                     },
-                    initialHour = selectedHour,
-                    initialMinute = selectedMinute
+                    textStyle = MaterialTheme.typography.bodyMedium
                 )
             }
-
-            val displayText = String.format(Locale.US, "%02d:%02d", selectedHour, selectedMinute)
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showPicker = true }
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = displayText,
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                    enabled = false,
-                    readOnly = true,
-                    colors = TextFieldDefaults.colors(
-                        disabledIndicatorColor = Gray,
-                        disabledContainerColor = White,
-                        disabledTextColor = Black
-                    ),
-                    onValueChange = { }
-                )
-            }
-        } else {
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = text,
-                onValueChange = {
-                    text = it
-                    onAnswerChanged(
-                        recordId,
-                        LogbookQuestionAnswer(
-                            questionId = question.id,
-                            answer = answer.copy(
-                                answer = it
-                            )
-                        )
-                    )
-                },
-                textStyle = MaterialTheme.typography.bodyMedium
-            )
         }
 
         if (subQuestions.isNotEmpty()) {

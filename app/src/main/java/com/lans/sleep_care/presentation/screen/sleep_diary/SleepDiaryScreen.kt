@@ -125,7 +125,11 @@ fun SleepDiaryScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(Dimens.dp24)
+            .padding(
+                start = Dimens.dp24,
+                top = Dimens.dp24,
+                end = Dimens.dp24
+            )
     ) {
         Column(
             modifier = Modifier
@@ -258,7 +262,8 @@ fun SleepDiaryScreen(
         if (tempAnswers.isNotEmpty()) {
             FloatingActionButton(
                 modifier = Modifier
-                    .align(Alignment.BottomEnd),
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = Dimens.dp16),
                 containerColor = Primary,
                 contentColor = White,
                 shape = Rounded,

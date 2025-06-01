@@ -271,7 +271,7 @@ fun NavGraph(
                     }
                 },
                 navigateToThoughtRecord = {
-                    navController.navigate(route = Route.ThoughtRecordScreen.route) {
+                    navController.navigate(route = Route.ThoughtRecordScreen.route + "/$therapyId") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
@@ -305,8 +305,10 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.ThoughtRecordScreen.route) {
+        composable(route = Route.ThoughtRecordScreen.route + "/{therapyId}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
             ThoughtRecordScreen(
+                therapyId = therapyId,
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }

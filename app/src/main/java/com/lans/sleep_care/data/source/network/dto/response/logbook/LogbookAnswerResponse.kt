@@ -6,12 +6,12 @@ data class LogbookAnswerResponse(
     val id: Int,
     val type: String,
     val answer: String,
-    val note: String,
+    val note: String?,
 )
 
 fun LogbookAnswerResponse.toDomain() = LogbookAnswer(
     id = id,
     type = type,
     answer = answer,
-    note = note
+    note = note ?: ""
 )

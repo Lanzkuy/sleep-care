@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.theme.White
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +20,7 @@ fun TimePickerDialog(
     initialHour: Int = 0,
     initialMinute: Int = 0,
     onDismiss: () -> Unit,
-    onConfirm: (hour: Int, minute: Int) -> Unit
+    onConfirm: (String) -> Unit
 ) {
     val state = rememberTimePickerState(
         initialHour = initialHour,
@@ -30,7 +31,9 @@ fun TimePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
-                onConfirm(state.hour, state.minute)
+                val formatter =
+                    String.format(Locale.getDefault(), "%02d:%02d", state.hour, state.minute)
+                onConfirm(formatter)
             }) {
                 Text(text = stringResource(R.string.ok))
             }

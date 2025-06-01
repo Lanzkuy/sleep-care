@@ -1,9 +1,19 @@
 package com.lans.sleep_care.utils
 
+import org.json.JSONArray
 import java.util.Locale
 
 fun String.capitalize(): String {
     return replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+}
+
+fun String.toList(): List<String> {
+    return try {
+        val jsonArray = JSONArray(this)
+        List(jsonArray.length()) { i -> jsonArray.getString(i) }
+    } catch (e: Exception) {
+        listOf(this)
+    }
 }
 
 fun splitName(fullName: String): Pair<String, String> {
