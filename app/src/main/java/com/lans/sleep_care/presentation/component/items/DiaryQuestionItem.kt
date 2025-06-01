@@ -44,7 +44,7 @@ fun DiaryQuestionItem(
     subAnswers: List<LogbookAnswer>,
     onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
-    var text by remember(answer.id to answer.answer) {
+    var text by rememberSaveable(answer.id to answer.answer) {
         mutableStateOf(answer.answer)
     }
 

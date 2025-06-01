@@ -1,6 +1,7 @@
 package com.lans.sleep_care.presentation.component.items
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,28 +34,38 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
-import com.lans.sleep_care.domain.model.logbook.CommittedAction
+import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.misc.StatusChip
+import com.lans.sleep_care.presentation.theme.Danger
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
+import com.lans.sleep_care.presentation.theme.Success
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun CommitedActionItem(
-    record: CommittedAction
+    answers: List<LogbookQuestionAnswer>,
+    onClick: () -> Unit
 ) {
-    val color = when (record.status.lowercase()) {
-        "selesai", "berhasil" -> Color(0xFF4CAF50)
-        "sedang berjalan" -> Color(0xFFFFC107)
-        else -> Color(0xFFF44336)
-    }
+    val area = answers[0].answer.answer
+    val goal = answers[1].answer.answer
+    val plan = answers[2].answer.answer
+    val time = answers[3].answer.answer
+    val status = answers[4].answer.answer
+    val obstacle = answers[5].answer.answer
+    val solution = answers[6].answer.answer
+
+    val color = if (status == "0") Success else Danger
     var expanded by remember { mutableStateOf(false) }
 
     OutlinedCard(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onClick.invoke()
+            },
         border = BorderStroke(
             width = Dimens.dp1,
             color = Gray
@@ -66,40 +77,31 @@ fun CommitedActionItem(
             modifier = Modifier
                 .padding(Dimens.dp16)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = record.area,
+                        text = area,
                         style = MaterialTheme.typography.titleMedium
                     )
-                    Spacer(
-                        modifier = Modifier
-                            .height(Dimens.dp4)
-                    )
-                    Text(
-                        text = record.goal,
-                        color = Color.DarkGray,
-                        style = MaterialTheme.typography.bodyMedium
+                    StatusChip(
+                        modifier = Modifier,
+                        text = if (status == "0") "Terlaksana" else "Belum Terlaksana",
+                        color = color
                     )
                 }
-                StatusChip(
-                    modifier = Modifier
-                        .padding(
-                            top = Dimens.dp16,
-                            end = Dimens.dp16
-                        ),
-                    text = record.status,
-                    color = color,
+                Spacer(modifier = Modifier.height(Dimens.dp8))
+                Text(
+                    text = goal,
+                    color = Color.DarkGray,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
-
             if (expanded) {
                 HorizontalDivider(
                     modifier = Modifier
@@ -110,14 +112,11 @@ fun CommitedActionItem(
                 InfoSection(
                     Icons.AutoMirrored.Filled.EventNote,
                     stringResource(R.string.plan),
-                    record.plan
+                    plan
                 )
-                InfoSection(Icons.Default.Schedule, stringResource(R.string.time), record.time)
-                InfoSection(Icons.Default.Block, stringResource(R.string.obstacle), record.obstacle)
-                InfoSection(
-                    Icons.Default.Lightbulb,
-                    stringResource(R.string.solution), record.solution
-                )
+                InfoSection(Icons.Default.Schedule, stringResource(R.string.time), time)
+                InfoSection(Icons.Default.Block, stringResource(R.string.obstacle), obstacle)
+                InfoSection(Icons.Default.Lightbulb, stringResource(R.string.solution), solution)
             }
             Spacer(
                 modifier = Modifier
@@ -145,7 +144,7 @@ fun InfoSection(icon: ImageVector, label: String, value: String) {
     ) {
         Icon(
             modifier = Modifier
-                .size(Dimens.dp20)
+                .size(Dimens.dp24)
                 .padding(end = Dimens.dp8),
             imageVector = icon,
             tint = DarkGray,
@@ -154,7 +153,7 @@ fun InfoSection(icon: ImageVector, label: String, value: String) {
         Column {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium)
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold)
             )
             Text(
                 text = value,

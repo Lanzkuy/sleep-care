@@ -76,7 +76,9 @@
     <string name="after_action">Setelah Melakukan Tindakan</string>
     <string name="impact_after">Dampak setelahnya</string>
     <string name="effect_after">Apa efeknya setelah kamu mengelola emosi?</string>
+    <string name="choose_area">Pilih Area</string>
     <string name="choose_emotion">Pilih Emosi</string>
+    <string name="choose_status">Pilih Status</string>
     <string name="how_to_manage">Cara mengelola</string>
     <string name="how_to_solve">Cara mengatasi</string>
     <string name="afterwards">Setelahnya</string>

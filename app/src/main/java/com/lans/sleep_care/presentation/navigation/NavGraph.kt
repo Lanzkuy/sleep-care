@@ -326,6 +326,7 @@ fun NavGraph(
         composable(route = Route.CommittedActionScreen.route + "/{therapyId}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             CommitedActionScreen(
+                therapyId = therapyId,
                 navigateToMyTherapy = {
                     navController.navigateUp()
                 }
