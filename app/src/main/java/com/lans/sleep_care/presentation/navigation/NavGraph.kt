@@ -234,8 +234,13 @@ fun NavGraph(
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 },
-                navigateToLogbook = { therapyId ->
-                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId") {
+                navigateToIdentifyValue = { therapyId, isReadOnly ->
+                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId/$isReadOnly") {
+                        popUpTo(route = Route.MyTherapyScreen.route)
+                    }
+                },
+                navigateToLogbook = { therapyId, week, isReadOnly ->
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$isReadOnly") {
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 }
@@ -254,80 +259,94 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.LogbookScreen.route + "/{therapyId}") {
+        composable(route = Route.LogbookScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             LogbookScreen(
-                therapyId = therapyId,
                 navigateBack = {
                     navController.navigateUp()
                 },
                 navigateToSleepDiary = {
-                    navController.navigate(route = Route.SleepDiaryScreen.route + "/$therapyId") {
-                        popUpTo(route = Route.LogbookScreen.route)
-                    }
-                },
-                navigateToIdentifyValue = {
-                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId") {
+                    navController.navigate(route = Route.SleepDiaryScreen.route + "/$therapyId/$week/$isReadOnly") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
                 navigateToThoughtRecord = {
-                    navController.navigate(route = Route.ThoughtRecordScreen.route + "/$therapyId") {
+                    navController.navigate(route = Route.ThoughtRecordScreen.route + "/$therapyId/$week/$isReadOnly") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
                 navigateToEmotionRecord = {
-                    navController.navigate(route = Route.EmotionRecordScreen.route + "/$therapyId") {
+                    navController.navigate(route = Route.EmotionRecordScreen.route + "/$therapyId/$week/$isReadOnly") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
                 navigateToCommitedAction = {
-                    navController.navigate(route = Route.CommittedActionScreen.route + "/$therapyId") {
+                    navController.navigate(route = Route.CommittedActionScreen.route + "/$therapyId/$week/$isReadOnly") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 }
             )
         }
-        composable(route = Route.SleepDiaryScreen.route + "/{therapyId}") {
+        composable(route = Route.SleepDiaryScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             SleepDiaryScreen(
                 therapyId = therapyId,
+                week = week,
+                isReadOnly = isReadOnly,
                 navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
         }
-        composable(route = Route.IdentifyValueScreen.route + "/{therapyId}") {
+        composable(route = Route.IdentifyValueScreen.route + "/{therapyId}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             IdentifyValueScreen(
                 therapyId = therapyId,
+                isReadOnly = isReadOnly,
                 navigateBack = {
                     navController.navigateUp()
                 }
             )
         }
-        composable(route = Route.ThoughtRecordScreen.route + "/{therapyId}") {
+        composable(route = Route.ThoughtRecordScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             ThoughtRecordScreen(
                 therapyId = therapyId,
+                week = week,
+                isReadOnly = isReadOnly,
                 navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
         }
-        composable(route = Route.EmotionRecordScreen.route + "/{therapyId}") {
+        composable(route = Route.EmotionRecordScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             EmotionRecordScreen(
                 therapyId = therapyId,
+                week = week,
+                isReadOnly = isReadOnly,
                 navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
         }
-        composable(route = Route.CommittedActionScreen.route + "/{therapyId}") {
+        composable(route = Route.CommittedActionScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             CommitedActionScreen(
                 therapyId = therapyId,
+                week = week,
+                isReadOnly = isReadOnly,
                 navigateToLogbook = {
                     navController.navigateUp()
                 }
@@ -371,16 +390,16 @@ fun NavGraph(
                 navigateToHistory = {
                     navController.navigateUp()
                 },
-                navigateToLogbook = {
-                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId") {
+                navigateToLogbook = { week, isReadOnly ->
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$isReadOnly") {
                         popUpTo(route = Route.HistoryDetailScreen.route)
                     }
                 },
-                navigateToIdentifyValue = {
-                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId") {
+                navigateToIdentifyValue = { isReadOnly ->
+                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId/$isReadOnly") {
                         popUpTo(route = Route.HistoryDetailScreen.route)
                     }
-                },
+                }
             )
         }
     }

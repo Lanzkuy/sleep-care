@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.button.OutlinedIconButton
+import com.lans.sleep_care.presentation.component.button.OutlinedIconTextButton
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Rounded
@@ -35,19 +35,14 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun LogbookScreen(
     viewModel: LogbookViewModel = hiltViewModel(),
-    therapyId: String,
     navigateBack: () -> Unit,
-    navigateToSleepDiary: (therapyId: String) -> Unit,
-    navigateToIdentifyValue: () -> Unit,
+    navigateToSleepDiary: () -> Unit,
     navigateToThoughtRecord: () -> Unit,
     navigateToEmotionRecord: () -> Unit,
     navigateToCommitedAction: () -> Unit,
 ) {
     val buttonItems = listOf(
-        Triple(R.drawable.ic_sleep, R.string.sleep_diary) {
-            navigateToSleepDiary.invoke(therapyId)
-        },
-        Triple(R.drawable.ic_star, R.string.identify_value, navigateToIdentifyValue),
+        Triple(R.drawable.ic_sleep, R.string.sleep_diary, navigateToSleepDiary),
         Triple(R.drawable.ic_mind, R.string.thought_record, navigateToThoughtRecord),
         Triple(R.drawable.ic_smile, R.string.emotion_record, navigateToEmotionRecord),
         Triple(R.drawable.ic_flag, R.string.commited_action, navigateToCommitedAction)
@@ -101,7 +96,7 @@ fun LogbookScreen(
             verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
         ) {
             items(buttonItems) { (icon, name, action) ->
-                OutlinedIconButton(
+                OutlinedIconTextButton(
                     modifier = Modifier.fillMaxWidth(),
                     icon = painterResource(icon),
                     name = stringResource(name),

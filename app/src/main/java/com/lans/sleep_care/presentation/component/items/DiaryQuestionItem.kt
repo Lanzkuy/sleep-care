@@ -42,6 +42,7 @@ fun DiaryQuestionItem(
     answer: LogbookAnswer,
     subQuestions: List<LogbookQuestion>,
     subAnswers: List<LogbookAnswer>,
+    isReadOnly: Boolean,
     onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
     var text by rememberSaveable(answer.id to answer.answer) {
@@ -55,7 +56,7 @@ fun DiaryQuestionItem(
         )
 
         when (question.type) {
-            "binary" -> {
+            "boolean" -> {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -69,6 +70,7 @@ fun DiaryQuestionItem(
                     ) {
                         TextButton(
                             modifier = Modifier.fillMaxWidth(),
+                            enabled = !isReadOnly,
                             onClick = {
                                 text = "1"
                                 onAnswerChanged(
@@ -94,6 +96,7 @@ fun DiaryQuestionItem(
                     ) {
                         TextButton(
                             modifier = Modifier.fillMaxWidth(),
+                            enabled = !isReadOnly,
                             onClick = {
                                 text = "0"
                                 onAnswerChanged(
@@ -116,7 +119,7 @@ fun DiaryQuestionItem(
             "time" -> {
                 var showPicker by remember { mutableStateOf(false) }
 
-                if (showPicker) {
+                if (showPicker && !isReadOnly) {
                     TimePickerDialog(
                         onDismiss = { showPicker = false },
                         onConfirm = { selectedTime ->
@@ -160,6 +163,7 @@ fun DiaryQuestionItem(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = text,
+                    readOnly = isReadOnly,
                     onValueChange = {
                         text = it
                         onAnswerChanged(
@@ -186,6 +190,7 @@ fun DiaryQuestionItem(
                         answer = subAnswer,
                         subQuestions = emptyList(),
                         subAnswers = emptyList(),
+                        isReadOnly = isReadOnly,
                         onAnswerChanged = onAnswerChanged
                     )
                 }

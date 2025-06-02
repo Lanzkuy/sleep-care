@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,7 +39,6 @@ import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
-import com.lans.sleep_care.presentation.component.form.NumberDropDown
 import com.lans.sleep_care.presentation.component.form.SleepDiary
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -52,21 +50,21 @@ import com.lans.sleep_care.presentation.theme.White
 fun SleepDiaryScreen(
     viewModel: SleepDiaryViewModel = hiltViewModel(),
     therapyId: String,
+    week: String,
+    isReadOnly: Boolean,
     navigateToLogbook: () -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
-    var isDropDownExpanded by remember { mutableStateOf(false) }
-    var selectedWeek by remember { mutableIntStateOf(0) }
     val diaryExpandedStates = remember { mutableStateMapOf<String, Boolean>() }
 
     val selectedDates = state.sleepDiaries
-        .filter { it.week == selectedWeek + 1 }
+        .filter { it.week == week.toInt() }
         .map { Pair(it.id, it.date) }
 
     val allAnswers = state.sleepDiaries
-        .filter { it.week == selectedWeek + 1 }
+        .filter { it.week == week.toInt() }
         .mapNotNull { it.logbookAnswerList?.answers }
 
     val tempAnswers = remember { mutableStateListOf<Pair<Int, LogbookQuestionAnswer>>() }
@@ -79,11 +77,8 @@ fun SleepDiaryScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.loadSleepDiaries(therapyId.toInt())
-    }
-
-    LaunchedEffect(selectedWeek) {
-        viewModel.loadSleepDiaries(therapyId = therapyId.toInt(), week = selectedWeek + 1)
+        viewModel.week = week.toInt()
+        viewModel.loadSleepDiaries(therapyId = therapyId.toInt(), isReadOnly = isReadOnly)
     }
 
     LaunchedEffect(key1 = state.isCreated, key2 = state.isUpdated, key3 = state.error) {
@@ -171,40 +166,6 @@ fun SleepDiaryScreen(
                     .fillMaxWidth()
                     .height(Dimens.dp8)
             )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(Dimens.dp8),
-                    text = stringResource(R.string.week_counter, selectedWeek + 1),
-                    fontSize = Dimens.sp16,
-                    fontWeight = FontWeight.SemiBold
-                )
-                NumberDropDown(
-                    isExpanded = isDropDownExpanded,
-                    selectedPosition = selectedWeek,
-                    numbers = if (state.sleepDiaries.isNotEmpty()) {
-                        state.sleepDiaries.map { it.week }.distinct().sorted()
-                    } else {
-                        listOf(1)
-                    },
-                    onExpandToggle = { isDropDownExpanded = !isDropDownExpanded },
-                    onNumberSelected = {
-                        if (state.sleepDiaries.isNotEmpty()) {
-                            selectedWeek = it
-                        }
-                    }
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(Dimens.dp8)
-            )
             if (state.isLoading) {
                 Box(
                     modifier = Modifier
@@ -223,6 +184,7 @@ fun SleepDiaryScreen(
                     dateWithIds = selectedDates,
                     questions = state.questions,
                     answers = mergedAnswers,
+                    isReadOnly = isReadOnly,
                     expandedStates = diaryExpandedStates,
                     onAnswerChanged = { recordId, questionAnswer ->
                         val originalAnswer = allAnswers
@@ -259,7 +221,7 @@ fun SleepDiaryScreen(
                 )
             }
         }
-        if (tempAnswers.isNotEmpty()) {
+        if (tempAnswers.isNotEmpty() && !isReadOnly) {
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)

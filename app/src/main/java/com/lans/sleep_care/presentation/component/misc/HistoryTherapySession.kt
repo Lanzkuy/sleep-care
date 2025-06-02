@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +31,7 @@ fun HistoryTherapySession(
     modifier: Modifier,
     schedules: List<TherapySchedule>,
     onIdentifyValueClick: () -> Unit,
-    onItemClick: () -> Unit
+    onItemClick: (week: Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -72,10 +72,10 @@ fun HistoryTherapySession(
                 .height(Dimens.dp8)
         )
         LazyColumn {
-            items(schedules) { schedule ->
+            itemsIndexed(schedules) { index, schedule ->
                 HistoryTherapySessionItem(
                     schedule = schedule,
-                    onClick = onItemClick
+                    onClick = { onItemClick((index + 1)) }
                 )
             }
         }

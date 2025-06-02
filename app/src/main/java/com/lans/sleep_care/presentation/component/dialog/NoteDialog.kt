@@ -114,6 +114,11 @@ fun NoteDialog(
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp16)
+                    )
                 }
             }
         }

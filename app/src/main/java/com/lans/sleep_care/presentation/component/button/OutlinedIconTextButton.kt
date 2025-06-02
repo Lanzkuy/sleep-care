@@ -26,7 +26,7 @@ import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
-fun OutlinedIconButton(
+fun OutlinedIconTextButton(
     modifier: Modifier,
     icon: Painter,
     name: String,

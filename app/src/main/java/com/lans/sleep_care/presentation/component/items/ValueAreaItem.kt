@@ -32,6 +32,7 @@ fun ValueAreaItem(
     areaName: String,
     questions: List<LogbookQuestion>,
     answers: List<LogbookQuestionAnswer>,
+    isReadOnly: Boolean,
     onDataChange: (LogbookQuestionAnswer) -> Unit
 ) {
     if (questions.isEmpty()) return
@@ -72,6 +73,7 @@ fun ValueAreaItem(
                                 value = scale,
                                 valueRange = 1f..10f,
                                 steps = 8,
+                                enabled = !isReadOnly,
                                 onValueChange = {
                                     scale = it
                                     onDataChange(
@@ -104,6 +106,7 @@ fun ValueAreaItem(
                                     )
                                 },
                                 value = text,
+                                readOnly = isReadOnly,
                                 onValueChange = {
                                     text = it
                                     onDataChange(

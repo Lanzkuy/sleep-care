@@ -128,6 +128,8 @@
     <string name="no">Tidak</string>
     <string name="update">Perbaharui</string>
     <string name="view_identify_value">Lihat Nilai Pribadi</string>
+    <string name="copy">Salin</string>
+    <string name="text_copied">Teks disalin</string>
     <string name="total_price">Total Harga</string>
     <string name="alert_default_title">Alert</string>
     <string name="alert_warning_title">Perhatian</string>

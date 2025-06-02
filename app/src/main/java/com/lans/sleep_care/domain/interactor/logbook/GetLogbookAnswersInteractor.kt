@@ -18,7 +18,8 @@ class GetLogbookAnswersInteractor @Inject constructor(
 ) : GetLogbookAnswersUseCase, SafeApiCall {
     override suspend fun execute(
         recordType: String,
-        therapyId: Int
+        therapyId: Int,
+        week: Int
     ): Flow<Resource<LogbookAnswerList>> {
         return flow {
             emit(Resource.Loading)
@@ -27,7 +28,8 @@ class GetLogbookAnswersInteractor @Inject constructor(
                     val response = repository.fetchAnswers(
                         LogbookAnswerRequest(
                             recordType = recordType,
-                            therapyId = therapyId
+                            therapyId = therapyId,
+                            week = week
                         )
                     )
                     response.data?.toDomain() ?: throw Exception()

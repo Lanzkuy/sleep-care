@@ -24,6 +24,8 @@ class ThoughtRecordViewModel @Inject constructor(
     private val _state = mutableStateOf(ThoughtRecordUIState())
     val state: State<ThoughtRecordUIState> get() = _state
 
+    var week: Int = 1
+
     fun onEvent(event: ThoughtRecordUIEvent) {
         if (event is ThoughtRecordUIEvent.SaveButtonClicked) {
             if (event.isUpdate) {
@@ -40,26 +42,30 @@ class ThoughtRecordViewModel @Inject constructor(
         }
     }
 
-    fun loadQuestions(therapyId: Int) {
+    fun loadQuestions(therapyId: Int, isReadOnly: Boolean) {
         viewModelScope.launch {
-            getLogbookQuestionsUseCase.execute("thought_record").collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            questions = response.data
-                        )
-                        loadAnswers(therapyId)
-                    }
+            if (isReadOnly) {
+                loadAnswers(therapyId)
+            } else {
+                getLogbookQuestionsUseCase.execute("thought_record").collect { response ->
+                    when (response) {
+                        is Resource.Success -> {
+                            _state.value = _state.value.copy(
+                                questions = response.data
+                            )
+                            loadAnswers(therapyId)
+                        }
 
-                    is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            error = response.message,
-                            isLoading = false
-                        )
-                    }
+                        is Resource.Error -> {
+                            _state.value = _state.value.copy(
+                                error = response.message,
+                                isLoading = false
+                            )
+                        }
 
-                    is Resource.Loading -> {
-                        _state.value = _state.value.copy(isLoading = true)
+                        is Resource.Loading -> {
+                            _state.value = _state.value.copy(isLoading = true)
+                        }
                     }
                 }
             }
@@ -70,7 +76,8 @@ class ThoughtRecordViewModel @Inject constructor(
         viewModelScope.launch {
             getLogbookAnswersUseCase.execute(
                 recordType = "thought_record",
-                therapyId = therapyId
+                therapyId = therapyId,
+                week = week
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {

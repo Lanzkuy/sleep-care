@@ -51,6 +51,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun IdentifyValueScreen(
     viewModel: IdentifyValueViewModel = hiltViewModel(),
     therapyId: String,
+    isReadOnly: Boolean,
     navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -67,7 +68,7 @@ fun IdentifyValueScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.loadQuestions(therapyId.toInt())
+        viewModel.loadQuestions(therapyId = therapyId.toInt(), isReadOnly = isReadOnly)
     }
 
     LaunchedEffect(key1 = state.isCreated, key2 = state.isUpdated, key3 = state.error) {
@@ -188,6 +189,7 @@ fun IdentifyValueScreen(
                             areaName = area,
                             questions = state.questions.sortedBy { it.type },
                             answers = answers,
+                            isReadOnly = isReadOnly,
                             onDataChange = { questionAnswer ->
                                 val originalAnswer = state.answers.firstOrNull {
                                     it.questionId == questionAnswer.questionId &&
@@ -233,7 +235,7 @@ fun IdentifyValueScreen(
             }
         }
 
-        if (tempAnswers.isNotEmpty()) {
+        if (tempAnswers.isNotEmpty() && !isReadOnly) {
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)

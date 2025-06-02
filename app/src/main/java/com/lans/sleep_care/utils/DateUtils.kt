@@ -58,6 +58,7 @@ fun generateDateRange(startDate: String, endDate: String): List<String> {
 }
 
 fun parseToDate(dateStr: String): String {
+    if (dateStr.isEmpty()) return ""
     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val date = inputFormat.parse(dateStr)
     val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())

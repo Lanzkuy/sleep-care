@@ -32,6 +32,8 @@ class SleepDiaryViewModel @Inject constructor(
     private val _state = mutableStateOf(SleepDiaryUIState())
     val state: State<SleepDiaryUIState> get() = _state
 
+    var week: Int = 1
+
     fun onEvent(event: SleepDiaryUIEvent) {
         if (event is SleepDiaryUIEvent.SaveButtonClicked) {
             val createdAnswers = event.recordAnswers.mapNotNull { entry ->
@@ -60,7 +62,7 @@ class SleepDiaryViewModel @Inject constructor(
         }
     }
 
-    fun loadSleepDiaries(therapyId: Int, week: Int = 1) {
+    fun loadSleepDiaries(therapyId: Int, isReadOnly: Boolean) {
         if (state.value.sleepDiaries.isNotEmpty()) {
             viewModelScope.launch {
                 val jobs = state.value.sleepDiaries.filter { it.week == week }.map { diary ->
@@ -81,7 +83,9 @@ class SleepDiaryViewModel @Inject constructor(
                                 sleepDiaries = diaries
                             )
 
-                            loadQuestions()
+                            if (!isReadOnly) {
+                                loadQuestions()
+                            }
 
                             val jobs = diaries.filter { it.week == week }.map { diary ->
                                 async {
@@ -144,6 +148,7 @@ class SleepDiaryViewModel @Inject constructor(
                         } else diary
                     }
                     _state.value = _state.value.copy(
+                        questions = response.data.questions,
                         sleepDiaries = updatedDiaries
                     )
                 }

@@ -2,7 +2,6 @@ package com.lans.sleep_care.presentation.screen.my_theraphy
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -36,26 +36,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
-import com.lans.sleep_care.presentation.component.button.OutlinedIconButton
 import com.lans.sleep_care.presentation.component.dialog.NoteDialog
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.items.ScheduleItem
 import com.lans.sleep_care.presentation.theme.Black
-import com.lans.sleep_care.presentation.theme.Danger
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
+import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
+import com.lans.sleep_care.utils.parseToDate
 
 @Composable
 fun MyTherapyScreen(
@@ -64,26 +66,15 @@ fun MyTherapyScreen(
     navigateToHome: () -> Unit,
     navigateToPsychologist: () -> Unit,
     navigateToChat: (therapyId: String, psychologistName: String) -> Unit,
-    navigateToLogbook: (therapyId: String) -> Unit
+    navigateToIdentifyValue: (therapyId: String, isReadOnly: Boolean) -> Unit,
+    navigateToLogbook: (therapyId: String, week: String, isReadOnly: Boolean) -> Unit
 ) {
     val state by viewModel.state
-    val buttonItems = listOf(
-        Triple(R.drawable.ic_message, R.string.chat_psychologist) {
-            navigateToChat.invoke(
-                state.therapy?.id.toString(),
-                state.psychologist.user.name
-            )
-        },
-        Triple(R.drawable.ic_book, R.string.therapy_note) {
-            navigateToLogbook.invoke(state.therapy?.id.toString())
-
-        }
-    )
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
     var showNoteDialog by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadTherapy()
+        viewModel.loadActiveTherapy()
     }
 
     LaunchedEffect(key1 = state.schedules, key2 = state.error) {
@@ -156,53 +147,111 @@ fun MyTherapyScreen(
                     .size(Dimens.dp50)
             )
         }
-        if (isTherapyInProgress || state.therapy != null) {
-            Spacer(
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(Dimens.dp16)
+        )
+        if (state.isTherapyLoading) {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(Dimens.dp16)
-            )
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Dimens.dp24),
-                verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
+                    .weight(1f)
             ) {
-                items(buttonItems) { (icon, name, action) ->
-                    Box(
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(Dimens.dp32)
+                        .align(Alignment.Center),
+                    color = Primary
+                )
+            }
+        } else if (isTherapyInProgress && state.therapy != null) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = Dimens.dp24
+                    ),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .size(Dimens.dp48)
+                        .padding()
+                        .clip(CircleShape),
+                    model = state.psychologist.user.avatar,
+                    placeholder = painterResource(R.drawable.img_user_placeholder),
+                    error = painterResource(R.drawable.img_user_placeholder),
+                    contentDescription = stringResource(R.string.image),
+                    contentScale = ContentScale.Crop,
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(start = Dimens.dp8)
+                        .weight(1f)
+                ) {
+                    Text(
                         modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        OutlinedIconButton(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            icon = painterResource(icon),
-                            name = stringResource(name),
-                            onClick = { action.invoke() }
+                            .padding(start = Dimens.dp4),
+                        text = state.psychologist.user.name,
+                        color = DarkGray,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontSize = Dimens.sp18,
+                            fontWeight = FontWeight.SemiBold
                         )
-
-                        if (name == R.string.chat_psychologist && state.unreadMessage > 0) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(end = Dimens.dp12)
-                                    .background(Danger, shape = Rounded)
-                                    .size(Dimens.dp24)
-                                    .align(Alignment.CenterEnd),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = state.unreadMessage.toString(),
-                                    color = White,
-                                    style = MaterialTheme.typography.labelMedium
-                                )
-                            }
-                        }
-                    }
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(start = Dimens.dp4),
+                        text = "${parseToDate(state.therapy!!.startDate)} - ${parseToDate(state.therapy!!.endDate)}",
+                        color = DarkGray,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
                 }
+                ElevatedIconButton(
+                    modifier = Modifier
+                        .size(Dimens.dp48),
+                    color = White,
+                    tint = Black,
+                    icon = painterResource(R.drawable.ic_message),
+                    shape = Rounded,
+                    onClick = {
+                        navigateToChat.invoke(
+                            state.therapy?.id.toString(),
+                            state.psychologist.user.name
+                        )
+                    }
+                )
             }
             Spacer(
                 modifier = Modifier
+                    .height(Dimens.dp24)
+            )
+            Button(
+                modifier = Modifier
                     .fillMaxWidth()
+                    .height(Dimens.dp36)
+                    .padding(horizontal = Dimens.dp24),
+                shape = RoundedLarge,
+                colors = ButtonDefaults
+                    .buttonColors(
+                        containerColor = Primary,
+                        contentColor = White
+                    ),
+                onClick = {
+                    navigateToIdentifyValue.invoke(state.therapy!!.id.toString(), false)
+                }
+            ) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically),
+                    text = stringResource(R.string.identify_value)
+                )
+            }
+            Spacer(
+                modifier = Modifier
                     .height(Dimens.dp16)
             )
             OutlinedCard(
@@ -248,15 +297,22 @@ fun MyTherapyScreen(
                                 horizontal = Dimens.dp16
                             )
                     ) {
-                        items(state.schedules) { schedule ->
+                        itemsIndexed(state.schedules) { index, schedule ->
                             ScheduleItem(
                                 date = schedule.date.ifEmpty { "Belum ditentukan" },
                                 topic = schedule.title.ifEmpty { "Belum ditentukan" },
                                 link = schedule.link.ifEmpty { "Belum ditentukan" },
                                 note = schedule.note,
+                                onLogbookClick = {
+                                    navigateToLogbook.invoke(
+                                        schedule.therapyId.toString(),
+                                        (index + 1).toString(),
+                                        false
+                                    )
+                                },
                                 onNoteClick = {
                                     showNoteDialog = showNoteDialog.copy(
-                                        first = false,
+                                        first = true,
                                         second = schedule.note
                                     )
                                 }
@@ -265,6 +321,44 @@ fun MyTherapyScreen(
                     }
                 }
             }
+//            LazyColumn(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = Dimens.dp24),
+//                verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
+//            ) {
+//                items(buttonItems) { (icon, name, action) ->
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                    ) {
+//                        OutlinedIconButton(
+//                            modifier = Modifier
+//                                .fillMaxWidth(),
+//                            icon = painterResource(icon),
+//                            name = stringResource(name),
+//                            onClick = { action.invoke() }
+//                        )
+//
+//                        if (name == R.string.chat_psychologist && state.unreadMessage > 0) {
+//                            Box(
+//                                modifier = Modifier
+//                                    .padding(end = Dimens.dp12)
+//                                    .background(Danger, shape = Rounded)
+//                                    .size(Dimens.dp24)
+//                                    .align(Alignment.CenterEnd),
+//                                contentAlignment = Alignment.Center
+//                            ) {
+//                                Text(
+//                                    text = state.unreadMessage.toString(),
+//                                    color = White,
+//                                    style = MaterialTheme.typography.labelMedium
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         } else {
             Column(
                 modifier = Modifier

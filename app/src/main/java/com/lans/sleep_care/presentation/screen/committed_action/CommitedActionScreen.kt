@@ -1,6 +1,7 @@
 package com.lans.sleep_care.presentation.screen.committed_action
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +54,8 @@ import com.lans.sleep_care.presentation.theme.White
 fun CommitedActionScreen(
     viewModel: CommitedActionViewModel = hiltViewModel(),
     therapyId: String,
+    week: String,
+    isReadOnly: Boolean,
     navigateToLogbook: () -> Unit
 ) {
     val context = LocalContext.current
@@ -66,10 +71,11 @@ fun CommitedActionScreen(
     }
 
     val groupedAnswers: List<List<LogbookQuestionAnswer>> = run {
-        if (state.answers.isEmpty()) emptyList()
+        val filteredAnswers = state.answers.filter { (it.answer.note.ifBlank { "1" }) == week }
+        if (filteredAnswers.isEmpty()) emptyList()
         else {
-            val firstQuestionId = state.answers.first().questionId
-            state.answers.fold(
+            val firstQuestionId = filteredAnswers.first().questionId
+            filteredAnswers.fold(
                 mutableListOf<MutableList<LogbookQuestionAnswer>>()
             ) { groupedAnswers, answer ->
                 if (groupedAnswers.isEmpty() || answer.questionId == firstQuestionId) {
@@ -82,7 +88,7 @@ fun CommitedActionScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.loadQuestions(therapyId.toInt())
+        viewModel.loadQuestions(therapyId = therapyId.toInt(), isReadOnly = isReadOnly)
     }
 
     LaunchedEffect(key1 = state.isCreated, key2 = state.isUpdated, key3 = state.error) {
@@ -172,64 +178,84 @@ fun CommitedActionScreen(
                     .fillMaxWidth()
                     .height(Dimens.dp16)
             )
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                if (state.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier
                             .size(Dimens.dp32)
                             .align(Alignment.Center),
                         color = Primary
                     )
-                }
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
-                ) {
-                    items(groupedAnswers.size) { index ->
-                        CommitedActionItem(
-                            answers = groupedAnswers[index],
-                            onClick = {
-                                showDialog = showDialog.copy(
-                                    first = true,
-                                    second = groupedAnswers[index]
-                                )
-                            }
+                } else if (groupedAnswers.isEmpty()) {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .size(Dimens.dp160),
+                            painter = painterResource(R.drawable.img_illustration_nothing),
+                            contentDescription = stringResource(R.string.image)
+                        )
+                        Text(
+                            text = stringResource(R.string.nothing_here),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.headlineSmall
                         )
                     }
-                    item {
-                        Spacer(
-                            modifier = Modifier
-                                .height(Dimens.dp16)
-                        )
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
+                    ) {
+                        items(groupedAnswers.size) { index ->
+                            CommitedActionItem(
+                                answers = groupedAnswers[index],
+                                onClick = {
+                                    showDialog = showDialog.copy(
+                                        first = true,
+                                        second = groupedAnswers[index]
+                                    )
+                                }
+                            )
+                        }
+                        item {
+                            Spacer(
+                                modifier = Modifier
+                                    .height(Dimens.dp16)
+                            )
+                        }
                     }
                 }
             }
         }
-        FloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd),
-            containerColor = Primary,
-            contentColor = White,
-            shape = Rounded,
-            onClick = {
-                showDialog = showDialog.copy(
-                    first = true,
-                    second = emptyList()
+        if (!isReadOnly) {
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd),
+                containerColor = Primary,
+                contentColor = White,
+                shape = Rounded,
+                onClick = {
+                    showDialog = showDialog.copy(
+                        first = true,
+                        second = emptyList()
+                    )
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.icon)
                 )
             }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.icon)
-            )
         }
-        if (showDialog.first) {
+        if (showDialog.first && !isReadOnly) {
             CommittedActionDialog(
                 areas = state.areas,
                 questions = state.questions,

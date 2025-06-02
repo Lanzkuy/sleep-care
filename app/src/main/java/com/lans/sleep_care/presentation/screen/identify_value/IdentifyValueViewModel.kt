@@ -49,27 +49,32 @@ class IdentifyValueViewModel @Inject constructor(
         }
     }
 
-    fun loadQuestions(therapyId: Int) {
+    fun loadQuestions(therapyId: Int, isReadOnly: Boolean) {
         viewModelScope.launch {
-            getLogbookQuestionsUseCase.execute("identify_value").collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            questions = response.data
-                        )
-                        loadAreas()
-                        loadAnswers(therapyId)
-                    }
+            if (isReadOnly) {
+                loadAreas()
+                loadAnswers(therapyId)
+            } else {
+                getLogbookQuestionsUseCase.execute("identify_value").collect { response ->
+                    when (response) {
+                        is Resource.Success -> {
+                            _state.value = _state.value.copy(
+                                questions = response.data
+                            )
+                            loadAreas()
+                            loadAnswers(therapyId)
+                        }
 
-                    is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            error = response.message,
-                            isLoading = false
-                        )
-                    }
+                        is Resource.Error -> {
+                            _state.value = _state.value.copy(
+                                error = response.message,
+                                isLoading = false
+                            )
+                        }
 
-                    is Resource.Loading -> {
-                        _state.value = _state.value.copy(isLoading = true)
+                        is Resource.Loading -> {
+                            _state.value = _state.value.copy(isLoading = true)
+                        }
                     }
                 }
             }
@@ -105,12 +110,14 @@ class IdentifyValueViewModel @Inject constructor(
         viewModelScope.launch {
             getLogbookAnswersUseCase.execute(
                 recordType = "identify_value",
-                therapyId = therapyId
+                therapyId = therapyId,
+                week = 0
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
                             recordId = response.data.id,
+                            questions = response.data.questions,
                             answers = response.data.answers,
                             isLoading = false
                         )
@@ -211,3 +218,42 @@ class IdentifyValueViewModel @Inject constructor(
         }
     }
 }
+
+
+//fun loadCompletedTherapy(therapyId: Int) {
+//    viewModelScope.launch {
+//        getCompletedTherapyUseCase.execute().collect { response ->
+//            when (response) {
+//                is Resource.Success -> {
+//                    val therapy = response.data.find { it.id == therapyId }
+//                    if (therapy != null) {
+//                        _state.value = _state.value.copy(
+//                            therapy = therapy
+//                        )
+//                        loadPsychologist(therapy.doctorId)
+//                        loadChatHistory(therapy.patientId)
+//                        loadTherapySchedules(therapy.id)
+//                    } else {
+//                        _state.value = _state.value.copy(
+//                            isTherapyLoading = false
+//                        )
+//                    }
+//                }
+//
+//                is Resource.Error -> {
+//                    _state.value = _state.value.copy(
+//                        error = response.message,
+//                        isTherapyLoading = false
+//                    )
+//                }
+//
+//                is Resource.Loading -> {
+//                    _state.value = _state.value.copy(
+//                        isTherapyLoading = true,
+//                        isScheduleLoading = true
+//                    )
+//                }
+//            }
+//        }
+//    }
+//}

@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.screen.history
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -121,44 +124,61 @@ fun HistoryScreen(
                 .fillMaxWidth()
                 .height(Dimens.dp16)
         )
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            if (state.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(Dimens.dp32)
                         .align(Alignment.Center),
                     color = Primary
                 )
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
-            ) {
-                items(state.therapies) { therapy ->
-                    val period =
-                        "${parseToDate(therapy.startDate)} - ${parseToDate(therapy.endDate)}"
-                    HistoryItem(
-                        name = state.psychologists.find {
-                            it.id == therapy.doctorId
-                        }?.user?.name ?: "Doctor",
-                        price = therapy.applicationFee + therapy.doctorFee,
-                        date = period,
-                        onClick = {
-                            navigateToHistoryDetail.invoke(
-                                therapy.id.toString(),
-                                therapy.doctorId.toString(),
-                                period,
-                                (therapy.applicationFee + therapy.doctorFee).toString()
-                            )
-                        }
+            } else if (state.therapies.isEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .size(Dimens.dp160),
+                        painter = painterResource(R.drawable.img_illustration_nothing),
+                        contentDescription = stringResource(R.string.image)
                     )
+                    Text(
+                        text = stringResource(R.string.nothing_here),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
+                ) {
+                    items(state.therapies) { therapy ->
+                        val period =
+                            "${parseToDate(therapy.startDate)} - ${parseToDate(therapy.endDate)}"
+                        HistoryItem(
+                            name = state.psychologists.find {
+                                it.id == therapy.doctorId
+                            }?.user?.name ?: "Doctor",
+                            price = therapy.applicationFee + therapy.doctorFee,
+                            date = period,
+                            onClick = {
+                                navigateToHistoryDetail.invoke(
+                                    therapy.id.toString(),
+                                    therapy.doctorId.toString(),
+                                    period,
+                                    (therapy.applicationFee + therapy.doctorFee).toString()
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

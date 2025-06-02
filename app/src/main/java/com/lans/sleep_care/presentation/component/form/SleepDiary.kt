@@ -42,6 +42,7 @@ fun SleepDiary(
     dateWithIds: List<Pair<Int, String>>,
     questions: List<LogbookQuestion>,
     answers: List<List<LogbookQuestionAnswer>>,
+    isReadOnly: Boolean,
     expandedStates: MutableMap<String, Boolean>,
     onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
@@ -98,6 +99,7 @@ fun SleepDiary(
                                 questions = questions,
                                 noteType = "Siang",
                                 answers = dayAnswers,
+                                isReadOnly = isReadOnly,
                                 onAnswerChanged = onAnswerChanged
                             )
 
@@ -109,6 +111,7 @@ fun SleepDiary(
                                 questions = questions,
                                 noteType = "Malam",
                                 answers = dayAnswers,
+                                isReadOnly = isReadOnly,
                                 onAnswerChanged = onAnswerChanged
                             )
                         }
@@ -126,6 +129,7 @@ private fun DiaryGroup(
     questions: List<LogbookQuestion>,
     noteType: String,
     answers: List<LogbookQuestionAnswer>,
+    isReadOnly: Boolean,
     onAnswerChanged: (Int, LogbookQuestionAnswer) -> Unit
 ) {
     Text(
@@ -154,11 +158,12 @@ private fun DiaryGroup(
                 answer = answer,
                 subQuestions = subQuestions,
                 subAnswers = subAnswers,
+                isReadOnly = isReadOnly,
                 onAnswerChanged = onAnswerChanged
             )
 
             val isLastItem = questions.indexOf(question) == questions.lastIndex
-            if ((noteType == "Siang" && question.type == "binary") || isLastItem) {
+            if ((noteType == "Siang" && question.type == "boolean") || isLastItem) {
                 HorizontalDivider(color = Color.LightGray, thickness = Dimens.dp1)
             }
         }

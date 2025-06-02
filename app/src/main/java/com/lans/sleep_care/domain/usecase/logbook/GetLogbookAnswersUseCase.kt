@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface GetLogbookAnswersUseCase {
     suspend fun execute(
         recordType: String,
-        therapyId: Int
+        therapyId: Int,
+        week: Int
     ): Flow<Resource<LogbookAnswerList>>
 }

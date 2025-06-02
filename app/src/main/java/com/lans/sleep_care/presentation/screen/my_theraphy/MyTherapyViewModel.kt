@@ -23,7 +23,7 @@ class MyTherapyViewModel @Inject constructor(
     private val _state = mutableStateOf(MyTherapyUIState())
     val state: State<MyTherapyUIState> get() = _state
 
-    fun loadTherapy() {
+    fun loadActiveTherapy() {
         viewModelScope.launch {
             getActiveTherapyUseCase.execute().collect { response ->
                 when (response) {
@@ -35,6 +35,10 @@ class MyTherapyViewModel @Inject constructor(
                             loadPsychologist(response.data.doctorId)
                             loadChatHistory(response.data.patientId)
                             loadTherapySchedules(response.data.id)
+                        } else {
+                            _state.value = _state.value.copy(
+                                isTherapyLoading = false
+                            )
                         }
                     }
 

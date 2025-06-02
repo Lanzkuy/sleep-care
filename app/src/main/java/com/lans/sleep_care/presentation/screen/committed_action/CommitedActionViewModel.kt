@@ -43,27 +43,32 @@ class CommitedActionViewModel @Inject constructor(
         }
     }
 
-    fun loadQuestions(therapyId: Int) {
+    fun loadQuestions(therapyId: Int, isReadOnly: Boolean) {
         viewModelScope.launch {
-            getLogbookQuestionsUseCase.execute("committed_action").collect { response ->
-                when (response) {
-                    is Resource.Success -> {
-                        _state.value = _state.value.copy(
-                            questions = response.data
-                        )
-                        loadAreas()
-                        loadAnswers(therapyId)
-                    }
+            if (isReadOnly) {
+                loadAreas()
+                loadAnswers(therapyId)
+            } else {
+                getLogbookQuestionsUseCase.execute("committed_action").collect { response ->
+                    when (response) {
+                        is Resource.Success -> {
+                            _state.value = _state.value.copy(
+                                questions = response.data
+                            )
+                            loadAreas()
+                            loadAnswers(therapyId)
+                        }
 
-                    is Resource.Error -> {
-                        _state.value = _state.value.copy(
-                            error = response.message,
-                            isLoading = false
-                        )
-                    }
+                        is Resource.Error -> {
+                            _state.value = _state.value.copy(
+                                error = response.message,
+                                isLoading = false
+                            )
+                        }
 
-                    is Resource.Loading -> {
-                        _state.value = _state.value.copy(isLoading = true)
+                        is Resource.Loading -> {
+                            _state.value = _state.value.copy(isLoading = true)
+                        }
                     }
                 }
             }
@@ -99,7 +104,8 @@ class CommitedActionViewModel @Inject constructor(
         viewModelScope.launch {
             getLogbookAnswersUseCase.execute(
                 recordType = "committed_action",
-                therapyId = therapyId
+                therapyId = therapyId,
+                week = 0
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {

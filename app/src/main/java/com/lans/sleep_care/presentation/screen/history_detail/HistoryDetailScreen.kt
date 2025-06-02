@@ -47,8 +47,8 @@ fun HistoryDetailScreen(
     period: String,
     totalPrice: String,
     navigateToHistory: () -> Unit,
-    navigateToLogbook: () -> Unit,
-    navigateToIdentifyValue: () -> Unit
+    navigateToLogbook: (week: String, isReadOnly: Boolean) -> Unit,
+    navigateToIdentifyValue: (isReadOnly: Boolean) -> Unit,
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
@@ -148,10 +148,10 @@ fun HistoryDetailScreen(
                     ),
                 schedules = state.schedules,
                 onIdentifyValueClick = {
-                    navigateToIdentifyValue.invoke()
+                    navigateToIdentifyValue.invoke(true)
                 },
-                onItemClick = {
-                    navigateToLogbook.invoke()
+                onItemClick = { week ->
+                    navigateToLogbook.invoke(week.toString(), true)
                 }
             )
         }
