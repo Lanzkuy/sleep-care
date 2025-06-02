@@ -51,7 +51,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun CommitedActionScreen(
     viewModel: CommitedActionViewModel = hiltViewModel(),
     therapyId: String,
-    navigateToMyTherapy: () -> Unit
+    navigateToLogbook: () -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.state
@@ -150,7 +150,7 @@ fun CommitedActionScreen(
                     icon = Icons.AutoMirrored.Default.ArrowBack,
                     shape = Rounded,
                     onClick = {
-                        navigateToMyTherapy.invoke()
+                        navigateToLogbook.invoke()
                     }
                 )
                 Text(

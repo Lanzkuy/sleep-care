@@ -1,21 +1,18 @@
 package com.lans.sleep_care.presentation.component.items
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,89 +24,73 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
+import com.lans.sleep_care.domain.model.therapy.TherapySchedule
+import com.lans.sleep_care.presentation.component.misc.StatusChip
+import com.lans.sleep_care.presentation.theme.Danger
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
+import com.lans.sleep_care.presentation.theme.MediumGray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
 import com.lans.sleep_care.presentation.theme.Success
-import com.lans.sleep_care.presentation.theme.White
-import com.lans.sleep_care.utils.formatToRupiah
+import com.lans.sleep_care.utils.formatToTime
 
 @Composable
-fun HistoryItem(
-    name: String,
-    price: Int,
-    date: String,
+fun HistoryTherapySessionItem(
+    schedule: TherapySchedule,
     onClick: () -> Unit
 ) {
+    val color = if (schedule.note.isEmpty()) {
+        Danger
+    } else {
+        Success
+    }
+
     OutlinedCard(
         modifier = Modifier
-            .fillMaxWidth(),
-        border = BorderStroke(
-            width = Dimens.dp1,
-            color = Gray
-        ),
-        colors = CardDefaults.outlinedCardColors(
-            containerColor = White
-        )
+            .fillMaxWidth()
+            .padding(vertical = Dimens.dp8),
+        shape = RoundedLarge
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Dimens.dp16),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceBetween
+                    .padding(Dimens.dp16)
             ) {
-                Row(
+                Text(
+                    text = schedule.title,
+                    color = DarkGray,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Spacer(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = name,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = Dimens.sp18
-                        )
+                        .height(Dimens.dp4)
+                )
+                Text(
+                    text = "${schedule.date} • ${formatToTime(schedule.time)}",
+                    color = MediumGray,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.SemiBold
                     )
-                    Text(
-                        text = formatToRupiah(price),
-                        color = Success,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    )
-                }
+                )
                 Spacer(
                     modifier = Modifier
                         .height(Dimens.dp8)
                 )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(Dimens.dp24)
-                            .padding(end = Dimens.dp8),
-                        imageVector = Icons.Default.CalendarToday,
-                        tint = DarkGray,
-                        contentDescription = stringResource(R.string.icon)
+                Text(
+                    text = schedule.note.ifEmpty { "Note" },
+                    color = DarkGray,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.SemiBold
                     )
-                    Text(
-                        text = date,
-                        color = DarkGray,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    )
-                }
+                )
                 HorizontalDivider(
                     modifier = Modifier
                         .padding(vertical = Dimens.dp16),
@@ -141,11 +122,25 @@ fun HistoryItem(
                         Text(
                             modifier = Modifier
                                 .align(Alignment.CenterVertically),
-                            text = stringResource(R.string.view_detail)
+                            text = stringResource(R.string.logbook)
                         )
                     }
                 }
             }
+            StatusChip(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(
+                        top = Dimens.dp16,
+                        end = Dimens.dp16
+                    ),
+                text = if (schedule.note.isEmpty()) {
+                    stringResource(R.string.not_done)
+                } else {
+                    stringResource(R.string.done)
+                },
+                color = color,
+            )
         }
     }
 }

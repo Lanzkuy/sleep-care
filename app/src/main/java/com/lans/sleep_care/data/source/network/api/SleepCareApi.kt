@@ -28,6 +28,7 @@ import com.lans.sleep_care.data.source.network.dto.response.payment.UpdatePaymen
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistListResponse
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.user.UserResponse
@@ -94,6 +95,9 @@ interface SleepCareApi {
 
     @GET("therapies?status=in_progress")
     suspend fun getActiveTherapy(): ApiResponse<TherapyResponse>
+
+    @GET("therapies?status=completed")
+    suspend fun getCompletedTherapy(): ApiResponse<TherapyListResponse>
 
     @GET("therapy/schedules/{id}")
     suspend fun getSchedules(

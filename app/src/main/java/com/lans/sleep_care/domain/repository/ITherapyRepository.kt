@@ -6,11 +6,14 @@ import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
 import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatListResponse
 import com.lans.sleep_care.data.source.network.dto.response.chatbot.ChatResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
 
 interface ITherapyRepository {
-    suspend fun fetchTherapy(): ApiResponse<TherapyResponse>
+    suspend fun fetchActiveTherapy(): ApiResponse<TherapyResponse>
+
+    suspend fun fetchCompletedTherapy(): ApiResponse<TherapyListResponse>
 
     suspend fun fetchTherapySchedules(therapyId: Int): ApiResponse<TherapyScheduleListResponse>
 

@@ -1,6 +1,8 @@
 package com.lans.sleep_care.utils
 
 import org.json.JSONArray
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 fun String.capitalize(): String {
@@ -21,4 +23,17 @@ fun splitName(fullName: String): Pair<String, String> {
     val firstName = parts.firstOrNull() ?: ""
     val lastName = if (parts.size > 1) parts.subList(1, parts.size).joinToString(" ") else ""
     return Pair(firstName, lastName)
+}
+
+fun formatToRupiah(amount: Int): String {
+    val formatter = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+    val formatted = formatter.format(amount)
+    return formatted.replace("Rp", "Rp.").replace(",00", "")
+}
+
+fun formatToTime(input: String): String {
+    val inputFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    val time = inputFormat.parse(input)
+    return outputFormat.format(time!!)
 }

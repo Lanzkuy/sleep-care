@@ -20,4 +20,5 @@ sealed class Route(val route: String) {
     data object CommittedActionScreen: Route("committed_action")
     data object ChatbotScreen: Route("chatbot")
     data object HistoryScreen: Route("history")
+    data object HistoryDetailScreen: Route("history_detail")
 }

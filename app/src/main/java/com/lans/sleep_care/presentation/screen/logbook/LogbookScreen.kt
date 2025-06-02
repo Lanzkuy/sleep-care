@@ -36,7 +36,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun LogbookScreen(
     viewModel: LogbookViewModel = hiltViewModel(),
     therapyId: String,
-    navigateToMyTherapy: () -> Unit,
+    navigateBack: () -> Unit,
     navigateToSleepDiary: (therapyId: String) -> Unit,
     navigateToIdentifyValue: () -> Unit,
     navigateToThoughtRecord: () -> Unit,
@@ -74,7 +74,7 @@ fun LogbookScreen(
                 icon = Icons.AutoMirrored.Default.ArrowBack,
                 shape = Rounded,
                 onClick = {
-                    navigateToMyTherapy.invoke()
+                    navigateBack.invoke()
                 }
             )
             Text(

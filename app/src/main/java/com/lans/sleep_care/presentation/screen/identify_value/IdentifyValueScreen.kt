@@ -51,7 +51,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun IdentifyValueScreen(
     viewModel: IdentifyValueViewModel = hiltViewModel(),
     therapyId: String,
-    navigateToMyTherapy: () -> Unit
+    navigateBack: () -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.state
@@ -141,7 +141,7 @@ fun IdentifyValueScreen(
                     icon = Icons.AutoMirrored.Default.ArrowBack,
                     shape = Rounded,
                     onClick = {
-                        navigateToMyTherapy.invoke()
+                        navigateBack.invoke()
                     }
                 )
                 Text(

@@ -30,6 +30,7 @@ import com.lans.sleep_care.domain.interactor.psychologist.GetPsychologistInterac
 import com.lans.sleep_care.domain.interactor.therapy.CreateOrderTherapyInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetActiveTherapyInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetChatHistoryInteractor
+import com.lans.sleep_care.domain.interactor.therapy.GetCompletedTherapyInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetOrderTherapyStatusInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetTherapyScheduleInteractor
 import com.lans.sleep_care.domain.interactor.therapy.SendChatInteractor
@@ -82,6 +83,7 @@ import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetActiveTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetChatHistoryUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetCompletedTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetOrderTherapyStatusUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
 import com.lans.sleep_care.domain.usecase.therapy.SendChatUseCase
@@ -248,10 +250,18 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetTherapyUseCase(
+    fun provideGetActiveTherapyUseCase(
         repository: ITherapyRepository
     ): GetActiveTherapyUseCase {
         return GetActiveTherapyInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCompletedTherapyUseCase(
+        repository: ITherapyRepository
+    ): GetCompletedTherapyUseCase {
+        return GetCompletedTherapyInteractor(repository)
     }
 
     @Provides

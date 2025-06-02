@@ -1,4 +1,4 @@
-package com.lans.sleep_care.presentation.screen.history
+package com.lans.sleep_care.presentation.screen.history_detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,16 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,33 +31,34 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
-import com.lans.sleep_care.presentation.component.items.HistoryItem
+import com.lans.sleep_care.presentation.component.misc.HistoryTherapyDetail
+import com.lans.sleep_care.presentation.component.misc.HistoryTherapySession
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
-import com.lans.sleep_care.utils.parseToDate
 
 @Composable
-fun HistoryScreen(
-    viewModel: HistoryViewModel = hiltViewModel(),
-    navigateToHome: () -> Unit,
-    navigateToHistoryDetail: (
-        therapyId: String,
-        psychologistId: String,
-        period: String,
-        totalPrice: String
-    ) -> Unit
+fun HistoryDetailScreen(
+    viewModel: HistoryDetailViewModel = hiltViewModel(),
+    therapyId: Int,
+    psychologistId: Int,
+    period: String,
+    totalPrice: String,
+    navigateToHistory: () -> Unit,
+    navigateToLogbook: () -> Unit,
+    navigateToIdentifyValue: () -> Unit
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadTherapies()
+        viewModel.loadPsychologist(psychologistId)
+        viewModel.loadTherapySchedules(therapyId)
     }
 
-    LaunchedEffect(key1 = state.therapies, key2 = state.error) {
+    LaunchedEffect(key1 = state.error) {
         val error = state.error
 
         if (error.isNotBlank()) {
@@ -83,11 +82,11 @@ fun HistoryScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(Dimens.dp24)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(Dimens.dp24),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -99,14 +98,14 @@ fun HistoryScreen(
                 icon = Icons.AutoMirrored.Default.ArrowBack,
                 shape = Rounded,
                 onClick = {
-                    navigateToHome.invoke()
+                    navigateToHistory.invoke()
                 }
             )
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                text = stringResource(R.string.history),
+                text = stringResource(R.string.history_detail),
                 textAlign = TextAlign.Center,
                 fontSize = Dimens.sp24,
                 fontWeight = FontWeight.Bold
@@ -116,11 +115,6 @@ fun HistoryScreen(
                     .size(Dimens.dp50)
             )
         }
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(Dimens.dp16)
-        )
         if (state.isLoading) {
             Box(
                 modifier = Modifier
@@ -135,32 +129,31 @@ fun HistoryScreen(
                 )
             }
         } else {
-            LazyColumn(
+            HorizontalDivider(thickness = Dimens.dp0p5)
+            HistoryTherapyDetail(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
-            ) {
-                items(state.therapies) { therapy ->
-                    val period =
-                        "${parseToDate(therapy.startDate)} - ${parseToDate(therapy.endDate)}"
-                    HistoryItem(
-                        name = state.psychologists.find {
-                            it.id == therapy.doctorId
-                        }?.user?.name ?: "Doctor",
-                        price = therapy.applicationFee + therapy.doctorFee,
-                        date = period,
-                        onClick = {
-                            navigateToHistoryDetail.invoke(
-                                therapy.id.toString(),
-                                therapy.doctorId.toString(),
-                                period,
-                                (therapy.applicationFee + therapy.doctorFee).toString()
-                            )
-                        }
-                    )
+                    .padding(horizontal = Dimens.dp24),
+                period = period,
+                totalPrice = totalPrice,
+                psychologist = state.psychologist
+            )
+            HorizontalDivider(thickness = Dimens.dp0p5)
+            HistoryTherapySession(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = Dimens.dp24,
+                        vertical = Dimens.dp16
+                    ),
+                schedules = state.schedules,
+                onIdentifyValueClick = {
+                    navigateToIdentifyValue.invoke()
+                },
+                onItemClick = {
+                    navigateToLogbook.invoke()
                 }
-            }
+            )
         }
     }
 }

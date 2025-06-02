@@ -51,7 +51,7 @@ import com.lans.sleep_care.presentation.theme.White
 fun EmotionRecordScreen(
     viewModel: EmotionRecordViewModel = hiltViewModel(),
     therapyId: String,
-    navigateToMyTherapy: () -> Unit
+    navigateToLogbook: () -> Unit
 ) {
     val context = LocalContext.current
     val state by viewModel.state
@@ -154,7 +154,7 @@ fun EmotionRecordScreen(
                     icon = Icons.AutoMirrored.Default.ArrowBack,
                     shape = Rounded,
                     onClick = {
-                        navigateToMyTherapy.invoke()
+                        navigateToLogbook.invoke()
                     }
                 )
                 Text(

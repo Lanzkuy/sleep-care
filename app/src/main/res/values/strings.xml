@@ -46,6 +46,9 @@
     <string name="therapy_schedule">Jadwal Terapi</string>
     <string name="psychologist_note">Catatan Psikolog</string>
     <string name="history">Riwayat</string>
+    <string name="history_detail">Detail Riwayat</string>
+    <string name="session_therapy_history">Riwayat Sesi Terapi</string>
+    <string name="therapy_period">Periode Terapi</string>
     <string name="message">Pesan</string>
     <string name="problem">Permasalahan</string>
     <string name="no_therapy_session">Belum ada sesi terapi yang dijadwalkan.</string>
@@ -120,9 +123,12 @@
     <string name="date_select">Pilih Tanggal</string>
     <string name="time_select">Pilih Waktu</string>
     <string name="detail">Detail</string>
+    <string name="view_detail">Lihat Detail</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="update">Perbaharui</string>
+    <string name="view_identify_value">Lihat Nilai Pribadi</string>
+    <string name="total_price">Total Harga</string>
     <string name="alert_default_title">Alert</string>
     <string name="alert_warning_title">Perhatian</string>
     <string name="alert_error_title">Terjadi Kesalahan</string>

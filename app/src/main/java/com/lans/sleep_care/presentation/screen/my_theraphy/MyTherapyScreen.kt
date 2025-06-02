@@ -70,17 +70,17 @@ fun MyTherapyScreen(
     val buttonItems = listOf(
         Triple(R.drawable.ic_message, R.string.chat_psychologist) {
             navigateToChat.invoke(
-                state.therapy.id.toString(),
+                state.therapy?.id.toString(),
                 state.psychologist.user.name
             )
         },
         Triple(R.drawable.ic_book, R.string.therapy_note) {
-            navigateToLogbook.invoke(state.therapy.id.toString())
+            navigateToLogbook.invoke(state.therapy?.id.toString())
 
         }
     )
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
-    var showNoteDialog by remember { mutableStateOf(false) }
+    var showNoteDialog by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
         viewModel.loadTherapy()
@@ -105,11 +105,11 @@ fun MyTherapyScreen(
         )
     }
 
-    if (showNoteDialog) {
+    if (showNoteDialog.first) {
         NoteDialog(
-            note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            note = showNoteDialog.second,
             onClose = {
-                showNoteDialog = false
+                showNoteDialog = showNoteDialog.copy(first = false)
             }
         )
     }
@@ -156,7 +156,7 @@ fun MyTherapyScreen(
                     .size(Dimens.dp50)
             )
         }
-        if (isTherapyInProgress) {
+        if (isTherapyInProgress || state.therapy != null) {
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -245,8 +245,7 @@ fun MyTherapyScreen(
                     LazyColumn(
                         modifier = Modifier
                             .padding(
-                                start = Dimens.dp16,
-                                end = Dimens.dp16
+                                horizontal = Dimens.dp16
                             )
                     ) {
                         items(state.schedules) { schedule ->
@@ -256,7 +255,10 @@ fun MyTherapyScreen(
                                 link = schedule.link.ifEmpty { "Belum ditentukan" },
                                 note = schedule.note,
                                 onNoteClick = {
-                                    showNoteDialog = true
+                                    showNoteDialog = showNoteDialog.copy(
+                                        first = false,
+                                        second = schedule.note
+                                    )
                                 }
                             )
                         }

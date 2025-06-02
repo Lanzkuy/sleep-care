@@ -5,22 +5,23 @@ import com.lans.sleep_care.data.source.network.SafeApiCall
 import com.lans.sleep_care.data.source.network.dto.response.therapy.toDomain
 import com.lans.sleep_care.domain.model.therapy.Therapy
 import com.lans.sleep_care.domain.repository.ITherapyRepository
-import com.lans.sleep_care.domain.usecase.therapy.GetActiveTherapyUseCase
+import com.lans.sleep_care.domain.usecase.therapy.GetCompletedTherapyUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class GetActiveTherapyInteractor @Inject constructor(
+class GetCompletedTherapyInteractor @Inject constructor(
     private val repository: ITherapyRepository
-) : GetActiveTherapyUseCase, SafeApiCall {
-    override suspend fun execute(): Flow<Resource<Therapy?>> {
+) : GetCompletedTherapyUseCase, SafeApiCall {
+    override suspend fun execute(): Flow<Resource<List<Therapy>>> {
         return flow {
             emit(Resource.Loading)
             emit(
                 safeCall {
-                    repository.fetchActiveTherapy().data?.toDomain()
+                    val response = repository.fetchCompletedTherapy().data
+                    response?.therapies?.map { it.toDomain() } ?: throw Exception()
                 }
             )
         }.flowOn(Dispatchers.IO)

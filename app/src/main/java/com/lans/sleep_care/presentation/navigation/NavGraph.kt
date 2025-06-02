@@ -19,6 +19,7 @@ import com.lans.sleep_care.presentation.screen.committed_action.CommitedActionSc
 import com.lans.sleep_care.presentation.screen.emotion_record.EmotionRecordScreen
 import com.lans.sleep_care.presentation.screen.forgot_password.ForgotPasswordScreen
 import com.lans.sleep_care.presentation.screen.history.HistoryScreen
+import com.lans.sleep_care.presentation.screen.history_detail.HistoryDetailScreen
 import com.lans.sleep_care.presentation.screen.home.HomeScreen
 import com.lans.sleep_care.presentation.screen.identify_value.IdentifyValueScreen
 import com.lans.sleep_care.presentation.screen.logbook.LogbookScreen
@@ -257,7 +258,7 @@ fun NavGraph(
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             LogbookScreen(
                 therapyId = therapyId,
-                navigateToMyTherapy = {
+                navigateBack = {
                     navController.navigateUp()
                 },
                 navigateToSleepDiary = {
@@ -300,7 +301,7 @@ fun NavGraph(
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             IdentifyValueScreen(
                 therapyId = therapyId,
-                navigateToMyTherapy = {
+                navigateBack = {
                     navController.navigateUp()
                 }
             )
@@ -309,7 +310,7 @@ fun NavGraph(
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             ThoughtRecordScreen(
                 therapyId = therapyId,
-                navigateToMyTherapy = {
+                navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
@@ -318,7 +319,7 @@ fun NavGraph(
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             EmotionRecordScreen(
                 therapyId = therapyId,
-                navigateToMyTherapy = {
+                navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
@@ -327,7 +328,7 @@ fun NavGraph(
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             CommitedActionScreen(
                 therapyId = therapyId,
-                navigateToMyTherapy = {
+                navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
@@ -347,7 +348,39 @@ fun NavGraph(
             HistoryScreen(
                 navigateToHome = {
                     navController.navigateUp()
+                },
+                navigateToHistoryDetail = { therapyId, psychologistId, period, totalPrice ->
+                    navController.navigate(
+                        route = Route.HistoryDetailScreen.route + "/$therapyId/$psychologistId/$period/$totalPrice"
+                    ) {
+                        popUpTo(route = Route.HistoryScreen.route)
+                    }
                 }
+            )
+        }
+        composable(route = Route.HistoryDetailScreen.route + "/{therapyId}/{psychologistId}/{period}/{totalPrice}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val psychologistId = it.arguments?.getString("psychologistId") ?: ""
+            val period = it.arguments?.getString("period") ?: ""
+            val totalPrice = it.arguments?.getString("totalPrice") ?: ""
+            HistoryDetailScreen(
+                therapyId = therapyId.toInt(),
+                psychologistId = psychologistId.toInt(),
+                period = period,
+                totalPrice = totalPrice,
+                navigateToHistory = {
+                    navController.navigateUp()
+                },
+                navigateToLogbook = {
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId") {
+                        popUpTo(route = Route.HistoryDetailScreen.route)
+                    }
+                },
+                navigateToIdentifyValue = {
+                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId") {
+                        popUpTo(route = Route.HistoryDetailScreen.route)
+                    }
+                },
             )
         }
     }

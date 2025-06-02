@@ -56,7 +56,6 @@ fun PsychologistItem(
             AsyncImage(
                 modifier = Modifier
                     .size(Dimens.dp48)
-                    .padding()
                     .clip(CircleShape),
                 model = image,
                 placeholder = painterResource(R.drawable.img_user_placeholder),
