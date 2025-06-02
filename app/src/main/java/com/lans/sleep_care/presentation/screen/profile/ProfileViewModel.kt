@@ -41,12 +41,6 @@ class ProfileViewModel @Inject constructor(
                 }
             }
 
-            is ProfileUIEvent.GenderSelected -> {
-                _state.value = _state.value.copy(
-                    gender = event.gender
-                )
-            }
-
             is ProfileUIEvent.ToggleProblem -> {
                 val updatedProblems = _state.value.problems.toMutableList()
                 if (updatedProblems.contains(event.problem)) {
@@ -74,8 +68,7 @@ class ProfileViewModel @Inject constructor(
         _state.value = _state.value.copy(
             id = id,
             name = _state.value.name.copy(value = name),
-            age = _state.value.age.copy(value = age),
-            gender = gender.capitalize()
+            age = _state.value.age.copy(value = age)
         )
         _state.value.problems.addAll(problems.map { it.capitalize() })
         _state.value.availableProblems.addAll(availableProblems)
@@ -118,7 +111,6 @@ class ProfileViewModel @Inject constructor(
                     id = stateValue.id,
                     name = stateValue.name.value,
                     age = stateValue.age.value.toInt(),
-                    gender = stateValue.gender.lowercase(),
                     problems = stateValue.problems.map { it.lowercase() }
                 )
             ).collect { response ->

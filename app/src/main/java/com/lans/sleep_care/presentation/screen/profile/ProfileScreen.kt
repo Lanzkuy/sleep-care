@@ -170,19 +170,6 @@ fun ProfileScreen(
                 viewModel.onEvent(ProfileUIEvent.AgeChanged(it))
             }
         )
-        GenericDropDown(
-            modifier = Modifier
-                .fillMaxWidth(),
-            label = stringResource(R.string.gender),
-            selected = state.gender,
-            onSelect = {
-                viewModel.onEvent(ProfileUIEvent.GenderSelected(it))
-            },
-            options = listOf(
-                stringResource(R.string.man),
-                stringResource(R.string.woman)
-            )
-        )
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()

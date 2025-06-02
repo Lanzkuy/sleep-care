@@ -6,7 +6,6 @@ data class ProfileUIState(
     val name: InputWrapper = InputWrapper(),
     val age: InputWrapper = InputWrapper(),
     val id: Int = 0,
-    val gender: String = "Pria",
     val problems: MutableList<String> = mutableListOf(),
     val availableProblems: MutableList<String> = mutableListOf(),
     val isLoading: Boolean = false,
