@@ -28,6 +28,7 @@ import com.lans.sleep_care.domain.interactor.payment.UpdatePaymentInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetAllPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.psychologist.GetPsychologistInteractor
 import com.lans.sleep_care.domain.interactor.therapy.CreateOrderTherapyInteractor
+import com.lans.sleep_care.domain.interactor.therapy.CreateRatingInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetActiveTherapyInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetChatHistoryInteractor
 import com.lans.sleep_care.domain.interactor.therapy.GetCompletedTherapyInteractor
@@ -81,6 +82,7 @@ import com.lans.sleep_care.domain.usecase.payment.UpdatePaymentUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetAllPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.CreateOrderTherapyUseCase
+import com.lans.sleep_care.domain.usecase.therapy.CreateRatingUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetActiveTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetChatHistoryUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetCompletedTherapyUseCase
@@ -310,6 +312,14 @@ object UseCaseModule {
         repository: ITherapyRepository
     ): UpdateChatReadStatusUseCase {
         return UpdateChatReadStatusInteractor(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateRatingUseCase(
+        repository: ITherapyRepository
+    ): CreateRatingUseCase {
+        return CreateRatingInteractor(repository)
     }
 
     @Provides

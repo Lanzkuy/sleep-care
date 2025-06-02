@@ -131,6 +131,7 @@
     <string name="copy">Salin</string>
     <string name="text_copied">Teks disalin</string>
     <string name="total_price">Total Harga</string>
+    <string name="your_comment">Komentar Anda</string>
     <string name="alert_default_title">Alert</string>
     <string name="alert_warning_title">Perhatian</string>
     <string name="alert_error_title">Terjadi Kesalahan</string>

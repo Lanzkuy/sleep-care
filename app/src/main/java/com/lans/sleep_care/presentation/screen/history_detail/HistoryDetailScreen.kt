@@ -52,10 +52,10 @@ fun HistoryDetailScreen(
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
+    var showPostRatingConfirmation by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadPsychologist(psychologistId)
-        viewModel.loadTherapySchedules(therapyId)
+        viewModel.loadCompletedTherapy(therapyId)
     }
 
     LaunchedEffect(key1 = state.error) {
@@ -73,6 +73,21 @@ fun HistoryDetailScreen(
             message = showAlert.second,
             onDismiss = {
                 showAlert = showAlert.copy(first = false)
+            }
+        )
+    }
+
+    if (showPostRatingConfirmation.first) {
+        ValidationAlert(
+            title = stringResource(R.string.alert_warning_title),
+            message = showPostRatingConfirmation.second,
+            confirmButtonText = stringResource(R.string.yes),
+            onDismiss = {
+                showPostRatingConfirmation = showAlert.copy(first = false)
+            },
+            onConfirm = {
+                viewModel.onEvent(HistoryDetailUIEvent.PostCommentButtonClicked)
+                showPostRatingConfirmation = showAlert.copy(first = false)
             }
         )
     }
@@ -129,31 +144,40 @@ fun HistoryDetailScreen(
                 )
             }
         } else {
-            HorizontalDivider(thickness = Dimens.dp0p5)
-            HistoryTherapyDetail(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = Dimens.dp24),
-                period = period,
-                totalPrice = totalPrice,
-                psychologist = state.psychologist
-            )
-            HorizontalDivider(thickness = Dimens.dp0p5)
-            HistoryTherapySession(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = Dimens.dp24,
-                        vertical = Dimens.dp16
-                    ),
-                schedules = state.schedules,
-                onIdentifyValueClick = {
-                    navigateToIdentifyValue.invoke(true)
-                },
-                onItemClick = { week ->
-                    navigateToLogbook.invoke(week.toString(), true)
-                }
-            )
+            if (state.therapy != null) {
+                HorizontalDivider(thickness = Dimens.dp0p5)
+                HistoryTherapyDetail(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = Dimens.dp24),
+                    period = period,
+                    totalPrice = totalPrice,
+                    therapy = state.therapy!!,
+                    psychologist = state.psychologist,
+                    onPostClick = { rating, comment ->
+                        state.rating = rating
+                        state.comment = comment
+                        showPostRatingConfirmation =
+                            Pair(true, "Lanjutkan untuk memberikan rating?")
+                    }
+                )
+                HorizontalDivider(thickness = Dimens.dp0p5)
+                HistoryTherapySession(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = Dimens.dp24,
+                            vertical = Dimens.dp16
+                        ),
+                    schedules = state.schedules,
+                    onIdentifyValueClick = {
+                        navigateToIdentifyValue.invoke(true)
+                    },
+                    onItemClick = { week ->
+                        navigateToLogbook.invoke(week.toString(), true)
+                    }
+                )
+            }
         }
     }
 }

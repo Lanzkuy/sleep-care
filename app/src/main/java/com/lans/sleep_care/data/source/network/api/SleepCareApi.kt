@@ -12,6 +12,7 @@ import com.lans.sleep_care.data.source.network.dto.request.payment.CreatePayment
 import com.lans.sleep_care.data.source.network.dto.request.payment.UpdatePaymentRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.ChatRequest
 import com.lans.sleep_care.data.source.network.dto.request.therapy.OrderTherapyRequest
+import com.lans.sleep_care.data.source.network.dto.request.therapy.RatingTherapyRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.PasswordChangeRequest
 import com.lans.sleep_care.data.source.network.dto.request.user.ProfileUpdateRequest
 import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
@@ -28,6 +29,7 @@ import com.lans.sleep_care.data.source.network.dto.response.payment.UpdatePaymen
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistListResponse
 import com.lans.sleep_care.data.source.network.dto.response.psychologist.PsychologistResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.OrderTherapyResponse
+import com.lans.sleep_care.data.source.network.dto.response.therapy.RatingTherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyListResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyResponse
 import com.lans.sleep_care.data.source.network.dto.response.therapy.TherapyScheduleListResponse
@@ -116,6 +118,11 @@ interface SleepCareApi {
     suspend fun updateChat(
         @Path("id") id: Int
     ): ApiResponse<Any>
+
+    @POST("therapy/rating")
+    suspend fun createRating(
+        @Body requestBody: RatingTherapyRequest
+    ): ApiResponse<RatingTherapyResponse>
 
     @GET("therapy/records/sleep-diaries")
     suspend fun getSleepDiaries(
