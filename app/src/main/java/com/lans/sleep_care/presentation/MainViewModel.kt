@@ -27,15 +27,16 @@ class MainViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         _isAuthenticated.value = response.data
+                        splashState = false
                     }
 
                     is Resource.Error -> {
                         _isAuthenticated.value = false
+                        splashState = false
                     }
 
                     else -> Unit
                 }
-                splashState = false
             }
         }
     }

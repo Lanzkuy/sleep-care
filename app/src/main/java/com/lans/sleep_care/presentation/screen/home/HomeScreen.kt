@@ -1,5 +1,6 @@
 package com.lans.sleep_care.presentation.screen.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
@@ -146,12 +146,10 @@ fun HomeScreen(
                             .clickable { showOverflowMenu = true },
                         contentAlignment = Alignment.Center
                     ) {
-                        AsyncImage(
+                        Image(
                             modifier = Modifier
                                 .fillMaxSize(),
-                            model = null,
-                            placeholder = painterResource(R.drawable.img_user_placeholder),
-                            error = painterResource(R.drawable.img_user_placeholder),
+                            painter = painterResource(R.drawable.logo_sleep_care_no_text),
                             contentDescription = stringResource(R.string.image),
                             contentScale = ContentScale.Crop,
                         )
@@ -197,7 +195,7 @@ fun HomeScreen(
                 Text(
                     text = state.user.name
                         .split(" ")[0]
-                            .ifEmpty { stringResource(R.string.user) },
+                        .ifEmpty { stringResource(R.string.user) },
                     fontSize = Dimens.sp24,
                     fontWeight = FontWeight.Bold,
                     lineHeight = Dimens.sp28
