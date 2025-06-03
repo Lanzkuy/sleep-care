@@ -48,7 +48,6 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
-import com.lans.sleep_care.utils.toList
 
 @Composable
 fun ThoughtRecordDialog(
@@ -93,7 +92,8 @@ fun ThoughtRecordDialog(
             time = answers[1].answer.answer
             situation = answers[2].answer.answer
             thoughts.clear()
-            thoughts.addAll(answers[3].answer.answer.toList())
+            val cleaned = answers[3].answer.answer.removePrefix("[").removeSuffix("]")
+            thoughts.addAll(cleaned.split(", ").map { it.trim() })
         }
     }
 

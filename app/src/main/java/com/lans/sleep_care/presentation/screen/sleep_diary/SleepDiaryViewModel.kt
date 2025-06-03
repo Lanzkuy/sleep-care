@@ -148,7 +148,9 @@ class SleepDiaryViewModel @Inject constructor(
                         } else diary
                     }
                     _state.value = _state.value.copy(
-                        questions = response.data.questions,
+                        questions = response.data.questions.takeIf {
+                            _state.value.questions.isEmpty()
+                        } ?: _state.value.questions,
                         sleepDiaries = updatedDiaries
                     )
                 }

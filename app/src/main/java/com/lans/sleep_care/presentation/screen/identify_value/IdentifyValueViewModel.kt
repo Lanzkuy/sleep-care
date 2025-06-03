@@ -117,7 +117,9 @@ class IdentifyValueViewModel @Inject constructor(
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
                             recordId = response.data.id,
-                            questions = response.data.questions,
+                            questions = response.data.questions.takeIf {
+                                _state.value.questions.isEmpty()
+                            } ?: _state.value.questions,
                             answers = response.data.answers,
                             isLoading = false
                         )

@@ -37,7 +37,6 @@ import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
 import com.lans.sleep_care.presentation.theme.White
-import com.lans.sleep_care.utils.toList
 
 @Composable
 fun ThoughtRecordItem(
@@ -47,7 +46,8 @@ fun ThoughtRecordItem(
     val date = answers[0].answer.answer
     val time = answers[1].answer.answer
     val situation = answers[2].answer.answer
-    val thoughts = answers[3].answer.answer.toList()
+    val cleaned = answers[3].answer.answer.removePrefix("[").removeSuffix("]")
+    val thoughts = cleaned.split(", ").map { it.trim() }
 
     OutlinedCard(
         modifier = Modifier
