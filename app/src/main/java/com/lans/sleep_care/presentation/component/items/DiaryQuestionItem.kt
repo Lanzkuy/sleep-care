@@ -149,7 +149,7 @@ fun DiaryQuestionItem(
                         enabled = false,
                         readOnly = true,
                         colors = TextFieldDefaults.colors(
-                            disabledIndicatorColor = Gray,
+                            disabledIndicatorColor = Black,
                             disabledContainerColor = Color.Transparent,
                             disabledLabelColor = TextFieldDefaults.colors().unfocusedLabelColor,
                             disabledTextColor = Black

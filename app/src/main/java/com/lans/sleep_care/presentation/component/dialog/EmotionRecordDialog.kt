@@ -37,6 +37,7 @@ import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
+import com.lans.sleep_care.presentation.theme.White
 import kotlin.math.roundToInt
 
 @Composable
@@ -123,8 +124,8 @@ fun EmotionRecordDialog(
                         enabled = false,
                         readOnly = true,
                         colors = TextFieldDefaults.colors(
-                            disabledIndicatorColor = Gray,
-                            disabledContainerColor = Color.Transparent,
+                            disabledIndicatorColor = Black,
+                            disabledContainerColor = White,
                             disabledLabelColor = TextFieldDefaults.colors().unfocusedLabelColor,
                             disabledTextColor = Black
                         ),
@@ -145,8 +146,8 @@ fun EmotionRecordDialog(
                         enabled = false,
                         readOnly = true,
                         colors = TextFieldDefaults.colors(
-                            disabledIndicatorColor = Gray,
-                            disabledContainerColor = Color.Transparent,
+                            disabledIndicatorColor = Black,
+                            disabledContainerColor = White,
                             disabledLabelColor = TextFieldDefaults.colors().unfocusedLabelColor,
                             disabledTextColor = Black
                         ),
@@ -157,12 +158,20 @@ fun EmotionRecordDialog(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.what_happened)) },
                     value = situation,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { situation = it }
                 )
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.what_comes_to_mind)) },
                     value = thought,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { thought = it }
                 )
                 Spacer(
@@ -201,6 +210,10 @@ fun EmotionRecordDialog(
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.what_do_you_do)) },
                     value = manage,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { manage = it }
                 )
                 Text(

@@ -19,10 +19,12 @@ private val darkColor = darkColorScheme(
     primary = Primary,
     onPrimary = White,
     primaryContainer = PrimaryVariant,
+    onPrimaryContainer = White,
 
     secondary = Secondary,
     onSecondary = Black,
     secondaryContainer = SecondaryVariant,
+    onSecondaryContainer = Black,
 
     background = SecondaryVariant,
     onBackground = Black,
@@ -30,10 +32,13 @@ private val darkColor = darkColorScheme(
     surface = White,
     onSurface = Black,
 
+    surfaceVariant = White,
+    onSurfaceVariant = Black,
+
     error = Danger,
     onError = White,
 
-    outline = Gray
+    outline = DarkGray
 )
 
 private val lightColor = lightColorScheme(
@@ -54,7 +59,7 @@ private val lightColor = lightColorScheme(
     error = Danger,
     onError = White,
 
-    outline = Gray
+    outline = DarkGray
 )
 
 @Composable
@@ -76,12 +81,12 @@ fun SleepCareTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = if(darkTheme) {
+            window.statusBarColor = if (darkTheme) {
                 Black.toArgb()
             } else {
                 White.toArgb()
             }
-            window.navigationBarColor = if(darkTheme) {
+            window.navigationBarColor = if (darkTheme) {
                 Black.toArgb()
             } else {
                 White.toArgb()

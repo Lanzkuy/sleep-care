@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.chat_room
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -94,15 +93,15 @@ fun ChatRoomScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(
-                start = Dimens.dp24,
-                top = Dimens.dp24,
-                end = Dimens.dp24
-            )
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(
+                    start = Dimens.dp24,
+                    top = Dimens.dp24,
+                    end = Dimens.dp24
+                ),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -151,7 +150,10 @@ fun ChatRoomScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(vertical = Dimens.dp16),
+                    .padding(
+                        horizontal = Dimens.dp24,
+                        vertical = Dimens.dp16
+                    ),
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp4)
             ) {
@@ -168,9 +170,12 @@ fun ChatRoomScreen(
         }
         Row(
             modifier = Modifier
-                .background(White)
                 .fillMaxWidth()
-                .padding(top = Dimens.dp8),
+                .padding(
+                    start = Dimens.dp8,
+                    top = Dimens.dp8,
+                    end = Dimens.dp8
+                ),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp8),
             verticalAlignment = Alignment.Top
         ) {

@@ -1,6 +1,5 @@
 package com.lans.sleep_care.presentation.screen.chatbot
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -90,15 +88,15 @@ fun ChatbotScreen(
             .fillMaxSize()
             .statusBarsPadding()
             .navigationBarsPadding()
-            .padding(
-                start = Dimens.dp24,
-                top = Dimens.dp24,
-                end = Dimens.dp24
-            )
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(
+                    start = Dimens.dp24,
+                    top = Dimens.dp24,
+                    end = Dimens.dp24
+                ),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp12),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -130,8 +128,8 @@ fun ChatbotScreen(
         if (state.isHistoryLoading) {
             Box(
                 modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
+                    .fillMaxWidth()
+                    .weight(1f)
             ) {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -145,7 +143,10 @@ fun ChatbotScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(vertical = Dimens.dp16),
+                    .padding(
+                        horizontal = Dimens.dp24,
+                        vertical = Dimens.dp16
+                    ),
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp4)
             ) {
@@ -165,9 +166,12 @@ fun ChatbotScreen(
         }
         Row(
             modifier = Modifier
-                .background(White)
                 .fillMaxWidth()
-                .padding(top = Dimens.dp8),
+                .padding(
+                    start = Dimens.dp8,
+                    top = Dimens.dp8,
+                    end = Dimens.dp8
+                ),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp8),
             verticalAlignment = Alignment.Top
         ) {

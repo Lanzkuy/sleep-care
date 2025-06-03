@@ -16,11 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
-import com.lans.sleep_care.domain.model.validation.InputWrapper
 import com.lans.sleep_care.R
+import com.lans.sleep_care.domain.model.validation.InputWrapper
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.White
 
@@ -33,6 +34,7 @@ fun SearchField(
     textStyle: TextStyle = LocalTextStyle.current,
     singleLine: Boolean = true,
     maxLines: Int = Int.MAX_VALUE,
+    shape: Shape = TextFieldDefaults.shape,
     keyboardOptions: KeyboardOptions = remember { KeyboardOptions.Default },
     keyboardActions: KeyboardActions = KeyboardActions(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -68,6 +70,7 @@ fun SearchField(
                         contentDescription = stringResource(R.string.search_icon)
                     )
                 },
+                shape = shape,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = White,
                     unfocusedContainerColor = White,

@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +26,7 @@ import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.form.GenericDropDown
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.RoundedLarge
+import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun CommittedActionDialog(
@@ -86,6 +88,10 @@ fun CommittedActionDialog(
                         .fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.goal)) },
                     value = goal,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { goal = it }
                 )
                 OutlinedTextField(
@@ -93,6 +99,10 @@ fun CommittedActionDialog(
                         .fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.plan)) },
                     value = plan,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { plan = it }
                 )
                 OutlinedTextField(
@@ -100,6 +110,10 @@ fun CommittedActionDialog(
                         .fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.time)) },
                     value = time,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { time = it }
                 )
                 GenericDropDown(
@@ -115,6 +129,10 @@ fun CommittedActionDialog(
                         .fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.obstacle)) },
                     value = obstacle,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { obstacle = it }
                 )
                 OutlinedTextField(
@@ -122,6 +140,10 @@ fun CommittedActionDialog(
                         .fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.how_to_solve)) },
                     value = solution,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { solution = it }
                 )
             }

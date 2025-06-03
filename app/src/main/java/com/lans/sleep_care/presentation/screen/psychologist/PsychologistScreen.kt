@@ -145,6 +145,7 @@ fun PsychologistScreen(
                 ),
             input = state.search,
             placeholder = stringResource(R.string.search_psychologist),
+            shape = Rounded,
             onValueChange = {
                 viewModel.onEvent(PsychologistUIEvent.SearchChanged(it))
             }

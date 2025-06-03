@@ -218,11 +218,12 @@ fun HomeScreen(
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(Dimens.dp8)
+                .height(Dimens.dp16)
         )
         LazyVerticalGrid(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .weight(1f),
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(Dimens.dp12),
             horizontalArrangement = Arrangement.spacedBy(Dimens.dp16),

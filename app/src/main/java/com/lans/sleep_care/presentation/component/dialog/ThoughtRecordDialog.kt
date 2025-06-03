@@ -48,6 +48,7 @@ import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
+import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun ThoughtRecordDialog(
@@ -129,8 +130,8 @@ fun ThoughtRecordDialog(
                         enabled = false,
                         readOnly = true,
                         colors = TextFieldDefaults.colors(
-                            disabledIndicatorColor = Gray,
-                            disabledContainerColor = Color.Transparent,
+                            disabledIndicatorColor = Black,
+                            disabledContainerColor = White,
                             disabledLabelColor = TextFieldDefaults.colors().unfocusedLabelColor,
                             disabledTextColor = Black
                         ),
@@ -156,8 +157,8 @@ fun ThoughtRecordDialog(
                         enabled = false,
                         readOnly = true,
                         colors = TextFieldDefaults.colors(
-                            disabledIndicatorColor = Gray,
-                            disabledContainerColor = Color.Transparent,
+                            disabledIndicatorColor = Black,
+                            disabledContainerColor = White,
                             disabledLabelColor = TextFieldDefaults.colors().unfocusedLabelColor,
                             disabledTextColor = Black
                         ),
@@ -174,6 +175,10 @@ fun ThoughtRecordDialog(
                         )
                     },
                     value = situation,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = White,
+                        unfocusedContainerColor = White
+                    ),
                     onValueChange = { situation = it }
                 )
                 Row(
@@ -184,6 +189,10 @@ fun ThoughtRecordDialog(
                         modifier = Modifier.weight(1f),
                         label = { Text(stringResource(R.string.thought)) },
                         value = currentThought,
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = White,
+                            unfocusedContainerColor = White
+                        ),
                         onValueChange = { currentThought = it }
                     )
                     IconButton(
