@@ -305,7 +305,8 @@ fun MyTherapyScreen(
                             )
 
                             ScheduleItem(
-                                date = schedule.date.ifEmpty { "Belum ditentukan" },
+                                date = schedule.date,
+                                time = schedule.time,
                                 topic = schedule.title.ifEmpty { "Belum ditentukan" },
                                 link = schedule.link.ifEmpty { "Belum ditentukan" },
                                 note = schedule.note,

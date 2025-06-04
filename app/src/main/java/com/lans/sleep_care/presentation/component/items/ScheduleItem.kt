@@ -3,7 +3,6 @@ package com.lans.sleep_care.presentation.component.items
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,10 +38,12 @@ import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
 import com.lans.sleep_care.presentation.theme.Success
+import com.lans.sleep_care.utils.formatToTime
 
 @Composable
 fun ScheduleItem(
     date: String,
+    time: String,
     topic: String,
     link: String,
     note: String,
@@ -53,6 +54,12 @@ fun ScheduleItem(
         Danger
     } else {
         Success
+    }
+
+    val dateTime = if (date.isEmpty()) {
+        "Belum ditentukan"
+    } else {
+        "$date • ${formatToTime(time)}"
     }
 
     OutlinedCard(
@@ -80,7 +87,7 @@ fun ScheduleItem(
                 modifier = Modifier
                     .height(Dimens.dp8)
             )
-            ScheduleContent(icon = painterResource(R.drawable.ic_time), value = date)
+            ScheduleContent(icon = painterResource(R.drawable.ic_time), value = dateTime)
             ScheduleContent(icon = painterResource(R.drawable.ic_videocam), value = topic)
             ScheduleContent(
                 icon = painterResource(R.drawable.ic_link),
