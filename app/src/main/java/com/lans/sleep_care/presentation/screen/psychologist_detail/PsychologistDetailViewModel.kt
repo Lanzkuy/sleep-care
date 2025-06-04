@@ -41,8 +41,9 @@ class PsychologistDetailViewModel @Inject constructor(
                 } else {
                     if (order.therapy.doctorId != 0 && order.therapy.doctorId != psychologist.id) {
                         cancelPayment()
+                    } else{
+                        createOrderTherapy()
                     }
-                    createOrderTherapy()
                 }
             }
         }
@@ -198,6 +199,12 @@ class PsychologistDetailViewModel @Inject constructor(
                 orderId = _state.value.order.id
             ).collect { response ->
                 when (response) {
+                    is Resource.Success -> {
+                        if(response.data) {
+                            createOrderTherapy()
+                        }
+                    }
+
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
                             error = response.message,
@@ -210,8 +217,6 @@ class PsychologistDetailViewModel @Inject constructor(
                             isButtonLoading = true
                         )
                     }
-
-                    else -> Unit
                 }
             }
         }
