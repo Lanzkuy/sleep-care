@@ -181,7 +181,7 @@ fun DiaryQuestionItem(
             }
         }
 
-        if (subQuestions.isNotEmpty()) {
+        if (subQuestions.isNotEmpty() && text == "1") {
             Column(modifier = Modifier.padding(start = Dimens.dp16)) {
                 subQuestions.zip(subAnswers).forEach { (subQuestion, subAnswer) ->
                     DiaryQuestionItem(

@@ -17,6 +17,7 @@ import com.lans.sleep_care.presentation.theme.RoundedLarge
 @Composable
 fun StatusChip(
     modifier: Modifier,
+    textModifier: Modifier = Modifier,
     text: String,
     textAlign: TextAlign = TextAlign.Unspecified,
     color: Color
@@ -33,8 +34,7 @@ fun StatusChip(
             )
     ) {
         Text(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = textModifier,
             text = text,
             textAlign = textAlign,
             color = color,

@@ -62,6 +62,8 @@ fun HistoryTherapySessionItem(
             StatusChip(
                 modifier = Modifier
                     .fillMaxWidth(),
+                textModifier = Modifier
+                    .fillMaxWidth(),
                 text = if (schedule.note.isEmpty()) {
                     stringResource(R.string.not_done)
                 } else {

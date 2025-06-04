@@ -51,7 +51,8 @@ class HistoryDetailViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _state.value = _state.value.copy(
-                            error = response.message,
+                            error = response.message.takeIf { !it.contains("Terapi tidak ditemukan.") }
+                                ?: "",
                             isLoading = false
                         )
                     }

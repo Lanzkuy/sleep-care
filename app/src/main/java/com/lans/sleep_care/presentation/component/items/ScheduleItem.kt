@@ -75,6 +75,8 @@ fun ScheduleItem(
             StatusChip(
                 modifier = Modifier
                     .fillMaxWidth(),
+                textModifier = Modifier
+                    .fillMaxWidth(),
                 text = if (note.isEmpty()) {
                     stringResource(R.string.not_done)
                 } else {
