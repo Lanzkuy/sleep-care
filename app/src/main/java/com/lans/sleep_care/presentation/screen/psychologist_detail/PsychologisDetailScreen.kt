@@ -58,6 +58,7 @@ import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Warning
 import com.lans.sleep_care.presentation.theme.White
+import com.lans.sleep_care.utils.formatToRupiah
 
 @Composable
 fun PsychologistDetailScreen(
@@ -281,7 +282,31 @@ fun PsychologistDetailScreen(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(Dimens.dp20)
+                            .height(Dimens.dp12)
+                    )
+                    OutlinedCard(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        border = BorderStroke(Dimens.dp1, Gray),
+                        colors = CardDefaults.outlinedCardColors(
+                            containerColor = White
+                        )
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(Dimens.dp8),
+                            text = "Biaya : ${formatToRupiah(370000)}",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp12)
                     )
                     LoadingButton(
                         modifier = Modifier
