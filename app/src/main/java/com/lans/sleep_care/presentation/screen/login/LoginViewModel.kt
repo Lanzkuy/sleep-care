@@ -78,8 +78,8 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
             loginUseCase.execute(
-                email = stateValue.email.value,
-                password = stateValue.password.value
+                email = stateValue.email.value.trim(),
+                password = stateValue.password.value.trim()
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {

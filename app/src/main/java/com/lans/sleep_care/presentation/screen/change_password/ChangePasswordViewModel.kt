@@ -94,9 +94,9 @@ class ChangePasswordViewModel @Inject constructor(
 
         viewModelScope.launch {
             changePasswordUseCase.execute(
-                currentPassword = stateValue.currentPassword.value,
-                newPassword = stateValue.newPassword.value,
-                newPasswordConfirmation = stateValue.newPasswordConfirmation.value
+                currentPassword = stateValue.currentPassword.value.trim(),
+                newPassword = stateValue.newPassword.value.trim(),
+                newPasswordConfirmation = stateValue.newPasswordConfirmation.value.trim()
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {

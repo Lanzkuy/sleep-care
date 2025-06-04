@@ -132,8 +132,7 @@ class HistoryDetailViewModel @Inject constructor(
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
-                            isRatingCreated = response.data,
-                            isLoading = false
+                            isRatingCreated = response.data
                         )
                     }
 

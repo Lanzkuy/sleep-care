@@ -123,7 +123,7 @@ class ForgotPasswordViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            forgotPasswordUseCase.execute(stateValue.email.value).collect { response ->
+            forgotPasswordUseCase.execute(stateValue.email.value.trim()).collect { response ->
                 when (response) {
                     is Resource.Success -> {
                         _state.value = _state.value.copy(
@@ -162,10 +162,10 @@ class ForgotPasswordViewModel @Inject constructor(
 
         viewModelScope.launch {
             resetPasswordUseCase.execute(
-                email = stateValue.email.value,
+                email = stateValue.email.value.trim(),
                 token = stateValue.verificationCode.value.toInt(),
-                password = stateValue.newPassword.value,
-                passwordConfirmation = stateValue.newPasswordConfirmation.value
+                password = stateValue.newPassword.value.trim(),
+                passwordConfirmation = stateValue.newPasswordConfirmation.value.trim()
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {

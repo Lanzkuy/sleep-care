@@ -109,7 +109,7 @@ class ProfileViewModel @Inject constructor(
             updateProfileUseCase.execute(
                 User(
                     id = stateValue.id,
-                    name = stateValue.name.value,
+                    name = stateValue.name.value.trim(),
                     age = stateValue.age.value.toInt(),
                     problems = stateValue.problems.map { it.lowercase() }
                 )

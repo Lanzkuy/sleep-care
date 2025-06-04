@@ -173,10 +173,10 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             registerUseCase.execute(
                 user = User(
-                    name = stateValue.name.value,
-                    email = stateValue.email.value,
+                    name = stateValue.name.value.trim(),
+                    email = stateValue.email.value.trim(),
                     age = stateValue.age.value.toInt(),
-                    gender = stateValue.gender.lowercase(),
+                    gender = stateValue.gender.lowercase().trim(),
                     problems = stateValue.problems.map { it.lowercase() }
                 ),
                 password = stateValue.password.value,

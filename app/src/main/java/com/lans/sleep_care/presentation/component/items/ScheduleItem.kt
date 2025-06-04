@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.lans.sleep_care.R
 import com.lans.sleep_care.presentation.component.misc.StatusChip
@@ -60,21 +61,51 @@ fun ScheduleItem(
             .padding(vertical = Dimens.dp8),
         shape = RoundedLarge
     ) {
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .padding(Dimens.dp16)
         ) {
-            Column(
+            StatusChip(
                 modifier = Modifier
-                    .padding(Dimens.dp16)
+                    .fillMaxWidth(),
+                text = if (note.isEmpty()) {
+                    stringResource(R.string.not_done)
+                } else {
+                    stringResource(R.string.done)
+                },
+                textAlign = TextAlign.Center,
+                color = color,
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(Dimens.dp8)
+            )
+            ScheduleContent(icon = painterResource(R.drawable.ic_time), value = date)
+            ScheduleContent(icon = painterResource(R.drawable.ic_videocam), value = topic)
+            ScheduleContent(
+                icon = painterResource(R.drawable.ic_link),
+                isCopyable = true,
+                value = link
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(Dimens.dp8)
+            )
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(Dimens.dp36),
+                shape = RoundedLarge,
+                colors = ButtonDefaults
+                    .buttonColors(
+                        containerColor = Secondary,
+                        contentColor = Primary
+                    ),
+                onClick = onLogbookClick
             ) {
-                ScheduleContent(icon = painterResource(R.drawable.ic_time), value = date)
-                ScheduleContent(icon = painterResource(R.drawable.ic_videocam), value = topic)
-                ScheduleContent(
-                    icon = painterResource(R.drawable.ic_link),
-                    isCopyable = true,
-                    value = link
-                )
+                Text(text = stringResource(R.string.logbook))
+            }
+            if (note.isNotEmpty()) {
                 Spacer(
                     modifier = Modifier
                         .height(Dimens.dp8)
@@ -89,45 +120,11 @@ fun ScheduleItem(
                             containerColor = Secondary,
                             contentColor = Primary
                         ),
-                    onClick = onLogbookClick
+                    onClick = onNoteClick
                 ) {
-                    Text(text = stringResource(R.string.logbook))
-                }
-                if (note.isNotEmpty()) {
-                    Spacer(
-                        modifier = Modifier
-                            .height(Dimens.dp8)
-                    )
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(Dimens.dp36),
-                        shape = RoundedLarge,
-                        colors = ButtonDefaults
-                            .buttonColors(
-                                containerColor = Secondary,
-                                contentColor = Primary
-                            ),
-                        onClick = onNoteClick
-                    ) {
-                        Text(text = stringResource(R.string.psychologist_note))
-                    }
+                    Text(text = stringResource(R.string.psychologist_note))
                 }
             }
-            StatusChip(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(
-                        top = Dimens.dp16,
-                        end = Dimens.dp16
-                    ),
-                text = if (note.isEmpty()) {
-                    stringResource(R.string.not_done)
-                } else {
-                    stringResource(R.string.done)
-                },
-                color = color,
-            )
         }
     }
 }

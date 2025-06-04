@@ -58,8 +58,13 @@ fun HistoryDetailScreen(
         viewModel.loadCompletedTherapy(therapyId)
     }
 
-    LaunchedEffect(key1 = state.error) {
+    LaunchedEffect(key1 = state.isRatingCreated, key2 = state.error) {
+        val isRatingCreated = state.isRatingCreated
         val error = state.error
+
+        if (isRatingCreated) {
+            viewModel.loadCompletedTherapy(therapyId)
+        }
 
         if (error.isNotBlank()) {
             showAlert = Pair(true, error)
@@ -155,10 +160,12 @@ fun HistoryDetailScreen(
                     therapy = state.therapy!!,
                     psychologist = state.psychologist,
                     onPostClick = { rating, comment ->
-                        state.rating = rating
-                        state.comment = comment
-                        showPostRatingConfirmation =
-                            Pair(true, "Lanjutkan untuk memberikan rating?")
+                        if(rating != 0 && comment.isNotEmpty()) {
+                            state.rating = rating
+                            state.comment = comment
+                            showPostRatingConfirmation =
+                                Pair(true, "Lanjutkan untuk memberikan rating?")
+                        }
                     }
                 )
                 HorizontalDivider(thickness = Dimens.dp0p5)
