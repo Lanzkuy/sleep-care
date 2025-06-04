@@ -6,6 +6,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.lans.sleep_care.R
+import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun ValidationAlert(
@@ -20,6 +21,7 @@ fun ValidationAlert(
         onDismissRequest = onDismiss,
         title = { Text(text = title) },
         text = { Text(text = message) },
+        containerColor = White,
         dismissButton = {
             if (onConfirm != null) {
                 TextButton(onClick = onDismiss) {

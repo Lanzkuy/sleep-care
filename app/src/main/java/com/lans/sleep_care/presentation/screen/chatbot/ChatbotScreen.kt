@@ -144,7 +144,7 @@ fun ChatbotScreen(
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(
-                        horizontal = Dimens.dp24,
+                        horizontal = Dimens.dp8,
                         vertical = Dimens.dp16
                     ),
                 state = listState,

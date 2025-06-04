@@ -57,6 +57,7 @@ import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
+import com.lans.sleep_care.utils.generateWeeklyRanges
 import com.lans.sleep_care.utils.parseToDate
 
 @Composable
@@ -67,7 +68,7 @@ fun MyTherapyScreen(
     navigateToPsychologist: () -> Unit,
     navigateToChat: (therapyId: String, psychologistName: String) -> Unit,
     navigateToIdentifyValue: (therapyId: String, isReadOnly: Boolean) -> Unit,
-    navigateToLogbook: (therapyId: String, week: String, isReadOnly: Boolean) -> Unit
+    navigateToLogbook: (therapyId: String, week: String, startDate: String, endDate: String, isReadOnly: Boolean) -> Unit
 ) {
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
@@ -298,6 +299,11 @@ fun MyTherapyScreen(
                             )
                     ) {
                         itemsIndexed(state.schedules) { index, schedule ->
+                            val dateRange = generateWeeklyRanges(
+                                startDate = state.therapy!!.startDate,
+                                endDate = state.therapy!!.endDate
+                            )
+
                             ScheduleItem(
                                 date = schedule.date.ifEmpty { "Belum ditentukan" },
                                 topic = schedule.title.ifEmpty { "Belum ditentukan" },
@@ -307,6 +313,8 @@ fun MyTherapyScreen(
                                     navigateToLogbook.invoke(
                                         schedule.therapyId.toString(),
                                         (index + 1).toString(),
+                                        dateRange[index].first,
+                                        dateRange[index].second,
                                         false
                                     )
                                 },

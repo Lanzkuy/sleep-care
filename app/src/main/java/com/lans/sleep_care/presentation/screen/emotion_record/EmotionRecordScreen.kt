@@ -55,6 +55,8 @@ fun EmotionRecordScreen(
     viewModel: EmotionRecordViewModel = hiltViewModel(),
     therapyId: String,
     week: String,
+    startDate: String,
+    endDate: String,
     isReadOnly: Boolean,
     navigateToLogbook: () -> Unit
 ) {
@@ -261,6 +263,7 @@ fun EmotionRecordScreen(
         }
         if (showDialog.first && !isReadOnly) {
             EmotionRecordDialog(
+                dateRange = startDate to endDate,
                 emotions = state.emotions,
                 questions = state.questions,
                 answers = showDialog.second,

@@ -158,6 +158,7 @@ fun HomeScreen(
                 DropdownMenu(
                     offset = DpOffset(x = Dimens.dp24, y = Dimens.dp4),
                     expanded = showOverflowMenu,
+                    containerColor = White,
                     onDismissRequest = { showOverflowMenu = false }
                 ) {
                     DropdownMenuItem(

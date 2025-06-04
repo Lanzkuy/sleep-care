@@ -54,6 +54,8 @@ fun ThoughtRecordScreen(
     viewModel: ThoughtRecordViewModel = hiltViewModel(),
     therapyId: String,
     week: String,
+    startDate: String,
+    endDate: String,
     isReadOnly: Boolean,
     navigateToLogbook: () -> Unit
 ) {
@@ -259,6 +261,7 @@ fun ThoughtRecordScreen(
         }
         if (showDialog.first && !isReadOnly) {
             ThoughtRecordDialog(
+                dateRange = startDate to endDate,
                 questions = state.questions,
                 answers = showDialog.second,
                 onDismiss = {

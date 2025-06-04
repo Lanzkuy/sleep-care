@@ -239,8 +239,8 @@ fun NavGraph(
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 },
-                navigateToLogbook = { therapyId, week, isReadOnly ->
-                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$isReadOnly") {
+                navigateToLogbook = { therapyId, week, startDate, endDate, isReadOnly ->
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
                         popUpTo(route = Route.MyTherapyScreen.route)
                     }
                 }
@@ -259,9 +259,11 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.LogbookScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
+        composable(route = Route.LogbookScreen.route + "/{therapyId}/{week}/{startDate}/{endDate}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             val week = it.arguments?.getString("week") ?: ""
+            val startDate = it.arguments?.getString("startDate") ?: ""
+            val endDate = it.arguments?.getString("endDate") ?: ""
             val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             LogbookScreen(
                 navigateBack = {
@@ -273,12 +275,12 @@ fun NavGraph(
                     }
                 },
                 navigateToThoughtRecord = {
-                    navController.navigate(route = Route.ThoughtRecordScreen.route + "/$therapyId/$week/$isReadOnly") {
+                    navController.navigate(route = Route.ThoughtRecordScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
                 navigateToEmotionRecord = {
-                    navController.navigate(route = Route.EmotionRecordScreen.route + "/$therapyId/$week/$isReadOnly") {
+                    navController.navigate(route = Route.EmotionRecordScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
                         popUpTo(route = Route.LogbookScreen.route)
                     }
                 },
@@ -313,26 +315,34 @@ fun NavGraph(
                 }
             )
         }
-        composable(route = Route.ThoughtRecordScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
+        composable(route = Route.ThoughtRecordScreen.route + "/{therapyId}/{week}/{startDate}/{endDate}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             val week = it.arguments?.getString("week") ?: ""
+            val startDate = it.arguments?.getString("startDate") ?: ""
+            val endDate = it.arguments?.getString("endDate") ?: ""
             val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             ThoughtRecordScreen(
                 therapyId = therapyId,
                 week = week,
+                startDate = startDate,
+                endDate = endDate,
                 isReadOnly = isReadOnly,
                 navigateToLogbook = {
                     navController.navigateUp()
                 }
             )
         }
-        composable(route = Route.EmotionRecordScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
+        composable(route = Route.EmotionRecordScreen.route + "/{therapyId}/{week}/{startDate}/{endDate}/{isReadOnly}") {
             val therapyId = it.arguments?.getString("therapyId") ?: ""
             val week = it.arguments?.getString("week") ?: ""
+            val startDate = it.arguments?.getString("startDate") ?: ""
+            val endDate = it.arguments?.getString("endDate") ?: ""
             val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
             EmotionRecordScreen(
                 therapyId = therapyId,
                 week = week,
+                startDate = startDate,
+                endDate = endDate,
                 isReadOnly = isReadOnly,
                 navigateToLogbook = {
                     navController.navigateUp()

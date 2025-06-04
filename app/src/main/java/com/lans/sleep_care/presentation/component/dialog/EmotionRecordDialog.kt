@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
@@ -35,13 +34,13 @@ import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.form.GenericDropDown
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
-import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
 import kotlin.math.roundToInt
 
 @Composable
 fun EmotionRecordDialog(
+    dateRange: Pair<String, String>,
     emotions: List<String>,
     questions: List<LogbookQuestion>,
     answers: List<LogbookQuestionAnswer> = emptyList(),
@@ -62,6 +61,7 @@ fun EmotionRecordDialog(
 
     if (showDatePicker) {
         DatePickerDialog(
+            dateRange = dateRange.first to dateRange.second,
             onDismiss = { showDatePicker = false },
             onConfirm = { selectedDate ->
                 showDatePicker = false
@@ -230,6 +230,7 @@ fun EmotionRecordDialog(
                 )
             }
         },
+        containerColor = White,
         confirmButton = {
             Button(
                 shape = RoundedLarge,

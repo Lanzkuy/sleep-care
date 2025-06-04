@@ -148,6 +148,7 @@ fun CommittedActionDialog(
                 )
             }
         },
+        containerColor = White,
         confirmButton = {
             Button(
                 shape = RoundedLarge,

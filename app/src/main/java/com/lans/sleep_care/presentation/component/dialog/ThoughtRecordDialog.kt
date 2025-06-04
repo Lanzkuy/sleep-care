@@ -36,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
@@ -45,13 +44,15 @@ import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
-import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
 import com.lans.sleep_care.presentation.theme.White
+import com.lans.sleep_care.utils.parseListToJson
+import com.lans.sleep_care.utils.toList
 
 @Composable
 fun ThoughtRecordDialog(
+    dateRange: Pair<String, String>,
     questions: List<LogbookQuestion>,
     answers: List<LogbookQuestionAnswer> = emptyList(),
     onDismiss: () -> Unit,
@@ -69,6 +70,7 @@ fun ThoughtRecordDialog(
 
     if (showDatePicker) {
         DatePickerDialog(
+            dateRange = dateRange.first to dateRange.second,
             onDismiss = { showDatePicker = false },
             onConfirm = { selectedDate ->
                 showDatePicker = false
@@ -93,8 +95,9 @@ fun ThoughtRecordDialog(
             time = answers[1].answer.answer
             situation = answers[2].answer.answer
             thoughts.clear()
-            val cleaned = answers[3].answer.answer.removePrefix("[").removeSuffix("]")
-            thoughts.addAll(cleaned.split(", ").map { it.trim() })
+//            val cleaned = answers[3].answer.answer.removePrefix("[").removeSuffix("]")
+//            cleaned.split(", ").map { it.trim() }
+            thoughts.addAll(answers[3].answer.answer.toList())
         }
     }
 
@@ -287,6 +290,7 @@ fun ThoughtRecordDialog(
                 }
             }
         },
+        containerColor = White,
         confirmButton = {
             Button(
                 shape = RoundedLarge,
@@ -323,10 +327,10 @@ fun ThoughtRecordDialog(
                             LogbookQuestionAnswer(
                                 questionId = questions[3].id,
                                 answer = answers.getOrNull(3)?.answer?.copy(
-                                    answer = thoughts.toList().toString()
+                                    answer = parseListToJson(thoughts) ?: ""
                                 ) ?: LogbookAnswer(
                                     type = "text",
-                                    answer = thoughts.toList().toString()
+                                    answer = parseListToJson(thoughts) ?: ""
                                 )
                             )
                         )

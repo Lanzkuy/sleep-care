@@ -29,20 +29,6 @@ fun TimePickerDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = {
-                val formatter =
-                    String.format(Locale.getDefault(), "%02d:%02d", state.hour, state.minute)
-                onConfirm(formatter)
-            }) {
-                Text(text = stringResource(R.string.ok))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(R.string.cancel))
-            }
-        },
         title = { Text(text = stringResource(R.string.time_select)) },
         text = {
             TimePicker(
@@ -57,6 +43,21 @@ fun TimePickerDialog(
                     timeSelectorSelectedContentColor = White
                 )
             )
+        },
+        containerColor = White,
+        confirmButton = {
+            TextButton(onClick = {
+                val formatter =
+                    String.format(Locale.getDefault(), "%02d:%02d", state.hour, state.minute)
+                onConfirm(formatter)
+            }) {
+                Text(text = stringResource(R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(R.string.cancel))
+            }
         }
     )
 }

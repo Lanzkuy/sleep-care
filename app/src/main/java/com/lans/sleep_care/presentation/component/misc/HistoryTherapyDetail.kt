@@ -53,7 +53,7 @@ fun HistoryTherapyDetail(
     onPostClick: (Int, String) -> Unit
 ) {
     val isRated = therapy.comment.isNotEmpty()
-    var rating by remember { mutableIntStateOf(0) }
+    var rating by remember { mutableIntStateOf(therapy.rating) }
     var comment by remember { mutableStateOf(therapy.comment) }
 
     Column(

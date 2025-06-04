@@ -38,23 +38,29 @@ fun splitDatesByWeek(dates: List<String>): List<List<String>> {
     return weeks
 }
 
-fun generateDateRange(startDate: String, endDate: String): List<String> {
+fun generateWeeklyRanges(startDate: String, endDate: String): List<Pair<String, String>> {
     val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val start = format.parse(startDate)
     val end = format.parse(endDate)
 
-    val dates = mutableListOf<String>()
+    val weeklyRanges = mutableListOf<Pair<String, String>>()
     val calendar = Calendar.getInstance()
 
     if (start != null && end != null) {
         calendar.time = start
+
         while (!calendar.time.after(end)) {
-            dates.add(format.format(calendar.time))
+            val weekStart = calendar.time
+            calendar.add(Calendar.DATE, 6)
+            val weekEnd = if (calendar.time.after(end)) end else calendar.time
+
+            weeklyRanges.add(Pair(format.format(weekStart), format.format(weekEnd)))
+
             calendar.add(Calendar.DATE, 1)
         }
     }
 
-    return dates
+    return weeklyRanges
 }
 
 fun parseToDate(dateStr: String): String {
