@@ -55,6 +55,7 @@ fun GenericDropDown(
         )
         ExposedDropdownMenu(
             expanded = expanded,
+            containerColor = White,
             onDismissRequest = { expanded = false }
         ) {
             options.forEach { option ->

@@ -161,7 +161,7 @@ fun ScheduleContent(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        if (isCopyable) {
+        if (isCopyable && value != "Belum ditentukan") {
             Icon(
                 modifier = Modifier
                     .size(Dimens.dp16)
