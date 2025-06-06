@@ -86,7 +86,8 @@ fun ValidableTextField(
         shape = shape,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = White,
-            unfocusedContainerColor = White
+            unfocusedContainerColor = White,
+            errorContainerColor = White
         ),
         keyboardOptions = keyboardOptions,
         visualTransformation = if (passwordVisible && isPassword) {

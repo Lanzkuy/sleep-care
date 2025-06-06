@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -41,13 +42,14 @@ import com.lans.sleep_care.presentation.theme.White
 @Composable
 fun ThoughtRecordItem(
     answers: List<LogbookQuestionAnswer>,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val date = answers[0].answer.answer
     val time = answers[1].answer.answer
     val situation = answers[2].answer.answer
     val cleaned = answers[3].answer.answer.removePrefix("[").removeSuffix("]")
     val thoughts = cleaned.split(", ").map { it.trim() }
+    val comment = answers[0].comment
 
     OutlinedCard(
         modifier = Modifier
@@ -106,7 +108,7 @@ fun ThoughtRecordItem(
                 text = "${stringResource(R.string.appear_thought)} :",
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = Black,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold
                 )
             )
             Spacer(
@@ -151,6 +153,27 @@ fun ThoughtRecordItem(
                         }
                     }
                 }
+            }
+            if(comment.isNotEmpty()) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(
+                            vertical = Dimens.dp8
+                        )
+                )
+                Text(
+                    text = "Komentar",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Text(
+                    text = answers[0].comment,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black
+                    )
+                )
             }
         }
     }

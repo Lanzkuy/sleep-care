@@ -47,7 +47,7 @@ fun HistoryDetailScreen(
     period: String,
     totalPrice: String,
     navigateToHistory: () -> Unit,
-    navigateToLogbook: (week: String, isReadOnly: Boolean) -> Unit,
+    navigateToLogbook: (week: String, startDate: String, endDate: String, isReadOnly: Boolean) -> Unit,
     navigateToIdentifyValue: (isReadOnly: Boolean) -> Unit,
 ) {
     val state by viewModel.state
@@ -160,7 +160,7 @@ fun HistoryDetailScreen(
                     therapy = state.therapy!!,
                     psychologist = state.psychologist,
                     onPostClick = { rating, comment ->
-                        if(rating != 0 && comment.isNotEmpty()) {
+                        if (rating != 0 && comment.isNotEmpty()) {
                             state.rating = rating
                             state.comment = comment
                             showPostRatingConfirmation =
@@ -176,12 +176,18 @@ fun HistoryDetailScreen(
                             horizontal = Dimens.dp24,
                             vertical = Dimens.dp16
                         ),
+                    therapy = state.therapy!!,
                     schedules = state.schedules,
                     onIdentifyValueClick = {
                         navigateToIdentifyValue.invoke(true)
                     },
-                    onItemClick = { week ->
-                        navigateToLogbook.invoke(week.toString(), true)
+                    onItemClick = { week, dateRange ->
+                        navigateToLogbook.invoke(
+                            week.toString(),
+                            dateRange.first,
+                            dateRange.second,
+                            true
+                        )
                     }
                 )
             }

@@ -10,7 +10,8 @@ data class SleepDiaryResponse(
     val title: String,
     val week: Int,
     val day: Int,
-    val date: String
+    val date: String,
+    val comment: String?
 )
 
 fun SleepDiaryResponse.toDomain() = SleepDiary(
@@ -19,5 +20,6 @@ fun SleepDiaryResponse.toDomain() = SleepDiary(
     title = title,
     week = week,
     day = day,
-    date = date
+    date = date,
+    comment = comment ?: ""
 )

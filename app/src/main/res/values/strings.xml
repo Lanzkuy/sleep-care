@@ -141,4 +141,5 @@
     <string name="image">Image</string>
     <string name="nothing_here">Nothing Here</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="view_psychologist_weekly_comment">Lihat Komentar Psikolog Minggu Ini</string>
 </resources>

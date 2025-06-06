@@ -400,8 +400,8 @@ fun NavGraph(
                 navigateToHistory = {
                     navController.navigateUp()
                 },
-                navigateToLogbook = { week, isReadOnly ->
-                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$isReadOnly") {
+                navigateToLogbook = { week, startDate, endDate, isReadOnly ->
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
                         popUpTo(route = Route.HistoryDetailScreen.route)
                     }
                 },

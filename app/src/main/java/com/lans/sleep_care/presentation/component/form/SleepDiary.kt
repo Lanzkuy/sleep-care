@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,10 +32,14 @@ import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.items.DiaryQuestionItem
+import com.lans.sleep_care.presentation.theme.Black
+import com.lans.sleep_care.presentation.theme.Danger
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.RoundedLarge
+import com.lans.sleep_care.presentation.theme.Success
+import com.lans.sleep_care.presentation.theme.White
 import com.lans.sleep_care.utils.parseToDayName
 
 @Composable
@@ -55,13 +60,25 @@ fun SleepDiary(
             val dateIndex = dateWithIds.indexOf(Pair(recordId, date))
             val dayAnswers = answers.getOrNull(dateIndex).orEmpty()
             val isExpanded = expandedStates[date] ?: false
+            val hasAnsweredAllQuestions = questions.filter { it.parentId == -1 }
+                .all { question ->
+                    dayAnswers.any { it.questionId == question.id && it.answer.answer.isNotEmpty() }
+                }
 
             OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = Dimens.dp8),
                 border = BorderStroke(width = Dimens.dp1, color = Gray),
-                shape = RoundedLarge
+                shape = RoundedLarge,
+                colors = CardDefaults.cardColors(
+                    containerColor = when {
+                        isExpanded -> White
+                        hasAnsweredAllQuestions -> Success
+                        else -> Danger
+                    },
+                    contentColor = if (isExpanded) Black else White
+                )
             ) {
                 Column(modifier = Modifier.padding(Dimens.dp16)) {
                     Row(

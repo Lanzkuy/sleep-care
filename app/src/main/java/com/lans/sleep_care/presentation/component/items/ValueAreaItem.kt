@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
+import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.RoundedLarge
@@ -37,6 +39,8 @@ fun ValueAreaItem(
     onDataChange: (LogbookQuestionAnswer) -> Unit
 ) {
     if (questions.isEmpty()) return
+
+    val comment = answers[0].comment
 
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -134,6 +138,29 @@ fun ValueAreaItem(
                         }
                     }
                 }
+            }
+
+            if (comment.isNotEmpty()) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(
+                            top = Dimens.dp16,
+                            bottom = Dimens.dp8
+                        )
+                )
+                Text(
+                    text = "Komentar",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Text(
+                    text = answers[0].comment,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black
+                    )
+                )
             }
         }
     }

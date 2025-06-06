@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.misc.StatusChip
+import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Danger
 import com.lans.sleep_care.presentation.theme.DarkGray
 import com.lans.sleep_care.presentation.theme.Dimens
@@ -56,6 +57,7 @@ fun CommitedActionItem(
     val status = answers[4].answer.answer
     val obstacle = answers[5].answer.answer
     val solution = answers[6].answer.answer
+    val comment = answers[0].comment
 
     val color = if (status == "0") Success else Danger
     var expanded by remember { mutableStateOf(false) }
@@ -91,7 +93,7 @@ fun CommitedActionItem(
                     )
                     StatusChip(
                         modifier = Modifier,
-                        text = if (status == "0") "Terlaksana" else "Belum Terlaksana",
+                        text = if (status == "1") "Terlaksana" else "Belum Terlaksana",
                         color = color
                     )
                 }
@@ -130,6 +132,27 @@ fun CommitedActionItem(
                 TextButton(onClick = { expanded = !expanded }) {
                     Text(text = if (expanded) "Tutup" else "Lihat Detail")
                 }
+            }
+            if(comment.isNotEmpty()) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(
+                            vertical = Dimens.dp8
+                        )
+                )
+                Text(
+                    text = "Komentar",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Text(
+                    text = answers[0].comment,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black
+                    )
+                )
             }
         }
     }

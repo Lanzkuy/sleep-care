@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -36,6 +37,7 @@ fun EmotionRecordItem(
     val intensityBefore = answers[5].answer.answer
     val manage = answers[6].answer.answer
     val intensityAfter = answers[7].answer.answer
+    val comment = answers[0].comment
 
     OutlinedCard(
         modifier = Modifier
@@ -84,6 +86,27 @@ fun EmotionRecordItem(
                 label = stringResource(R.string.afterwards),
                 value = "$emotion (${intensityAfter}/10)"
             )
+            if(comment.isNotEmpty()) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(
+                            vertical = Dimens.dp8
+                        )
+                )
+                Text(
+                    text = "Komentar",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Text(
+                    text = answers[0].comment,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Black
+                    )
+                )
+            }
         }
     }
 }

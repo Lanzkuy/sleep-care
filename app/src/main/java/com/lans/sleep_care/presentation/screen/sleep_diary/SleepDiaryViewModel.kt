@@ -80,7 +80,8 @@ class SleepDiaryViewModel @Inject constructor(
                         is Resource.Success -> {
                             val diaries = response.data
                             _state.value = _state.value.copy(
-                                sleepDiaries = diaries
+                                sleepDiaries = diaries,
+                                comment = diaries[0].comment
                             )
 
                             if (!isReadOnly) {

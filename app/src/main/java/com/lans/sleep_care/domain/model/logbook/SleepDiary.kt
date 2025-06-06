@@ -7,5 +7,6 @@ data class SleepDiary(
     val week: Int = 0,
     val day: Int = 0,
     val date: String = "",
+    val comment: String = "",
     var logbookAnswerList: LogbookAnswerList? = null
 )

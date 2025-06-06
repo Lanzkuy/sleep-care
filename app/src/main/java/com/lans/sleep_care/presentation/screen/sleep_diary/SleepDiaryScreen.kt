@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -38,12 +40,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
+import com.lans.sleep_care.presentation.component.dialog.NoteDialog
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.form.SleepDiary
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
+import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.White
 
 @Composable
@@ -57,6 +61,7 @@ fun SleepDiaryScreen(
     val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
+    var showNoteDialog by remember { mutableStateOf(Pair(false, "")) }
     val diaryExpandedStates = remember { mutableStateMapOf<String, Boolean>() }
 
     val selectedDates = state.sleepDiaries
@@ -115,6 +120,15 @@ fun SleepDiaryScreen(
         )
     }
 
+    if (showNoteDialog.first) {
+        NoteDialog(
+            note = showNoteDialog.second,
+            onClose = {
+                showNoteDialog = showNoteDialog.copy(first = false)
+            }
+        )
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -164,7 +178,7 @@ fun SleepDiaryScreen(
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(Dimens.dp8)
+                    .height(Dimens.dp16)
             )
             if (state.isLoading) {
                 Box(
@@ -180,6 +194,32 @@ fun SleepDiaryScreen(
                     )
                 }
             } else {
+                if (state.comment.isNotEmpty()) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp36),
+                        shape = RoundedLarge,
+                        colors = ButtonDefaults
+                            .buttonColors(
+                                containerColor = Primary,
+                                contentColor = White
+                            ),
+                        onClick = {
+                            showNoteDialog = showNoteDialog.copy(
+                                first = true,
+                                second = state.comment
+                            )
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.view_psychologist_weekly_comment))
+                    }
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(Dimens.dp16)
+                    )
+                }
                 SleepDiary(
                     dateWithIds = selectedDates,
                     questions = state.questions,
