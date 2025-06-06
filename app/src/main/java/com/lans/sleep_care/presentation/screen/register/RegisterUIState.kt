@@ -9,7 +9,7 @@ data class RegisterUIState(
     val passwordConfirmation: InputWrapper = InputWrapper(),
     val age: InputWrapper = InputWrapper(),
     val gender: String = "Pria",
-    val problems: MutableList<String> = mutableListOf(),
+    val problems: List<String> = emptyList(),
     val availableProblems: MutableList<String> = mutableListOf(),
     val currentPage: Int = 0,
     val isLoading: Boolean = false,

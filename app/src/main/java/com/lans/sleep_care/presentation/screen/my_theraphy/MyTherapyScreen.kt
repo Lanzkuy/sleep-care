@@ -99,6 +99,7 @@ fun MyTherapyScreen(
 
     if (showNoteDialog.first) {
         NoteDialog(
+            title = stringResource(R.string.psychologist_note),
             note = showNoteDialog.second,
             onClose = {
                 showNoteDialog = showNoteDialog.copy(first = false)

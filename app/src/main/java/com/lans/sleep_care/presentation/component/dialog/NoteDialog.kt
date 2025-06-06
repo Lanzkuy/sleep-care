@@ -34,6 +34,7 @@ import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun NoteDialog(
+    title: String,
     note: String,
     onClose: () -> Unit
 ) {
@@ -70,7 +71,7 @@ fun NoteDialog(
                     ) {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
-                            text = stringResource(R.string.psychologist_note),
+                            text = title,
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontSize = Dimens.sp18
                             )

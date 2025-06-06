@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.auth.User
+import com.lans.sleep_care.domain.usecase.logbook.GetProblemsUseCase
 import com.lans.sleep_care.domain.usecase.user.UpdateProfileUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
 import com.lans.sleep_care.utils.capitalize
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val validatorUseCase: ValidatorUseCase,
+    private val getProblemsUseCase: GetProblemsUseCase,
     private val updateProfileUseCase: UpdateProfileUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(ProfileUIState())
@@ -61,17 +63,45 @@ class ProfileViewModel @Inject constructor(
         id: Int,
         name: String,
         age: String,
-        gender: String,
-        problems: List<String>,
-        availableProblems: List<String>
+        problems: List<String>
     ) {
         _state.value = _state.value.copy(
             id = id,
             name = _state.value.name.copy(value = name),
             age = _state.value.age.copy(value = age)
         )
-        _state.value.problems.addAll(problems.map { it.capitalize() })
-        _state.value.availableProblems.addAll(availableProblems)
+        loadProblems()
+        _state.value.problems.addAll(problems.map {
+            it.replace("_", " ").capitalize()
+        })
+    }
+
+    private fun loadProblems() {
+        viewModelScope.launch {
+            getProblemsUseCase.execute().collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            availableProblems = response.data.map {
+                                it.replace("_", " ").capitalize()
+                            }.toMutableList(),
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
     }
 
     private fun validate(stateValue: ProfileUIState): Boolean {
@@ -111,7 +141,9 @@ class ProfileViewModel @Inject constructor(
                     id = stateValue.id,
                     name = stateValue.name.value.trim(),
                     age = stateValue.age.value.toInt(),
-                    problems = stateValue.problems.map { it.lowercase() }
+                    problems = stateValue.problems.map {
+                        it.replace(" ", "_").lowercase()
+                    }
                 )
             ).collect { response ->
                 when (response) {

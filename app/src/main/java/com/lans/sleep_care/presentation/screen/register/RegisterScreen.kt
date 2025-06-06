@@ -58,19 +58,11 @@ fun RegisterScreen(
     navigateToLogin: () -> Unit,
     navigateToVerification: (email: String) -> Unit
 ) {
-    val context = LocalContext.current
     val state by viewModel.state
     var showAlert by remember { mutableStateOf(Pair(false, "")) }
 
     LaunchedEffect(Unit) {
-        viewModel.initializeData(
-            availableProblems = listOf(
-                context.getString(R.string.stress),
-                context.getString(R.string.adiction),
-                context.getString(R.string.depresion),
-                context.getString(R.string.trauma)
-            )
-        )
+        viewModel.loadProblems()
     }
 
     LaunchedEffect(key1 = state.isRegistered, key2 = state.error) {

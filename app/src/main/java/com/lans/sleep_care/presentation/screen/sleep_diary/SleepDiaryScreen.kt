@@ -122,6 +122,7 @@ fun SleepDiaryScreen(
 
     if (showNoteDialog.first) {
         NoteDialog(
+            title = stringResource(R.string.psychologist_comment),
             note = showNoteDialog.second,
             onClose = {
                 showNoteDialog = showNoteDialog.copy(first = false)

@@ -69,14 +69,7 @@ fun ProfileScreen(
             id = id.toInt(),
             name = name,
             age = age,
-            gender = gender,
-            problems = problemList,
-            availableProblems = listOf(
-                context.getString(R.string.stress),
-                context.getString(R.string.adiction),
-                context.getString(R.string.depresion),
-                context.getString(R.string.trauma)
-            )
+            problems = problemList
         )
     }
 

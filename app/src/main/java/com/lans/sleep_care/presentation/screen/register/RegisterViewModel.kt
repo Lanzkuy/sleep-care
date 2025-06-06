@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.lans.sleep_care.data.Resource
 import com.lans.sleep_care.domain.model.auth.User
 import com.lans.sleep_care.domain.usecase.auth.RegisterUseCase
+import com.lans.sleep_care.domain.usecase.logbook.GetProblemsUseCase
 import com.lans.sleep_care.domain.usecase.validator.ValidatorUseCase
+import com.lans.sleep_care.utils.capitalize
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val validatorUseCase: ValidatorUseCase,
+    private val getProblemsUseCase: GetProblemsUseCase,
     private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(RegisterUIState())
@@ -101,10 +104,32 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun initializeData(
-        availableProblems: List<String>
-    ) {
-        _state.value.availableProblems.addAll(availableProblems)
+    fun loadProblems() {
+        viewModelScope.launch {
+            getProblemsUseCase.execute().collect { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        _state.value = _state.value.copy(
+                            availableProblems = response.data.map {
+                                it.replace("_", " ").capitalize()
+                            }.toMutableList(),
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = response.message,
+                            isLoading = false
+                        )
+                    }
+
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
+            }
+        }
     }
 
     private fun validatePageOne(stateValue: RegisterUIState): Boolean {
@@ -177,7 +202,9 @@ class RegisterViewModel @Inject constructor(
                     email = stateValue.email.value.trim(),
                     age = stateValue.age.value.toInt(),
                     gender = stateValue.gender.lowercase().trim(),
-                    problems = stateValue.problems.map { it.lowercase() }
+                    problems = stateValue.problems.map {
+                        it.replace(" ", "_").lowercase()
+                    }
                 ),
                 password = stateValue.password.value,
                 passwordConfirmation = stateValue.passwordConfirmation.value,
