@@ -38,6 +38,8 @@ import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.RoundedLarge
 import com.lans.sleep_care.presentation.theme.Secondary
 import com.lans.sleep_care.presentation.theme.White
+import org.json.JSONArray
+import org.json.JSONException
 
 @Composable
 fun ThoughtRecordItem(
@@ -47,8 +49,13 @@ fun ThoughtRecordItem(
     val date = answers[0].answer.answer
     val time = answers[1].answer.answer
     val situation = answers[2].answer.answer
-    val cleaned = answers[3].answer.answer.removePrefix("[").removeSuffix("]")
-    val thoughts = cleaned.split(", ").map { it.trim() }
+    val rawThoughts = answers[3].answer.answer
+    val thoughts = try {
+        val jsonArray = JSONArray(rawThoughts)
+        List(jsonArray.length()) { index -> jsonArray.getString(index) }
+    } catch (e: JSONException) {
+        listOf()
+    }
     val comment = answers[0].comment
 
     OutlinedCard(
@@ -154,7 +161,7 @@ fun ThoughtRecordItem(
                     }
                 }
             }
-            if(comment.isNotEmpty()) {
+            if (comment.isNotEmpty()) {
                 HorizontalDivider(
                     modifier = Modifier
                         .padding(

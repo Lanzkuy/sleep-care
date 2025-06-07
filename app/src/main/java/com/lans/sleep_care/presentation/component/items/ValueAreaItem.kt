@@ -40,7 +40,7 @@ fun ValueAreaItem(
 ) {
     if (questions.isEmpty()) return
 
-    val comment = answers[0].comment
+    val comment = if (answers.isNotEmpty()) answers[0].comment else ""
 
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
