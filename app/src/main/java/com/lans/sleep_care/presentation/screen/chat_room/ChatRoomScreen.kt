@@ -33,15 +33,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lans.sleep_care.R
+import com.lans.sleep_care.domain.model.therapy.Chat
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
 import com.lans.sleep_care.presentation.component.form.ValidableTextField
 import com.lans.sleep_care.presentation.component.misc.ChatBubble
+import com.lans.sleep_care.presentation.component.misc.DividerWithText
 import com.lans.sleep_care.presentation.theme.Black
 import com.lans.sleep_care.presentation.theme.Dimens
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
+import com.lans.sleep_care.utils.formatChatDate
+import com.lans.sleep_care.utils.parseToTime
 
 @Composable
 fun ChatRoomScreen(
@@ -146,6 +150,21 @@ fun ChatRoomScreen(
                 )
             }
         } else {
+            val chatListWithHeader = mutableListOf<Pair<Boolean, Any>>()
+            var lastHeader: String? = null
+
+            state.chatHistories
+                .filter { it.therapyId == therapyId.toInt() }
+                .sortedBy { it.createdAt }
+                .forEach { chat ->
+                    val currentHeader = formatChatDate(chat.createdAt)
+                    if (currentHeader != lastHeader) {
+                        chatListWithHeader.add(true to currentHeader)
+                        lastHeader = currentHeader
+                    }
+                    chatListWithHeader.add(false to chat)
+                }
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -157,11 +176,15 @@ fun ChatRoomScreen(
                 state = listState,
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp4)
             ) {
-                items(state.chatHistories) { chat ->
-                    if (chat.therapyId == therapyId.toInt()) {
-                        val isUser = chat.senderId == id.toInt()
+                items(chatListWithHeader) { (isHeader, content) ->
+                    if (isHeader && content is String) {
+                        DividerWithText(text = content)
+                    } else if (!isHeader && content is Chat) {
+                        val isUser = content.senderId == id.toInt()
                         ChatBubble(
-                            message = chat.message,
+                            message = content.message,
+                            time = parseToTime(content.createdAt),
+                            isRead = content.readAt.isNotEmpty(),
                             isUser = isUser
                         )
                     }

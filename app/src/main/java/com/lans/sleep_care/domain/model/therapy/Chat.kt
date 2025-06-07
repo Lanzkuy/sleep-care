@@ -6,5 +6,6 @@ data class Chat(
     val senderId: Int = 0,
     val receiverId: Int = 0,
     val message: String = "",
-    val readAt: String = ""
+    val readAt: String = "",
+    val createdAt: String = ""
 )

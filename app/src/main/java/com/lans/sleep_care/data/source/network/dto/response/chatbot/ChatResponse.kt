@@ -13,7 +13,9 @@ data class ChatResponse(
     val receiverId: Int,
     val message: String,
     @field:Json(name = "read_at")
-    val readAt: String?
+    val readAt: String?,
+    @field:Json(name = "created_at")
+    val createdAt: String
 )
 
 fun ChatResponse.toDomain() = Chat(
@@ -22,5 +24,6 @@ fun ChatResponse.toDomain() = Chat(
     senderId = senderId,
     receiverId = receiverId,
     message = message,
-    readAt = readAt ?: ""
+    readAt = readAt ?: "",
+    createdAt = createdAt
 )
