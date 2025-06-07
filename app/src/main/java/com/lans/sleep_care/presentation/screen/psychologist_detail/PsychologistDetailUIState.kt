@@ -10,6 +10,6 @@ data class PsychologistDetailUIState(
     var error: String = "",
     val psychologist: Psychologist = Psychologist(),
     val user: User = User(),
-    val order: Order = Order(),
-    val paymentToken: String = ""
+    var order: Order = Order(),
+    var paymentToken: String = ""
 )

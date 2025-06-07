@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.lans.sleep_care.R
+import com.lans.sleep_care.domain.model.therapy.Order
 import com.lans.sleep_care.presentation.component.button.ElevatedIconButton
 import com.lans.sleep_care.presentation.component.button.LoadingButton
 import com.lans.sleep_care.presentation.component.dialog.ValidationAlert
@@ -77,6 +78,7 @@ fun PsychologistDetailScreen(
         if (result.resultCode == Activity.RESULT_OK) {
             navigateToHome.invoke()
         }
+        viewModel.getOrderTherapyStatus()
     }
 
     LaunchedEffect(Unit) {
@@ -95,6 +97,8 @@ fun PsychologistDetailScreen(
                 putExtra("token", paymentToken)
             }
             paymentLauncher.launch(intent)
+            state.order = Order()
+            state.paymentToken = ""
         }
 
         if (error.isNotBlank()) {
