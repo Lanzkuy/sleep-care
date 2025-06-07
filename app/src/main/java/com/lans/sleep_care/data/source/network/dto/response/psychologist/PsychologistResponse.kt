@@ -17,7 +17,7 @@ data class PsychologistResponse(
     @field:Json(name = "total_rating")
     val totalRating: Int,
     @field:Json(name = "avg_rating")
-    val avgRating: Int,
+    val avgRating: Double,
     val user: UserResponse
 )
 

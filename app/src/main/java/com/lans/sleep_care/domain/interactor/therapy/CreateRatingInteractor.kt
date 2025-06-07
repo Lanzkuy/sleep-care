@@ -16,7 +16,7 @@ class CreateRatingInteractor @Inject constructor(
 ) : CreateRatingUseCase, SafeApiCall {
     override suspend fun execute(
         therapyId: Int,
-        rating: Int,
+        rating: Double,
         comment: String
     ): Flow<Resource<Boolean>> {
         return flow {

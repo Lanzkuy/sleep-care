@@ -10,6 +10,6 @@ data class Psychologist(
     val about: String = "",
     val phone: String = "",
     val totalRating: Int = 0,
-    val avgRating: Int = 0,
+    val avgRating: Double = 0.0,
     val user: User = User()
 )

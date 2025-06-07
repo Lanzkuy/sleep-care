@@ -10,5 +10,5 @@ data class Therapy(
     val doctorFee: Int = 0,
     val applicationFee: Int = 0,
     val comment: String = "",
-    val rating: Int = 0
+    val rating: Double = 0.0
 )

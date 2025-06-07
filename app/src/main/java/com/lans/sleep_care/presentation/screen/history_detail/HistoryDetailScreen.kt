@@ -160,7 +160,7 @@ fun HistoryDetailScreen(
                     therapy = state.therapy!!,
                     psychologist = state.psychologist,
                     onPostClick = { rating, comment ->
-                        if (rating != 0 && comment.isNotEmpty()) {
+                        if (rating != 0.0 && comment.isNotEmpty()) {
                             state.rating = rating
                             state.comment = comment
                             showPostRatingConfirmation =

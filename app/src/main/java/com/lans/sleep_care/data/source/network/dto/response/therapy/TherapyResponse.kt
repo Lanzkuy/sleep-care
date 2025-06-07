@@ -19,7 +19,7 @@ data class TherapyResponse(
     @field:Json(name = "application_fee")
     val applicationFee: Int,
     val comment: String?,
-    val rating: Int
+    val rating: Double
 )
 
 fun TherapyResponse.toDomain() = Therapy(

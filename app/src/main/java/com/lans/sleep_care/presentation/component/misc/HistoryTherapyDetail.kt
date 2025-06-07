@@ -19,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,10 +51,10 @@ fun HistoryTherapyDetail(
     totalPrice: String,
     therapy: Therapy,
     psychologist: Psychologist,
-    onPostClick: (Int, String) -> Unit
+    onPostClick: (Double, String) -> Unit
 ) {
     val isRated = therapy.comment.isNotEmpty()
-    var rating by remember { mutableIntStateOf(therapy.rating) }
+    var rating by remember { mutableDoubleStateOf(therapy.rating) }
     var comment by remember { mutableStateOf(therapy.comment) }
 
     Column(
@@ -146,7 +147,7 @@ fun HistoryTherapyDetail(
                                 .size(Dimens.dp24)
                                 .clickable {
                                     if (!isRated) {
-                                        rating = index
+                                        rating = index.toDouble()
                                     }
                                 },
                             imageVector = Icons.Default.Star,

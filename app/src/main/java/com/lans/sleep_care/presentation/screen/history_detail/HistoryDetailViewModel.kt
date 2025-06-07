@@ -9,7 +9,6 @@ import com.lans.sleep_care.domain.usecase.psychologist.GetPsychologistUseCase
 import com.lans.sleep_care.domain.usecase.therapy.CreateRatingUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetCompletedTherapyUseCase
 import com.lans.sleep_care.domain.usecase.therapy.GetTherapySchedulesUseCase
-import com.lans.sleep_care.presentation.screen.home.HomeUIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

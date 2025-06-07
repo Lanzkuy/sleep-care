@@ -47,6 +47,7 @@ import com.lans.sleep_care.presentation.theme.Gray
 import com.lans.sleep_care.presentation.theme.Primary
 import com.lans.sleep_care.presentation.theme.Rounded
 import com.lans.sleep_care.presentation.theme.White
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
 fun PsychologistScreen(
@@ -67,7 +68,7 @@ fun PsychologistScreen(
             val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
             lastVisible
         }.collect { lastVisibleIndex ->
-            if (lastVisibleIndex >= state.filteredPsychologists.size - 3) {
+            if (lastVisibleIndex >= state.filteredPsychologists.size - 3 && !state.isPaginating) {
                 viewModel.loadAllPsychologist()
             }
         }
@@ -202,7 +203,7 @@ fun PsychologistScreen(
                             PsychologistItem(
                                 name = psychologist.user.name,
                                 image = psychologist.user.avatar,
-                                rating = psychologist.avgRating.toDouble(),
+                                rating = psychologist.avgRating,
                                 totalReview = psychologist.totalRating,
                                 onClick = {
                                     navigateToPsychologistDetail(psychologist.id.toString())
