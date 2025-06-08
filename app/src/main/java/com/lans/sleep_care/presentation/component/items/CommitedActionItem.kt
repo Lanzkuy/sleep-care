@@ -59,7 +59,7 @@ fun CommitedActionItem(
     val solution = answers[6].answer.answer
     val comment = answers[0].comment
 
-    val color = if (status == "0") Success else Danger
+    val color = if (status == "1") Success else Danger
     var expanded by remember { mutableStateOf(false) }
 
     OutlinedCard(

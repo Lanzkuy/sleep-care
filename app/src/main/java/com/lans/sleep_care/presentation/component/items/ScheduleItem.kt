@@ -57,7 +57,7 @@ fun ScheduleItem(
     }
 
     val dateTime = if (date.isEmpty()) {
-        "Belum ditentukan"
+        "Belum ditentukan psikolog"
     } else {
         "$date • ${formatToTime(time)}"
     }
