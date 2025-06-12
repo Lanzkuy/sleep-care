@@ -74,7 +74,6 @@ fun CommittedActionDialog(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(Dimens.dp8)
             ) {
-
                 GenericDropDown(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -120,8 +119,8 @@ fun CommittedActionDialog(
                     modifier = Modifier
                         .fillMaxWidth(),
                     label = stringResource(R.string.choose_status),
-                    selected = if (status == "0") "Terlaksana" else "Belum Terlaksana",
-                    onSelect = { status = if (it == "Terlaksana") "0" else "1" },
+                    selected = if (status == "1") "Terlaksana" else "Belum Terlaksana",
+                    onSelect = { status = if (it == "Terlaksana") "1" else "0" },
                     options = listOf("Terlaksana", "Belum Terlaksana")
                 )
                 OutlinedTextField(

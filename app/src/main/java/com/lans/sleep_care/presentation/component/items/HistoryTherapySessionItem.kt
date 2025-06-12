@@ -88,7 +88,7 @@ fun HistoryTherapySessionItem(
                     .height(Dimens.dp4)
             )
             Text(
-                text = "${schedule.date} • ${formatToTime(schedule.time)}",
+                text = if(schedule.date.isNotEmpty()) "${schedule.date} • ${formatToTime(schedule.time)}" else "Belum Ditentukan",
                 color = MediumGray,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.SemiBold

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
@@ -164,18 +166,25 @@ fun DiaryQuestionItem(
                     value = text,
                     readOnly = isReadOnly,
                     onValueChange = {
-                        text = it
-                        onAnswerChanged(
-                            recordId,
-                            LogbookQuestionAnswer(
-                                questionId = question.id,
-                                answer = answer.copy(
-                                    answer = it
+                        if (question.type != "number" || it.all { char -> char.isDigit() }) {
+                            text = it
+                            onAnswerChanged(
+                                recordId,
+                                LogbookQuestionAnswer(
+                                    questionId = question.id,
+                                    answer = answer.copy(
+                                        answer = it
+                                    )
                                 )
                             )
-                        )
+                        }
                     },
-                    textStyle = MaterialTheme.typography.bodyMedium
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                    keyboardOptions = if (question.type == "number") {
+                        KeyboardOptions(keyboardType = KeyboardType.Number)
+                    } else {
+                        KeyboardOptions.Default
+                    }
                 )
             }
         }

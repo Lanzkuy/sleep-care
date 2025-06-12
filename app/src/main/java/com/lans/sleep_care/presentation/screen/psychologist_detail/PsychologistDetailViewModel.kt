@@ -41,7 +41,7 @@ class PsychologistDetailViewModel @Inject constructor(
                 } else {
                     if (order.therapy.doctorId != 0 && order.therapy.doctorId != psychologist.id) {
                         cancelPayment()
-                    } else{
+                    } else {
                         createOrderTherapy()
                     }
                 }
@@ -200,7 +200,7 @@ class PsychologistDetailViewModel @Inject constructor(
             ).collect { response ->
                 when (response) {
                     is Resource.Success -> {
-                        if(response.data) {
+                        if (response.data) {
                             createOrderTherapy()
                         }
                     }
