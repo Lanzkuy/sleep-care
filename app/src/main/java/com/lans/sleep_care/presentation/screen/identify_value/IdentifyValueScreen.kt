@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Save
@@ -183,12 +184,14 @@ fun IdentifyValueScreen(
                         .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(Dimens.dp16)
                 ) {
-                    items(state.areas) { area ->
+                    itemsIndexed(state.areas) { areaIndex, area ->
                         val answers = mergedAnswers.filter { it.answer.note == area }
+                        val comment = mergedAnswers.getOrNull(areaIndex)?.comment ?: ""
                         ValueAreaItem(
                             areaName = area,
                             questions = state.questions.sortedBy { it.type },
                             answers = answers,
+                            comment = comment,
                             isReadOnly = isReadOnly,
                             onDataChange = { questionAnswer ->
                                 val originalAnswer = state.answers.firstOrNull {

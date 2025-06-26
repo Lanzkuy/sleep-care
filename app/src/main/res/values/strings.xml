@@ -120,6 +120,7 @@
     <string name="next">Selanjutnya</string>
     <string name="order_therapy">Pesan Terapi</string>
     <string name="search">Cari</string>
+    <string name="comment">Komentar</string>
     <string name="date_select">Pilih Tanggal</string>
     <string name="time_select">Pilih Waktu</string>
     <string name="detail">Detail</string>
@@ -136,6 +137,7 @@
     <string name="your_comment">Komentar Anda</string>
     <string name="alert_default_title">Alert</string>
     <string name="alert_warning_title">Perhatian</string>
+
     <string name="alert_error_title">Terjadi Kesalahan</string>
 
     <string name="search_icon">Search Icon</string>

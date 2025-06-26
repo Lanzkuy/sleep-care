@@ -195,7 +195,8 @@ fun SleepDiaryScreen(
                     )
                 }
             } else {
-                if (state.comment.isNotEmpty()) {
+                val comment = state.comment.getOrNull((week.toInt() - 1) * 7)
+                if (!comment.isNullOrEmpty()) {
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -209,7 +210,7 @@ fun SleepDiaryScreen(
                         onClick = {
                             showNoteDialog = showNoteDialog.copy(
                                 first = true,
-                                second = state.comment
+                                second = comment
                             )
                         }
                     ) {

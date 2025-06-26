@@ -8,7 +8,7 @@ data class SleepDiaryUIState(
     var error: String = "",
     val sleepDiaries: List<SleepDiary> = emptyList(),
     val questions: List<LogbookQuestion> = emptyList(),
-    val comment: String = "",
+    val comment: List<String> = emptyList(),
     var isCreated: Boolean = false,
     var isUpdated: Boolean = false
 )

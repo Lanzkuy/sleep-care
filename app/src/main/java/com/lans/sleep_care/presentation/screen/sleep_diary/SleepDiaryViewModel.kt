@@ -81,7 +81,7 @@ class SleepDiaryViewModel @Inject constructor(
                             val diaries = response.data
                             _state.value = _state.value.copy(
                                 sleepDiaries = diaries,
-                                comment = diaries[0].comment
+                                comment = diaries.map { it.comment }
                             )
 
                             if (!isReadOnly) {
@@ -209,7 +209,12 @@ class SleepDiaryViewModel @Inject constructor(
 
             _state.value = _state.value.copy(
                 isCreated = successfulRecords.isNotEmpty(),
-                error = if (hasError) errorMessage.orEmpty() else "",
+                error = if (hasError) {
+                    if (errorMessage?.contains("wajib diisi", ignoreCase = true) == true)
+                        "Semua pertanyaan wajib diisi"
+                    else
+                        errorMessage.orEmpty()
+                } else "",
                 isLoading = false
             )
         }
@@ -274,7 +279,12 @@ class SleepDiaryViewModel @Inject constructor(
             _state.value = _state.value.copy(
                 sleepDiaries = updatedDiaries,
                 isUpdated = hasSuccess,
-                error = if (hasError) errorMessage.orEmpty() else "",
+                error = if (hasError) {
+                    if (errorMessage?.contains("wajib diisi", ignoreCase = true) == true)
+                        "Semua pertanyaan wajib diisi"
+                    else
+                        errorMessage.orEmpty()
+                } else "",
                 isLoading = false
             )
         }

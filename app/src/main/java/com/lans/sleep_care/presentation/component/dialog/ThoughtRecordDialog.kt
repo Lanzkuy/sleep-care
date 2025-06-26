@@ -293,6 +293,10 @@ fun ThoughtRecordDialog(
         containerColor = White,
         confirmButton = {
             Button(
+                enabled = date.isNotBlank() &&
+                        time.isNotBlank() &&
+                        situation.isNotBlank() &&
+                        thoughts.isNotEmpty(),
                 shape = RoundedLarge,
                 onClick = {
                     if (date.isNotBlank() &&

@@ -233,6 +233,12 @@ fun EmotionRecordDialog(
         containerColor = White,
         confirmButton = {
             Button(
+                enabled = date.isNotBlank() &&
+                        time.isNotBlank() &&
+                        situation.isNotBlank() &&
+                        thought.isNotEmpty() &&
+                        emotion.isNotEmpty() &&
+                        manage.isNotEmpty(),
                 shape = RoundedLarge,
                 onClick = {
                     if (date.isNotBlank() &&

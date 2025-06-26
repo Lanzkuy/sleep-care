@@ -257,6 +257,7 @@ fun CommitedActionScreen(
         }
         if (showDialog.first && !isReadOnly) {
             CommittedActionDialog(
+                week = week,
                 areas = state.areas,
                 questions = state.questions,
                 answers = showDialog.second,

@@ -19,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.lans.sleep_care.R
 import com.lans.sleep_care.domain.model.logbook.LogbookAnswer
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestion
 import com.lans.sleep_care.domain.model.logbook.LogbookQuestionAnswer
@@ -35,12 +37,11 @@ fun ValueAreaItem(
     areaName: String,
     questions: List<LogbookQuestion>,
     answers: List<LogbookQuestionAnswer>,
+    comment: String = "",
     isReadOnly: Boolean,
     onDataChange: (LogbookQuestionAnswer) -> Unit
 ) {
     if (questions.isEmpty()) return
-
-    val comment = if (answers.isNotEmpty()) answers[0].comment else ""
 
     OutlinedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -149,14 +150,14 @@ fun ValueAreaItem(
                         )
                 )
                 Text(
-                    text = "Komentar",
+                    text = stringResource(R.string.comment),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = Black,
                         fontWeight = FontWeight.Bold
                     )
                 )
                 Text(
-                    text = answers[0].comment,
+                    text = comment,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = Black
                     )

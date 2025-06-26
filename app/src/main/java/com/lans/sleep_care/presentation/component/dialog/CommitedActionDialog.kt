@@ -30,6 +30,7 @@ import com.lans.sleep_care.presentation.theme.White
 
 @Composable
 fun CommittedActionDialog(
+    week: String,
     areas: List<String>,
     questions: List<LogbookQuestion>,
     answers: List<LogbookQuestionAnswer> = emptyList(),
@@ -119,7 +120,11 @@ fun CommittedActionDialog(
                     modifier = Modifier
                         .fillMaxWidth(),
                     label = stringResource(R.string.choose_status),
-                    selected = if (status == "1") "Terlaksana" else "Belum Terlaksana",
+                    selected = when (status) {
+                        "1" -> "Terlaksana"
+                        "0" -> "Belum Terlaksana"
+                        else -> ""
+                    },
                     onSelect = { status = if (it == "Terlaksana") "1" else "0" },
                     options = listOf("Terlaksana", "Belum Terlaksana")
                 )
@@ -150,6 +155,13 @@ fun CommittedActionDialog(
         containerColor = White,
         confirmButton = {
             Button(
+                enabled = area.isNotBlank() &&
+                    goal.isNotBlank() &&
+                    plan.isNotBlank() &&
+                    time.isNotBlank() &&
+                    status.isNotBlank() &&
+                    obstacle.isNotBlank() &&
+                    solution.isNotBlank(),
                 shape = RoundedLarge,
                 onClick = {
                     if (area.isNotBlank() &&
@@ -165,50 +177,64 @@ fun CommittedActionDialog(
                         updatedAnswers.add(
                             LogbookQuestionAnswer(
                                 questionId = questions[0].id,
-                                answer = answers.getOrNull(0)?.answer?.copy(answer = area)
-                                    ?: LogbookAnswer(type = "text", answer = area)
+                                answer = answers.getOrNull(0)?.answer?.copy(
+                                    answer = area,
+                                    note = week
+                                ) ?: LogbookAnswer(type = "text", answer = area, note = week)
                             )
                         )
                         updatedAnswers.add(
                             LogbookQuestionAnswer(
                                 questionId = questions[1].id,
-                                answer = answers.getOrNull(1)?.answer?.copy(answer = goal)
-                                    ?: LogbookAnswer(type = "text", answer = goal)
+                                answer = answers.getOrNull(1)?.answer?.copy(
+                                    answer = goal,
+                                    note = week
+                                ) ?: LogbookAnswer(type = "text", answer = goal, note = week)
                             )
                         )
                         updatedAnswers.add(
                             LogbookQuestionAnswer(
                                 questionId = questions[2].id,
-                                answer = answers.getOrNull(2)?.answer?.copy(answer = plan)
-                                    ?: LogbookAnswer(type = "text", answer = plan)
+                                answer = answers.getOrNull(2)?.answer?.copy(
+                                    answer = plan,
+                                    note = week
+                                ) ?: LogbookAnswer(type = "text", answer = plan, note = week)
                             )
                         )
                         updatedAnswers.add(
                             LogbookQuestionAnswer(
                                 questionId = questions[3].id,
-                                answer = answers.getOrNull(3)?.answer?.copy(answer = time)
-                                    ?: LogbookAnswer(type = "text", answer = time)
+                                answer = answers.getOrNull(3)?.answer?.copy(
+                                    answer = time,
+                                    note = week
+                                ) ?: LogbookAnswer(type = "text", answer = time, note = week)
                             )
                         )
                         updatedAnswers.add(
                             LogbookQuestionAnswer(
                                 questionId = questions[4].id,
-                                answer = answers.getOrNull(4)?.answer?.copy(answer = status)
-                                    ?: LogbookAnswer(type = "boolean", answer = status)
+                                answer = answers.getOrNull(4)?.answer?.copy(
+                                    answer = status,
+                                    note = week
+                                ) ?: LogbookAnswer(type = "boolean", answer = status, note = week)
                             )
                         )
                         updatedAnswers.add(
                             LogbookQuestionAnswer(
                                 questionId = questions[5].id,
-                                answer = answers.getOrNull(5)?.answer?.copy(answer = obstacle)
-                                    ?: LogbookAnswer(type = "text", answer = obstacle)
+                                answer = answers.getOrNull(5)?.answer?.copy(
+                                    answer = obstacle,
+                                    note = week
+                                ) ?: LogbookAnswer(type = "text", answer = obstacle, note = week)
                             )
                         )
                         updatedAnswers.add(
                             LogbookQuestionAnswer(
                                 questionId = questions[6].id,
-                                answer = answers.getOrNull(6)?.answer?.copy(answer = solution)
-                                    ?: LogbookAnswer(type = "text", answer = solution)
+                                answer = answers.getOrNull(6)?.answer?.copy(
+                                    answer = solution,
+                                    note = week
+                                ) ?: LogbookAnswer(type = "text", answer = solution, note = week)
                             )
                         )
 

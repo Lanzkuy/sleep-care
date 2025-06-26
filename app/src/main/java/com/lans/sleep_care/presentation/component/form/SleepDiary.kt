@@ -62,7 +62,18 @@ fun SleepDiary(
             val isExpanded = expandedStates[date] ?: false
             val hasAnsweredAllQuestions = questions.filter { it.parentId == -1 }
                 .all { question ->
-                    dayAnswers.any { it.questionId == question.id && it.answer.answer.isNotEmpty() }
+                    val answer =
+                        dayAnswers.find { it.questionId == question.id }?.answer?.answer.orEmpty()
+                    if (answer.isEmpty()) {
+                        false
+                    } else if (answer == "1") {
+                        val childQuestions = questions.filter { it.parentId == question.id }
+                        childQuestions.all { child ->
+                            dayAnswers.any { it.questionId == child.id && it.answer.answer.isNotEmpty() }
+                        }
+                    } else {
+                        true
+                    }
                 }
 
             OutlinedCard(
