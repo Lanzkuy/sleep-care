@@ -28,7 +28,7 @@ class CreatePaymentInteractor @Inject constructor(
             emit(
                 safeCall {
                     val (firstName, lastName) = splitName(user.name)
-                    val psychologistFee = 350000
+                    val psychologistFee = 480000
                     val applicationFee = 20000
 
                     val response = repository.createMidtransPayment(

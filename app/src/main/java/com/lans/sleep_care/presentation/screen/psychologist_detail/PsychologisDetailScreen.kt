@@ -300,7 +300,7 @@ fun PsychologistDetailScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(Dimens.dp8),
-                            text = "Biaya : ${formatToRupiah(370000)}",
+                            text = "Biaya : ${formatToRupiah(500000)}",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.SemiBold
