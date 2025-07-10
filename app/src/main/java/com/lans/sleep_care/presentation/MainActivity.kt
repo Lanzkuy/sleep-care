@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.lans.sleep_care.presentation.navigation.NavGraph
 import com.lans.sleep_care.presentation.theme.SleepCareTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,11 +21,20 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+
+        installSplashScreen().setKeepOnScreenCondition {
+            viewModel.splashState
+        }
+
         setContent {
-            SleepCareTheme(dynamicColor = false) {
-                SleepCareApp(startDestination = "login")
+            val authState by viewModel.isAuthenticated.collectAsState(initial = null)
+
+            if (authState != null) {
+                SleepCareTheme(dynamicColor = false) {
+                    SleepCareApp(if (authState == true) "home" else "login")
+                }
             }
         }
     }
@@ -36,6 +48,6 @@ fun SleepCareApp(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.background
     ) {
-
+        NavGraph(startDestination = startDestination)
     }
 }

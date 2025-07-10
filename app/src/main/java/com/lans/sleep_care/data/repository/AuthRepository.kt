@@ -1,0 +1,58 @@
+package com.lans.sleep_care.data.repository
+
+import com.lans.sleep_care.data.source.local.DataStoreManager
+import com.lans.sleep_care.data.source.network.api.SleepCareApi
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordForgotRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.LoginRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.RegisterRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.PasswordResetRequest
+import com.lans.sleep_care.data.source.network.dto.request.auth.OtpVerifyRequest
+import com.lans.sleep_care.data.source.network.dto.response.ApiResponse
+import com.lans.sleep_care.data.source.network.dto.response.auth.LoginResponse
+import com.lans.sleep_care.data.source.network.dto.response.auth.RegisterResponse
+import com.lans.sleep_care.domain.repository.IAuthRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+class AuthRepository @Inject constructor(
+    private val api: SleepCareApi,
+    private val dataStoreManager: DataStoreManager
+) : IAuthRepository {
+    override suspend fun authState(): Flow<Boolean> {
+        return dataStoreManager.getAccessToken().map { it.isNotEmpty() }
+    }
+
+    override suspend fun saveToken(accessToken: String) {
+        dataStoreManager.storeData(key = DataStoreManager.ACCESS_TOKEN, value = accessToken)
+    }
+
+    override suspend fun deleteToken() {
+        dataStoreManager.deleteAccessToken()
+    }
+
+    override suspend fun fetchLogin(request: LoginRequest): ApiResponse<LoginResponse> {
+        return api.login(request)
+    }
+
+    override suspend fun fetchRegister(request: RegisterRequest): ApiResponse<RegisterResponse> {
+        return api.register(request)
+    }
+
+    override suspend fun forgotPassword(request: PasswordForgotRequest): ApiResponse<Any> {
+        return api.forgotPassword(request)
+    }
+
+    override suspend fun resetPassword(request: PasswordResetRequest): ApiResponse<Any> {
+        return api.resetPassword(request)
+    }
+
+    override suspend fun sendOtp(request: OtpRequest): ApiResponse<Any> {
+        return api.requestOtp(request)
+    }
+
+    override suspend fun verifyOtp(request: OtpVerifyRequest): ApiResponse<Any> {
+        return api.verifyOtp(request)
+    }
+}

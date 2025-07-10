@@ -1,0 +1,9 @@
+package com.lans.sleep_care.domain.usecase.payment
+
+import com.lans.sleep_care.data.Resource
+import com.lans.sleep_care.domain.model.auth.User
+import kotlinx.coroutines.flow.Flow
+
+interface CreatePaymentUseCase {
+    suspend fun execute(orderId: String, user: User): Flow<Resource<Pair<String, String>>>
+}

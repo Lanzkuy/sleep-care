@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.sp
 
 object Dimens {
     val dp0: Dp = 0.dp
+    val dp0p5: Dp = 0.5.dp
     val dp1: Dp = 1.dp
     val dp2: Dp = 2.dp
     val dp3: Dp = 3.dp
@@ -18,6 +19,7 @@ object Dimens {
     val dp12: Dp = 12.dp
     val dp14: Dp = 14.dp
     val dp16: Dp = 16.dp
+    val dp18: Dp = 18.dp
     val dp24: Dp = 24.dp
     val dp26: Dp = 26.dp
     val dp20: Dp = 20.dp
@@ -28,9 +30,14 @@ object Dimens {
     val dp36: Dp = 36.dp
     val dp38: Dp = 38.dp
     val dp40: Dp = 40.dp
+    val dp46: Dp = 46.dp
     val dp48: Dp = 48.dp
+    val dp50: Dp = 50.dp
+    val dp52: Dp = 52.dp
     val dp55: Dp = 55.dp
+    val dp56: Dp = 56.dp
     val dp60: Dp = 60.dp
+    val dp64: Dp = 64.dp
     val dp70: Dp = 70.dp
     val dp80: Dp = 80.dp
     val dp90: Dp = 90.dp
@@ -41,6 +48,10 @@ object Dimens {
     val dp140: Dp = 140.dp
     val dp150: Dp = 150.dp
     val dp160: Dp = 160.dp
+    val dp180: Dp = 180.dp
+    val dp240: Dp = 240.dp
+    val dp260: Dp = 260.dp
+    val dp300: Dp = 300.dp
 
     val sp10: TextUnit = 10.sp
     val sp11: TextUnit = 11.sp

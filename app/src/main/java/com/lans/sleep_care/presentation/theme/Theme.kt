@@ -16,17 +16,50 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val darkColor = darkColorScheme(
-    primary = PrimaryVariant,
+    primary = Primary,
     onPrimary = White,
-    secondary = SecondaryVariant,
-    background = Black,
+    primaryContainer = PrimaryVariant,
+    onPrimaryContainer = White,
+
+    secondary = Secondary,
+    onSecondary = Black,
+    secondaryContainer = SecondaryVariant,
+    onSecondaryContainer = Black,
+
+    background = SecondaryVariant,
+    onBackground = Black,
+
+    surface = White,
+    onSurface = Black,
+
+    surfaceVariant = White,
+    onSurfaceVariant = Black,
+
+    error = Danger,
+    onError = White,
+
+    outline = DarkGray
 )
 
 private val lightColor = lightColorScheme(
     primary = Primary,
     onPrimary = White,
+    primaryContainer = PrimaryVariant,
+
     secondary = Secondary,
-    background = White
+    onSecondary = Black,
+    secondaryContainer = SecondaryVariant,
+
+    background = SecondaryVariant,
+    onBackground = Black,
+
+    surface = White,
+    onSurface = Black,
+
+    error = Danger,
+    onError = White,
+
+    outline = DarkGray
 )
 
 @Composable
@@ -48,12 +81,12 @@ fun SleepCareTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = if(darkTheme) {
+            window.statusBarColor = if (darkTheme) {
                 Black.toArgb()
             } else {
                 White.toArgb()
             }
-            window.navigationBarColor = if(darkTheme) {
+            window.navigationBarColor = if (darkTheme) {
                 Black.toArgb()
             } else {
                 White.toArgb()

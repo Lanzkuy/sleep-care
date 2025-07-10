@@ -1,0 +1,416 @@
+package com.lans.sleep_care.presentation.navigation
+
+import android.app.Activity
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.lans.sleep_care.presentation.screen.change_password.ChangePasswordScreen
+import com.lans.sleep_care.presentation.screen.chat_room.ChatRoomScreen
+import com.lans.sleep_care.presentation.screen.chatbot.ChatbotScreen
+import com.lans.sleep_care.presentation.screen.committed_action.CommitedActionScreen
+import com.lans.sleep_care.presentation.screen.emotion_record.EmotionRecordScreen
+import com.lans.sleep_care.presentation.screen.forgot_password.ForgotPasswordScreen
+import com.lans.sleep_care.presentation.screen.history.HistoryScreen
+import com.lans.sleep_care.presentation.screen.history_detail.HistoryDetailScreen
+import com.lans.sleep_care.presentation.screen.home.HomeScreen
+import com.lans.sleep_care.presentation.screen.identify_value.IdentifyValueScreen
+import com.lans.sleep_care.presentation.screen.logbook.LogbookScreen
+import com.lans.sleep_care.presentation.screen.login.LoginScreen
+import com.lans.sleep_care.presentation.screen.my_theraphy.MyTherapyScreen
+import com.lans.sleep_care.presentation.screen.profile.ProfileScreen
+import com.lans.sleep_care.presentation.screen.psychologist.PsychologistScreen
+import com.lans.sleep_care.presentation.screen.psychologist_detail.PsychologistDetailScreen
+import com.lans.sleep_care.presentation.screen.register.RegisterScreen
+import com.lans.sleep_care.presentation.screen.sleep_diary.SleepDiaryScreen
+import com.lans.sleep_care.presentation.screen.thought_record.ThoughtRecordScreen
+import com.lans.sleep_care.presentation.screen.verification.VerificationScreen
+
+@Composable
+fun NavGraph(
+    startDestination: String
+) {
+    val navController = rememberNavController()
+    val activity = LocalContext.current as Activity
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination
+    BackHandler {
+        if (currentRoute?.route == Route.HomeScreen.route) {
+            activity.finish()
+        }
+    }
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        enterTransition = {
+            fadeIn(animationSpec = tween(500))
+        },
+        exitTransition = {
+            fadeOut(animationSpec = tween(500))
+        },
+        popEnterTransition = {
+            fadeIn(animationSpec = tween(500))
+        },
+        popExitTransition = {
+            fadeOut(animationSpec = tween(500))
+        }
+    ) {
+        composable(route = Route.LoginScreen.route) {
+            LoginScreen(
+                navigateToRegister = {
+                    navController.navigate(route = Route.RegisterScreen.route) {
+                        popUpTo(route = Route.LoginScreen.route)
+                    }
+                },
+                navigateToForgotPassword = {
+                    navController.navigate(route = Route.ForgotScreen.route) {
+                        popUpTo(route = Route.LoginScreen.route)
+                    }
+                },
+                navigateToVerification = { email ->
+                    navController.navigate(route = Route.VerificationScreen.route + "/$email") {
+                        popUpTo(route = Route.LoginScreen.route)
+                    }
+                },
+                navigateToHome = {
+                    navController.navigate(route = Route.HomeScreen.route) {
+                        popUpTo(route = Route.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+        composable(route = Route.RegisterScreen.route) {
+            RegisterScreen(
+                navigateToLogin = {
+                    navController.navigateUp()
+                },
+                navigateToVerification = { email ->
+                    navController.navigate(route = Route.VerificationScreen.route + "/$email") {
+                        popUpTo(route = Route.RegisterScreen.route)
+                    }
+                }
+            )
+        }
+        composable(route = Route.ForgotScreen.route) {
+            ForgotPasswordScreen(
+                navigateToLogin = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.VerificationScreen.route + "/{email}") {
+            val email = it.arguments?.getString("email") ?: ""
+            VerificationScreen(
+                email = email,
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                navigateNext = {
+                    navController.navigate(route = Route.LoginScreen.route) {
+                        popUpTo(route = Route.VerificationScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+        composable(route = Route.HomeScreen.route) {
+            HomeScreen(
+                navigateToTherapist = {
+                    navController.navigate(route = Route.PsychologistScreen.route) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                },
+                navigateToMyTherapy = { id, isTherapyInProgress ->
+                    navController.navigate(route = Route.MyTherapyScreen.route + "/$id/$isTherapyInProgress") {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                },
+                navigateToChatbot = { name, email ->
+                    navController.navigate(route = Route.ChatbotScreen.route + "/$name/$email") {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                },
+                navigateToHistory = {
+                    navController.navigate(route = Route.HistoryScreen.route) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                },
+                navigateToProfile = { id, name, age, gender, problemList ->
+                    val problems = problemList?.joinToString(",") ?: ""
+                    navController.navigate(
+                        route = Route.ProfileScreen.route + "/$id/$name/$age/$gender/$problems"
+                    ) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                },
+                navigateToChangePassword = {
+                    navController.navigate(route = Route.ChangePasswordScreen.route) {
+                        popUpTo(route = Route.HomeScreen.route)
+                    }
+                }
+            )
+        }
+        composable(route = Route.ProfileScreen.route + "/{id}/{name}/{age}/{gender}/{problems}") {
+            val id = it.arguments?.getString("id") ?: ""
+            val name = it.arguments?.getString("name") ?: ""
+            val age = it.arguments?.getString("age") ?: "0"
+            val gender = it.arguments?.getString("gender") ?: ""
+            val problems = it.arguments?.getString("problems") ?: ""
+            val problemList = if (problems.isNotEmpty()) problems.split(",") else emptyList()
+            ProfileScreen(
+                id = id,
+                name = name,
+                age = age,
+                gender = gender,
+                problemList = problemList,
+                navigateToHome = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.ChangePasswordScreen.route) {
+            ChangePasswordScreen(
+                navigateToHome = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.PsychologistScreen.route) {
+            PsychologistScreen(
+                navigateToHome = {
+                    navController.navigateUp()
+                },
+                navigateToPsychologistDetail = { id ->
+                    navController.navigate(
+                        route = Route.PsychologistDetailScreen.route + "/$id"
+                    ) {
+                        popUpTo(route = Route.PsychologistScreen.route)
+                    }
+                },
+            )
+        }
+        composable(route = Route.PsychologistDetailScreen.route + "/{id}") {
+            val id = it.arguments?.getString("id") ?: ""
+            PsychologistDetailScreen(
+                id = id.toInt(),
+                navigateToPsychologist = {
+                    navController.navigateUp()
+                },
+                navigateToHome = {
+                    navController.navigate(route = Route.HomeScreen.route) {
+                        popUpTo(route = Route.PsychologistDetailScreen.route + "/{id}") {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+        composable(route = Route.MyTherapyScreen.route + "/{id}/{isTherapyInProgress}") {
+            val id = it.arguments?.getString("id") ?: ""
+            val isTherapyInProgress =
+                it.arguments?.getString("isTherapyInProgress")?.toBoolean() ?: false
+            MyTherapyScreen(
+                isTherapyInProgress = isTherapyInProgress,
+                navigateToHome = {
+                    navController.navigateUp()
+                },
+                navigateToPsychologist = {
+                    navController.navigate(route = Route.PsychologistScreen.route) {
+                        popUpTo(route = Route.MyTherapyScreen.route)
+                    }
+                },
+                navigateToChat = { therapyId, psychologistName ->
+                    navController.navigate(route = Route.ChatRoomScreen.route + "/$id/$therapyId/$psychologistName") {
+                        popUpTo(route = Route.MyTherapyScreen.route)
+                    }
+                },
+                navigateToIdentifyValue = { therapyId, isReadOnly ->
+                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId/$isReadOnly") {
+                        popUpTo(route = Route.MyTherapyScreen.route)
+                    }
+                },
+                navigateToLogbook = { therapyId, week, startDate, endDate, isReadOnly ->
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
+                        popUpTo(route = Route.MyTherapyScreen.route)
+                    }
+                }
+            )
+        }
+        composable(route = Route.ChatRoomScreen.route + "/{id}/{therapyId}/{psychologistName}") {
+            val id = it.arguments?.getString("id") ?: ""
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val psychologistName = it.arguments?.getString("psychologistName") ?: ""
+            ChatRoomScreen(
+                id = id,
+                therapyId = therapyId,
+                psychologistName = psychologistName,
+                navigateToMyTheraphy = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.LogbookScreen.route + "/{therapyId}/{week}/{startDate}/{endDate}/{isReadOnly}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val startDate = it.arguments?.getString("startDate") ?: ""
+            val endDate = it.arguments?.getString("endDate") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
+            LogbookScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                navigateToSleepDiary = {
+                    navController.navigate(route = Route.SleepDiaryScreen.route + "/$therapyId/$week/$isReadOnly") {
+                        popUpTo(route = Route.LogbookScreen.route)
+                    }
+                },
+                navigateToThoughtRecord = {
+                    navController.navigate(route = Route.ThoughtRecordScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
+                        popUpTo(route = Route.LogbookScreen.route)
+                    }
+                },
+                navigateToEmotionRecord = {
+                    navController.navigate(route = Route.EmotionRecordScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
+                        popUpTo(route = Route.LogbookScreen.route)
+                    }
+                },
+                navigateToCommitedAction = {
+                    navController.navigate(route = Route.CommittedActionScreen.route + "/$therapyId/$week/$isReadOnly") {
+                        popUpTo(route = Route.LogbookScreen.route)
+                    }
+                }
+            )
+        }
+        composable(route = Route.SleepDiaryScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
+            SleepDiaryScreen(
+                therapyId = therapyId,
+                week = week,
+                isReadOnly = isReadOnly,
+                navigateToLogbook = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.IdentifyValueScreen.route + "/{therapyId}/{isReadOnly}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
+            IdentifyValueScreen(
+                therapyId = therapyId,
+                isReadOnly = isReadOnly,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.ThoughtRecordScreen.route + "/{therapyId}/{week}/{startDate}/{endDate}/{isReadOnly}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val startDate = it.arguments?.getString("startDate") ?: ""
+            val endDate = it.arguments?.getString("endDate") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
+            ThoughtRecordScreen(
+                therapyId = therapyId,
+                week = week,
+                startDate = startDate,
+                endDate = endDate,
+                isReadOnly = isReadOnly,
+                navigateToLogbook = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.EmotionRecordScreen.route + "/{therapyId}/{week}/{startDate}/{endDate}/{isReadOnly}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val startDate = it.arguments?.getString("startDate") ?: ""
+            val endDate = it.arguments?.getString("endDate") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
+            EmotionRecordScreen(
+                therapyId = therapyId,
+                week = week,
+                startDate = startDate,
+                endDate = endDate,
+                isReadOnly = isReadOnly,
+                navigateToLogbook = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.CommittedActionScreen.route + "/{therapyId}/{week}/{isReadOnly}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val week = it.arguments?.getString("week") ?: ""
+            val isReadOnly = it.arguments?.getString("isReadOnly")?.toBoolean() ?: false
+            CommitedActionScreen(
+                therapyId = therapyId,
+                week = week,
+                isReadOnly = isReadOnly,
+                navigateToLogbook = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.ChatbotScreen.route + "/{name}/{email}") {
+            val name = it.arguments?.getString("name") ?: ""
+            val email = it.arguments?.getString("email") ?: ""
+            ChatbotScreen(
+                email = email,
+                name = name,
+                navigateToHome = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable(route = Route.HistoryScreen.route) {
+            HistoryScreen(
+                navigateToHome = {
+                    navController.navigateUp()
+                },
+                navigateToHistoryDetail = { therapyId, psychologistId, period, totalPrice ->
+                    navController.navigate(
+                        route = Route.HistoryDetailScreen.route + "/$therapyId/$psychologistId/$period/$totalPrice"
+                    ) {
+                        popUpTo(route = Route.HistoryScreen.route)
+                    }
+                }
+            )
+        }
+        composable(route = Route.HistoryDetailScreen.route + "/{therapyId}/{psychologistId}/{period}/{totalPrice}") {
+            val therapyId = it.arguments?.getString("therapyId") ?: ""
+            val psychologistId = it.arguments?.getString("psychologistId") ?: ""
+            val period = it.arguments?.getString("period") ?: ""
+            val totalPrice = it.arguments?.getString("totalPrice") ?: ""
+            HistoryDetailScreen(
+                therapyId = therapyId.toInt(),
+                psychologistId = psychologistId.toInt(),
+                period = period,
+                totalPrice = totalPrice,
+                navigateToHistory = {
+                    navController.navigateUp()
+                },
+                navigateToLogbook = { week, startDate, endDate, isReadOnly ->
+                    navController.navigate(route = Route.LogbookScreen.route + "/$therapyId/$week/$startDate/$endDate/$isReadOnly") {
+                        popUpTo(route = Route.HistoryDetailScreen.route)
+                    }
+                },
+                navigateToIdentifyValue = { isReadOnly ->
+                    navController.navigate(route = Route.IdentifyValueScreen.route + "/$therapyId/$isReadOnly") {
+                        popUpTo(route = Route.HistoryDetailScreen.route)
+                    }
+                }
+            )
+        }
+    }
+}

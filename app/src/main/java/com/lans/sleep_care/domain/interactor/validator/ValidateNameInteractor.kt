@@ -1,0 +1,26 @@
+package com.lans.sleep_care.domain.interactor.validator
+
+import com.lans.sleep_care.domain.model.validation.ValidationResult
+import com.lans.sleep_care.domain.usecase.validator.ValidateNameUseCase
+
+class ValidateNameInteractor : ValidateNameUseCase {
+    override fun execute(input: String): ValidationResult {
+        if (input.isBlank()) {
+            return ValidationResult(
+                isSuccess = false,
+                errorMessage = "Name must be filled"
+            )
+        }
+
+        if (input.length < 4) {
+            return ValidationResult(
+                isSuccess = false,
+                errorMessage = "Name must be at least 4 characters long"
+            )
+        }
+
+        return ValidationResult(
+            isSuccess = true
+        )
+    }
+}
